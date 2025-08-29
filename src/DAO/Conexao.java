@@ -32,7 +32,7 @@ public class Conexao {
 
     public void desconectar(){
         try {
-            this.connection.close();
+            this.connection.close(); //fecha a conexão
         }catch (SQLException sqle){
             System.out.println("Não foi possivel fechar a conexão");
         }

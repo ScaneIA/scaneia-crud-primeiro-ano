@@ -1,6 +1,8 @@
-package DAO;
+package TestDAO;
 
-public class Main {
+import DAO.Conexao;
+
+public class ConexaoTeste {
     public static void main(String[] args) {
         Conexao conexao = new Conexao();
         if (conexao.getConnection() == null){
