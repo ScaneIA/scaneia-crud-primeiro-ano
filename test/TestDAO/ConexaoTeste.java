@@ -10,6 +10,8 @@ public class ConexaoTeste {
         }else {
             System.out.println("conectado com sucesso");
         }
+        TestDAO test= new TestDAO();
+        test.inserir();
         conexao.desconectar();
     }
 }
