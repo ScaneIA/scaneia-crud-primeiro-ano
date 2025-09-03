@@ -121,6 +121,7 @@ public class UserDAO {
             return false;
         }
 
+
         //return the result
         return usersFound == 1;
     }
