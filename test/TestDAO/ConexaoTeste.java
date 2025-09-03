@@ -1,7 +1,8 @@
 package TestDAO;
 
 import DAO.Conexao;
-import DAO.UserDao;
+import DAO.UserDAO;
+
 
 public class ConexaoTeste {
     public static void main(String[] args) {
@@ -13,7 +14,8 @@ public class ConexaoTeste {
         }
 
 
-        UserDao test= new UserDao();
+        UserDAO test= new UserDAO();
+
         if(test.insert()){
             System.out.println("Inserção realizada");
         }
