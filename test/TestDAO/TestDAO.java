@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 public class TestDAO {
-    public void inserir(){
+    public void insert(){
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         if (conn == null) {
@@ -27,4 +27,6 @@ public class TestDAO {
             conexao.desconectar();
         }
     }
+    public void atualizar(){}
+
 }
