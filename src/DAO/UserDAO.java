@@ -49,6 +49,7 @@ public class UserDAO {
             }
             catch (SQLException se){
                 se.printStackTrace();
+                return false;
             }
             finally {
                 conexao.desconectar();
@@ -72,6 +73,7 @@ public class UserDAO {
             }
             catch (SQLException se){
                 se.printStackTrace();
+                return false;
             }
             finally {
                 conexao.desconectar();
