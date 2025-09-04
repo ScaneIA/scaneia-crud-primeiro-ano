@@ -6,47 +6,100 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO {
-    public void inserir(){
+    public boolean insert(){
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return;
+            return false;
+        }
+        else{
+            try (PreparedStatement pstmt = conn.prepareStatement(
+                    "INSERT INTO USUARIO (NOME, EMAIL, CPF) VALUES (?, ?, ?)")) {
+                pstmt.setString(1,"Gustavo Amex");
+                pstmt.setString(2, "gustavo.amex@gmail.com");
+                pstmt.setInt(3, 569874534);
+                pstmt.execute();
+
+            } catch (SQLException se) {
+                se.printStackTrace();
+                return false;
+            } finally {
+                conexao.desconectar();
+            }
+            return true;
         }
 
-        try (PreparedStatement pstmt = conn.prepareStatement(
-                "INSERT INTO USUARIO (NOME, EMAIL, CPF) VALUES (?, ?, ?)")) {
-            pstmt.setString(1,"Gustavo Amex");
-            pstmt.setString(2, "gustavo.amex@gmail.com");
-            pstmt.setInt(3, 569874532);
-            pstmt.execute();
-            System.out.println("Inserção realizada com sucesso");
-        } catch (SQLException se) {
-            se.printStackTrace();
-        } finally {
-            conexao.desconectar();
+    }
+
+    public boolean update(){
+        Conexao conexao= new Conexao();
+        Connection conn= conexao.getConnection();
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return false;
         }
+        else{
+
+            try{
+                PreparedStatement pstmt= conn.prepareStatement("UPDATE USUARIO SET NOME=? WHERE CPF=? ");
+                pstmt.setString(1,"Aline");
+                pstmt.setInt(2,569874534);
+                pstmt.execute();
+            }
+            catch (SQLException se){
+                se.printStackTrace();
+            }
+            finally {
+                conexao.desconectar();
+            }
+            return true;
+        }
+    }
+    public boolean delete(){
+        Conexao conexao= new Conexao();
+        Connection conn= conexao.getConnection();
+        if(conn==null){
+            System.out.println("Não foi possível conectar");
+            return false;
+        }
+        else{
+            try{
+                String remover="DELETE FROM USUARIO WHERE CPF=?";
+                PreparedStatement pstmt= conn.prepareStatement(remover);
+                pstmt.setInt(1,569874532);
+                pstmt.execute();
+            }
+            catch (SQLException se){
+                se.printStackTrace();
+            }
+            finally {
+                conexao.desconectar();
+            }
+            return true;
+        }
+
     }
 
     public boolean login(String email, String senha){
-        //variables
+        //variavei
         int usersFound = 0;
 
-        //create connection
+        //Cria uma conexão
         Conexao conexao = new Conexao();
         ResultSet resultSet;
 
-        //realize the query
+        //try-catch para a consulta
         try {
-            //prepare the query
+            //Prepara a consulta
             String sql = "SELECT COUNT(*) FROM USUARIO WHERE email = ? and senha = ?";
             PreparedStatement preparedStatement = conexao.getConnection().prepareStatement(sql);
 
-            //change the parameters
+            //Modifica os parametros
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, senha);
 
-            //do the query
+            //Faz a consulta
             resultSet = preparedStatement.executeQuery();
 
         }catch (SQLException exception){
@@ -57,7 +110,7 @@ public class UserDAO {
             conexao.desconectar();
         }
 
-        //See the amount of founded users
+        //Verifica a quantidade de usuarios encontrados
         try{
             if (resultSet.next()){
                 usersFound = resultSet.getInt(1);
@@ -69,7 +122,7 @@ public class UserDAO {
             return false;
         }
 
-        //return the result
+        //Retorna se tem apenas 1 usuario encontrado
         return usersFound == 1;
     }
 }
