@@ -97,7 +97,7 @@ public class Usuarios {
         ZonedDateTime zonedDateTime = instant.atZone(ZoneOffset.UTC);
 
         //motifica a data com o fuso-horario correto
-        this.dataAtualizacao = Timestamp.from(instant);
+        this.dataAtualizacao = Timestamp.from(zonedDateTime.toInstant());
     }
 
     public void setDataExclusao(Timestamp dataExclusao) {
@@ -108,7 +108,7 @@ public class Usuarios {
         ZonedDateTime zonedDateTime = instant.atZone(ZoneOffset.UTC);
 
         //motifica a data com o fuso-horario correto
-        this.dataExclusao = Timestamp.from(instant);
+        this.dataExclusao = Timestamp.from(zonedDateTime.toInstant());
     }
 
     public void setIdCargo(int idCargo) {
