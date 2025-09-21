@@ -1,14 +1,14 @@
 package TestDAO;
 
 import DAO.Conexao;
-import DAO.UserDAO;
+import DAO.UsuariosDAO;
 
 
 public class ConexaoTeste {
     public static void main(String[] args) {
         //variaveis
         Conexao conexao = new Conexao();
-        UserDAO test= new UserDAO();
+        UsuariosDAO test= new UsuariosDAO();
 
         //testando a conexão com o DB
         if (conexao.getConnection() == null){
