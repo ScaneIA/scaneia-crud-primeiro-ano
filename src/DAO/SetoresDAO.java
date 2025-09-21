@@ -2,6 +2,7 @@ package DAO;
 
 import Model.Setores;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -15,7 +16,8 @@ public class SetoresDAO {
         try{
             //prepara o sql
             String sql = "INSERT INTO SETORES(DESCRICAO, NOME, IDAREAS) VALUES ?,?,?";
-            PreparedStatement preparedStatement = conexao.getConnection().prepareStatement(sql);
+            Connection connection = conexao.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             //coloca os parametros
             preparedStatement.setString(1, setor.getDescricao());
