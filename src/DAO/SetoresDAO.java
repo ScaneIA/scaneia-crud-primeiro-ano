@@ -85,5 +85,31 @@ public class SetoresDAO {
         }
     }
 
+    public boolean alterarIdAreas(Setores setor, int idArea){
+        //cria a conexao
+        Conexao conexao = new Conexao();
+
+        //prepara o comando sql
+        try {
+            //cria o prepared statement
+            String sql = "UPDATE SETORES SET IDAREAS = ? WHERE ID = ?";
+            Connection connection = conexao.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            //coloca os parametros
+            preparedStatement.setInt(1, idArea);
+            preparedStatement.setInt(2, setor.getId());
+
+            //executa o comando
+            return preparedStatement.executeUpdate() == 1;
+
+        }catch (SQLException exception){
+            exception.printStackTrace();
+            return false;
+        }finally {
+            conexao.desconectar();
+        }
+    }
+
 
 }
