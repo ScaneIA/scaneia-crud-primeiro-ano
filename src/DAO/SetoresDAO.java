@@ -36,7 +36,7 @@ public class SetoresDAO {
         }
     }
 
-    public boolean alterarNome(Setores setor){
+    public boolean alterarNome(Setores setor, String nome){
         //cria a conexao
         Conexao conexao = new Conexao();
 
@@ -48,7 +48,7 @@ public class SetoresDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             //coloca os parametros
-            preparedStatement.setString(1, setor.getNome());
+            preparedStatement.setString(1, nome);
             preparedStatement.setInt(2, setor.getId());
 
             //executa o comando
@@ -60,4 +60,30 @@ public class SetoresDAO {
             conexao.desconectar();
         }
     }
+
+    public boolean alterarDescricao(Setores setor, String descricao){
+        //cria a conexao
+        Conexao conexao = new Conexao();
+
+        //prepara o comando sql
+        try {
+            //cria o prepared statement
+            String sql = "UPDATE SETORES SET DESCRICAO = ? WHERE ID = ?";
+            Connection connection = conexao.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            //coloca os parametros
+            preparedStatement.setString(1, descricao);
+            preparedStatement.setInt(2, setor.getId());
+
+            //executa o comando
+            return preparedStatement.executeUpdate() == 1;
+
+        }catch (SQLException exception){
+            exception.printStackTrace();
+            return false;
+        }
+    }
+
+
 }
