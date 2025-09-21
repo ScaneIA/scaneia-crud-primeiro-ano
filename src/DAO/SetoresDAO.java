@@ -5,6 +5,7 @@ import Model.Setores;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Set;
 
 public class SetoresDAO {
 
@@ -31,6 +32,31 @@ public class SetoresDAO {
             return false;
         }finally {
             //fecha a conexão
+            conexao.desconectar();
+        }
+    }
+
+    public boolean alterarNome(Setores setor){
+        //cria a conexao
+        Conexao conexao = new Conexao();
+
+        //prepara o comando sql
+        try {
+            //script sql
+            String sql = "UPDATE SETORES SET NOME = ? WHERE ID = ?";
+            Connection connection = conexao.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            //coloca os parametros
+            preparedStatement.setString(1, setor.getNome());
+            preparedStatement.setInt(2, setor.getId());
+
+            //executa o comando
+            return preparedStatement.executeUpdate() == 1;
+        }catch (SQLException exception){
+            exception.printStackTrace();
+            return false;
+        }finally {
             conexao.desconectar();
         }
     }
