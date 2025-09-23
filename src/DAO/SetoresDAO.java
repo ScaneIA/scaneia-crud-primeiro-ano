@@ -124,6 +124,31 @@ public class SetoresDAO {
         }
     }
 
+    public boolean deletarSetor(Setores setor){
+        //cria a conexao
+        Conexao conexao = new Conexao();
+
+        //prepara o comando sql
+        try {
+            //cria o prepared statement
+            String sql = "DELETE FROM SETORES WHERE ID = ?";
+            Connection connection = conexao.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            //coloca o parametro
+            preparedStatement.setInt(1, setor.getId());
+
+            //executa o comando
+            return preparedStatement.executeUpdate() > 0;
+
+        }catch (SQLException exception){
+            exception.printStackTrace();
+            return false;
+        }finally {
+            conexao.desconectar();
+        }
+    }
+
     public void atualizarData(Connection connection, Setores setor) throws SQLException{
         //prepara o script sql
         String sql = "UPDATE SETORES SET DATAATUALIZACAO = ? WHERE ID = ?";
