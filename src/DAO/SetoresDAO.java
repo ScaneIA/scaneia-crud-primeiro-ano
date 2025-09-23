@@ -5,7 +5,8 @@ import Model.Setores;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class SetoresDAO {
 
@@ -111,5 +112,21 @@ public class SetoresDAO {
         }
     }
 
+    public void atualizarData(Connection connection, Setores setor) throws SQLException{
+        //prepara o script sql
+        String sql = "UPDATE SETORES SET DATAATUALIZACAO = ? WHERE ID = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
+        //prepara o timestamp
+        LocalDateTime timestampLocal = LocalDateTime.now();
+        Timestamp timestamp = Timestamp.valueOf(timestampLocal);
+        setor.setDataAtualizacao(timestamp);
+
+        //atualiza os parametros do sql
+        preparedStatement.setTimestamp(1, setor.getDataAtualizacao());
+        preparedStatement.setInt(2, setor.getId());
+
+        //executa o comando
+        preparedStatement.executeUpdate();
+    }
 }
