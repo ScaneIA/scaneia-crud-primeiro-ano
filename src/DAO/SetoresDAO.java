@@ -26,6 +26,9 @@ public class SetoresDAO {
             preparedStatement.setString(2, setor.getNome());
             preparedStatement.setInt(3, setor.getIdArea());
 
+            //atualiza data de modificacao
+            atualizarData(connection, setor);
+
             //executa o comando
             return preparedStatement.executeUpdate() > 0;
         }catch (SQLException exception){
@@ -52,6 +55,9 @@ public class SetoresDAO {
             preparedStatement.setString(1, nome);
             preparedStatement.setInt(2, setor.getId());
 
+            //atualiza data de modificacao
+            atualizarData(connection, setor);
+
             //executa o comando
             return preparedStatement.executeUpdate() == 1;
         }catch (SQLException exception){
@@ -77,6 +83,9 @@ public class SetoresDAO {
             preparedStatement.setString(1, descricao);
             preparedStatement.setInt(2, setor.getId());
 
+            //atualiza data de modificacao
+            atualizarData(connection, setor);
+
             //executa o comando
             return preparedStatement.executeUpdate() == 1;
 
@@ -100,6 +109,9 @@ public class SetoresDAO {
             //coloca os parametros
             preparedStatement.setInt(1, idArea);
             preparedStatement.setInt(2, setor.getId());
+
+            //atualiza data de modificacao
+            atualizarData(connection, setor);
 
             //executa o comando
             return preparedStatement.executeUpdate() == 1;
