@@ -10,16 +10,18 @@ public class Setores {
     private int id;
     private String descricao; //text
     private String nome; //max 80 chars
+    private Timestamp dataCriacao; //timestamp z
     private Timestamp dataAtualizacao; //timestamp z
     private Timestamp dataExclusao; //timestamp z
     private int idArea;
 
     //construtor com todos atributos, ideal para buscas
-    public Setores(int id, String descricao, String nome, Timestamp dataCriacao, Timestamp dataExclusao, int idArea) {
+    public Setores(int id, String descricao, String nome, Timestamp dataAtualiazcao, Timestamp dataExclusao, int idArea, Timestamp dataCriacao) {
         this.id = id;
         this.descricao = descricao;
         this.nome = nome;
-        this.dataAtualizacao = dataCriacao;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualiazcao;
         this.dataExclusao = dataExclusao;
         this.idArea = idArea;
     }
@@ -56,6 +58,10 @@ public class Setores {
         return idArea;
     }
 
+    public Timestamp getDataCriacao() {
+        return dataCriacao;
+    }
+
     //setters
     public void setDescricao(String descricao) {
         this.descricao = descricao;
@@ -78,7 +84,7 @@ public class Setores {
 
     public void setDataExclusao(Timestamp dataExclusao) {
         //cria a data em instante
-        Instant instant = dataAtualizacao.toInstant();
+        Instant instant = dataExclusao.toInstant();
 
         //cria com fuso-horario certo
         ZonedDateTime zonedDateTime = instant.atZone(ZoneOffset.UTC);

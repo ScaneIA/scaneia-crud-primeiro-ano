@@ -13,6 +13,7 @@ public class Usuarios {
     private String cpf; //max 12 chars
     private String urlFoto; //tipo text
     private String senha; //max 200 chars
+    private Timestamp dataCriacao; //timestamp timezone z
     private Timestamp dataAtualizacao; //timestamp timezone z
     private Timestamp dataExclusao; //timestamp timezone z
     private int idCargo;
@@ -102,7 +103,7 @@ public class Usuarios {
 
     public void setDataExclusao(Timestamp dataExclusao) {
         //cria a data em instante
-        Instant instant = dataAtualizacao.toInstant();
+        Instant instant = dataExclusao.toInstant();
 
         //cria com fuso-horario certo
         ZonedDateTime zonedDateTime = instant.atZone(ZoneOffset.UTC);
