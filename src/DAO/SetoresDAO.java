@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class SetoresDAO {
@@ -131,12 +132,18 @@ public class SetoresDAO {
         //prepara o comando sql
         try {
             //cria o prepared statement
-            String sql = "DELETE FROM SETORES WHERE ID = ?";
+            String sql = "UPDATE SETORES SET DATAEXCLUSAO = ? WHERE ID = ?";
             Connection connection = conexao.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            //coloca o parametro
-            preparedStatement.setInt(1, setor.getId());
+            //pega o horario do sistema
+            LocalDateTime horaAtual = LocalDateTime.now();
+            Instant instanteAtual = Instant.from(horaAtual);
+            setor.setDataExclusao(Timestamp.from(instanteAtual));
+
+            //coloca os parametros sql
+            preparedStatement.setTimestamp(1, setor.getDataExclusao());
+            preparedStatement.setInt(2, setor.getId());
 
             //executa o comando
             return preparedStatement.executeUpdate() > 0;
