@@ -65,28 +65,30 @@ public class UsuariosDAO {
         }
     }
 
-    public boolean delete(){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
-        if(conn==null){
-            System.out.println("Não foi possível conectar");
-            return false;
-        }
-        else{
-            try{
-                String remover="DELETE FROM USUARIO WHERE CPF=?";
-                PreparedStatement pstmt= conn.prepareStatement(remover);
-                pstmt.setInt(1,569874532);
-                pstmt.execute();
-            }
-            catch (SQLException se){
-                se.printStackTrace();
-                return false;
-            }
-            finally {
-                conexao.desconectar();
-            }
+    public boolean atualizarIdCargo(Usuarios usuario, int idCargo){
+        //cria a conexao
+        Conexao conexao = new Conexao();
+
+        //faz o script
+        try {
+            //Prepara o script
+            String sql = "UPDATE USUARIOS SET IDCARGOS = ? WHERE ID = ?";
+            Connection connection = conexao.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            //adiciona os parametros
+            preparedStatement.setInt(1, idCargo);
+            preparedStatement.setInt(2, usuario.getId());
+
+            //executa o comando
+            preparedStatement.executeUpdate();
             return true;
+
+        }catch (SQLException exception){
+            exception.printStackTrace();
+            return false;
+        }finally {
+            conexao.desconectar();
         }
 
     }
