@@ -2,6 +2,7 @@ package Model;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
@@ -91,25 +92,27 @@ public class Usuarios {
     }
 
     public void setDataAtualizacao(Timestamp dataAtualizacao) {
-        //cria a data em instante
-        Instant instant = dataAtualizacao.toInstant();
+        //cria a data em zonedDateTime
+        Instant instante = dataExclusao.toInstant();
+        ZonedDateTime areaAtual = ZonedDateTime.ofInstant(instante, ZoneId.systemDefault());
 
-        //cria com fuso-horario certo
-        ZonedDateTime zonedDateTime = instant.atZone(ZoneOffset.UTC);
+        //mantem o instante em outro timezone
+        ZonedDateTime convertido = areaAtual.withZoneSameInstant(ZoneOffset.UTC);
 
-        //motifica a data com o fuso-horario correto
-        this.dataAtualizacao = Timestamp.from(zonedDateTime.toInstant());
+        //coloca o tempo convertido no instante
+        this.dataAtualizacao = Timestamp.from(Instant.from(convertido));
     }
 
     public void setDataExclusao(Timestamp dataExclusao) {
-        //cria a data em instante
-        Instant instant = dataExclusao.toInstant();
+        //cria a data em zonedDateTime
+        Instant instante = dataExclusao.toInstant();
+        ZonedDateTime areaAtual = ZonedDateTime.ofInstant(instante, ZoneId.systemDefault());
 
-        //cria com fuso-horario certo
-        ZonedDateTime zonedDateTime = instant.atZone(ZoneOffset.UTC);
+        //mantem o instante em outro timezone
+        ZonedDateTime convertido = areaAtual.withZoneSameInstant(ZoneOffset.UTC);
 
-        //motifica a data com o fuso-horario correto
-        this.dataExclusao = Timestamp.from(zonedDateTime.toInstant());
+        //coloca o tempo convertido no instante
+        this.dataExclusao = Timestamp.from(Instant.from(convertido));
     }
 
     public void setIdCargo(int idCargo) {
