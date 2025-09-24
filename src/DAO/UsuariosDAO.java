@@ -2,10 +2,8 @@ package DAO;
 
 import Model.Usuarios;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 
 public class UsuariosDAO {
     public boolean cadastrar(Usuarios usuario){
@@ -53,6 +51,9 @@ public class UsuariosDAO {
             preparedStatement.setString(1, nome);
             preparedStatement.setInt(2, usuario.getId());
 
+            //muda a data de atualizacao
+            atualizarData(connection, usuario);
+
             //executa o comando
             preparedStatement.executeUpdate();
             return true;
@@ -79,6 +80,9 @@ public class UsuariosDAO {
             //adiciona os parametros
             preparedStatement.setInt(1, idCargo);
             preparedStatement.setInt(2, usuario.getId());
+
+            //muda a data de atualizacao
+            atualizarData(connection, usuario);
 
             //executa o comando
             preparedStatement.executeUpdate();
@@ -136,5 +140,23 @@ public class UsuariosDAO {
 
         //Retorna se tem apenas 1 usuario encontrado
         return usersFound == 1;
+    }
+
+    public void atualizarData(Connection connection, Usuarios usuario)throws SQLException{
+        //prepara o script sql
+        String sql = "UPDATE USUARIOS SET DATAATUALIZACAO = ? WHERE ID = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        //prepara o timestamp
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Timestamp timestamp = Timestamp.valueOf(localDateTime);
+        usuario.setDataAtualizacao(timestamp);
+
+        //atualiza os parametros do statement
+        preparedStatement.setTimestamp(1, usuario.getDataAtualizacao());
+        preparedStatement.setInt(2, usuario.getId());
+
+        //executa o comando
+        preparedStatement.executeUpdate();
     }
 }
