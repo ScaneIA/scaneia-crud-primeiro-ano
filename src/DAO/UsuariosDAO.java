@@ -38,31 +38,33 @@ public class UsuariosDAO {
 
     }
 
-    public boolean update(){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
-        if (conn == null) {
-            System.out.println("Não foi possível conectar");
-            return false;
-        }
-        else{
+    public boolean atualizarNome(Usuarios usuario, String nome){
+        //cria a conexao
+        Conexao conexao = new Conexao();
 
-            try{
-                PreparedStatement pstmt= conn.prepareStatement("UPDATE USUARIO SET NOME=? WHERE CPF=? ");
-                pstmt.setString(1,"Aline");
-                pstmt.setInt(2,569874534);
-                pstmt.execute();
-            }
-            catch (SQLException se){
-                se.printStackTrace();
-                return false;
-            }
-            finally {
-                conexao.desconectar();
-            }
+        //faz o script
+        try {
+            //prepara o script
+            String sql = "UPDATE USUARIOS SET NOME = ? WHERE ID = ?";
+            Connection connection = conexao.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            
+            //adiciona os parametros
+            preparedStatement.setString(1, nome);
+            preparedStatement.setInt(2, usuario.getId());
+
+            //executa o comando
+            preparedStatement.executeUpdate();
             return true;
+
+        }catch (SQLException exception){
+            exception.printStackTrace();
+            return false;
+        }finally {
+            conexao.desconectar();
         }
     }
+
     public boolean delete(){
         Conexao conexao= new Conexao();
         Connection conn= conexao.getConnection();
