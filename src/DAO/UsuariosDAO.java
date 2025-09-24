@@ -1,33 +1,39 @@
 package DAO;
 
+import Model.Usuarios;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UsuariosDAO {
-    public boolean insert(){
+    public boolean cadastrar(Usuarios usuario){
+        //cria a conexao
         Conexao conexao = new Conexao();
-        Connection conn = conexao.getConnection();
-        if (conn == null) {
-            System.out.println("Não foi possível conectar");
-            return false;
-        }
-        else{
-            try (PreparedStatement pstmt = conn.prepareStatement(
-                    "INSERT INTO USUARIO (NOME, EMAIL, CPF) VALUES (?, ?, ?)")) {
-                pstmt.setString(1,"Gustavo Amex");
-                pstmt.setString(2, "gustavo.amex@gmail.com");
-                pstmt.setInt(3, 569874534);
-                pstmt.execute();
 
-            } catch (SQLException se) {
-                se.printStackTrace();
-                return false;
-            } finally {
-                conexao.desconectar();
-            }
+        //prepara o comando sql
+        try{
+            //script sql
+            String sql = "INSERT INTO USUARIOS(NOME, EMAIL, CPF, SENHA, IDCARGOS) VALUES (?, ?, ?, ?, ?)";
+            Connection connection = conexao.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            //adiciona os parametros
+            preparedStatement.setString(1, usuario.getNome());
+            preparedStatement.setString(2, usuario.getEmail());
+            preparedStatement.setString(3, usuario.getCpf());
+            preparedStatement.setString(4, usuario.getSenha());
+            preparedStatement.setInt(5, usuario.getIdCargo());
+
+            //executa o comando
+            preparedStatement.executeUpdate();
             return true;
+        }catch (SQLException exception){
+            exception.printStackTrace();
+            return false;
+        }finally {
+            conexao.desconectar();
         }
 
     }
@@ -84,7 +90,7 @@ public class UsuariosDAO {
     }
 
     public boolean login(String email, String senha){
-        //variavei
+        //variaveis
         int usersFound = 0;
 
         //Cria uma conexão
