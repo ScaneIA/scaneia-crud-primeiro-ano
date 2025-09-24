@@ -10,7 +10,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class SetoresDAO {
-
+//adicionar teste de conexao
     public boolean inserirSetor(Setores setor){
         //cria a conexão
         Conexao conexao = new Conexao();

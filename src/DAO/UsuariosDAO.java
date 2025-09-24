@@ -97,50 +97,7 @@ public class UsuariosDAO {
 
     }
 
-    public boolean login(String email, String senha){
-        //variaveis
-        int usersFound = 0;
 
-        //Cria uma conexão
-        Conexao conexao = new Conexao();
-        ResultSet resultSet;
-
-        //try-catch para a consulta
-        try {
-            //Prepara a consulta
-            String sql = "SELECT COUNT(*) FROM USUARIO WHERE email = ? and senha = ?";
-            PreparedStatement preparedStatement = conexao.getConnection().prepareStatement(sql);
-
-            //Modifica os parametros
-            preparedStatement.setString(1, email);
-            preparedStatement.setString(2, senha);
-
-            //Faz a consulta
-            resultSet = preparedStatement.executeQuery();
-
-        }catch (SQLException exception){
-            System.out.println("Erro ao fazer consulta");
-            exception.printStackTrace();
-            return false;
-        }finally {
-            conexao.desconectar();
-        }
-
-        //Verifica a quantidade de usuarios encontrados
-        try{
-            if (resultSet.next()){
-                usersFound = resultSet.getInt(1);
-            }
-
-        }catch (SQLException exception){
-            System.out.println("Erro ao visualizar consulta");
-            exception.printStackTrace();
-            return false;
-        }
-
-        //Retorna se tem apenas 1 usuario encontrado
-        return usersFound == 1;
-    }
 
     public void atualizarData(Connection connection, Usuarios usuario)throws SQLException{
         //prepara o script sql

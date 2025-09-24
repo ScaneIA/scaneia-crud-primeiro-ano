@@ -127,4 +127,8 @@ public class Usuarios {
     public void setIdCargo(int idCargo) {
         this.idCargo = idCargo;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
