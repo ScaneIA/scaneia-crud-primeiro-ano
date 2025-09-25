@@ -15,10 +15,10 @@ public class UserDAO {
         }
         else{
             try (PreparedStatement pstmt = conn.prepareStatement(
-                    "INSERT INTO USUARIO (NOME, EMAIL, CPF) VALUES (?, ?, ?)")) {
+                    "INSERT INTO USUARIOS (NOME, EMAIL, CPF) VALUES (?, ?, ?)")) {
                 pstmt.setString(1,"Gustavo Amex");
                 pstmt.setString(2, "gustavo.amex@gmail.com");
-                pstmt.setInt(3, 569874534);
+                pstmt.setInt(3, 569874530);
                 pstmt.execute();
 
             } catch (SQLException se) {
@@ -42,7 +42,7 @@ public class UserDAO {
         else{
 
             try{
-                PreparedStatement pstmt= conn.prepareStatement("UPDATE USUARIO SET NOME=? WHERE CPF=? ");
+                PreparedStatement pstmt= conn.prepareStatement("UPDATE USUARIOS SET NOME=? WHERE CPF=? ");
                 pstmt.setString(1,"Aline");
                 pstmt.setInt(2,569874534);
                 pstmt.execute();
@@ -66,7 +66,7 @@ public class UserDAO {
         }
         else{
             try{
-                String remover="DELETE FROM USUARIO WHERE CPF=?";
+                String remover="DELETE FROM USUARIOS WHERE CPF=?";
                 PreparedStatement pstmt= conn.prepareStatement(remover);
                 pstmt.setInt(1,569874532);
                 pstmt.execute();
@@ -94,7 +94,7 @@ public class UserDAO {
         //try-catch para a consulta
         try {
             //Prepara a consulta
-            String sql = "SELECT COUNT(*) FROM USUARIO WHERE email = ? and senha = ?";
+            String sql = "SELECT COUNT(*) FROM USUARIOS WHERE email = ? and senha = ?";
             PreparedStatement preparedStatement = conexao.getConnection().prepareStatement(sql);
 
             //Modifica os parametros
