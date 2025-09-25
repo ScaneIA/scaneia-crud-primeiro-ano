@@ -132,7 +132,7 @@ public class SetoresDAO {
         //prepara o comando sql
         try {
             //cria o prepared statement
-            String sql = "UPDATE SETORES SET DATAEXCLUSAO = ? WHERE ID = ?";
+            String sql = "UPDATE SETORES SET DATAEXCLUSAO = NOW() WHERE ID = ?";
             Connection connection = conexao.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
