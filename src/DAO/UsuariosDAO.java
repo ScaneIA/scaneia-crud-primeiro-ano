@@ -3,6 +3,7 @@ package DAO;
 import Model.Usuarios;
 
 import java.sql.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class UsuariosDAO {
@@ -122,17 +123,14 @@ public class UsuariosDAO {
 
     public void atualizarData(Connection connection, Usuarios usuario)throws SQLException{
         //prepara o script sql
-        String sql = "UPDATE USUARIOS SET DATAATUALIZACAO = ? WHERE ID = ?";
+        String sql = "UPDATE USUARIOS SET DATAATUALIZACAO = NOW() WHERE ID = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-        //prepara o timestamp
-        LocalDateTime localDateTime = LocalDateTime.now();
-        Timestamp timestamp = Timestamp.valueOf(localDateTime);
-        usuario.setDataAtualizacao(timestamp);
 
         //atualiza os parametros do statement
         preparedStatement.setTimestamp(1, usuario.getDataAtualizacao());
-        preparedStatement.setInt(2, usuario.getId());
+
+        //atualiza o usuario
+        usuario.setDataAtualizacao(Timestamp.from(Instant.from(LocalDateTime.now())));
 
         //executa o comando
         preparedStatement.executeUpdate();

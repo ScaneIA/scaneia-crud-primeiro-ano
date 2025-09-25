@@ -1,24 +1,21 @@
 package Model;
 
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 public class Setores {
     //atributos
     private int id;
     private String descricao; //text
     private String nome; //max 80 chars
-    private Timestamp dataCriacao; //timestamp z
-    private Timestamp dataAtualizacao; //timestamp z
-    private Timestamp dataExclusao; //timestamp z
+    private LocalDateTime dataCriacao; //timestamp z
+    private LocalDateTime dataAtualizacao; //timestamp z
+    private LocalDateTime dataExclusao; //timestamp z
     private int idArea;
 
     //construtor com todos atributos, ideal para buscas
-    public Setores(int id, String descricao, String nome, Timestamp dataAtualizacao, Timestamp dataExclusao, int idArea,
-                   Timestamp dataCriacao) {
+    public Setores(int id, String descricao, String nome, LocalDateTime dataAtualizacao, LocalDateTime dataExclusao, int idArea,
+                   LocalDateTime dataCriacao) {
         this.id = id;
         this.descricao = descricao;
         this.nome = nome;
@@ -48,11 +45,11 @@ public class Setores {
         return nome;
     }
 
-    public Timestamp getDataAtualizacao() {
+    public LocalDateTime getDataAtualizacao() {
         return dataAtualizacao;
     }
 
-    public Timestamp getDataExclusao() {
+    public LocalDateTime getDataExclusao() {
         return dataExclusao;
     }
 
@@ -60,7 +57,7 @@ public class Setores {
         return idArea;
     }
 
-    public Timestamp getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
@@ -73,28 +70,12 @@ public class Setores {
         this.nome = nome;
     }
 
-    public void setDataAtualizacao(Timestamp dataAtualizacao) {
-        //cria a data em zonedDateTime
-        Instant instante = dataAtualizacao.toInstant();
-        ZonedDateTime areaAtual = ZonedDateTime.ofInstant(instante, ZoneId.systemDefault());
-
-        //mantem o instante em outro timezone
-        ZonedDateTime convertido = areaAtual.withZoneSameInstant(ZoneOffset.UTC);
-
-        //coloca o tempo convertido no instante
-        this.dataAtualizacao = Timestamp.from(Instant.from(convertido));
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
     }
 
-    public void setDataExclusao(Timestamp dataExclusao) {
-        //cria a data em zonedDateTime
-        Instant instante = dataExclusao.toInstant();
-        ZonedDateTime areaAtual = ZonedDateTime.ofInstant(instante, ZoneId.systemDefault());
-
-        //mantem o instante em outro timezone
-        ZonedDateTime convertido = areaAtual.withZoneSameInstant(ZoneOffset.UTC);
-
-        //coloca o tempo convertido no instante
-        this.dataExclusao = Timestamp.from(Instant.from(convertido));
+    public void setDataExclusao(LocalDateTime dataExclusao) {
+        this.dataExclusao = dataExclusao;
     }
 
     public void setIdArea(int idArea) {
