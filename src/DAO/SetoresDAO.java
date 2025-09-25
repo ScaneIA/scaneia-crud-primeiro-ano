@@ -1,6 +1,7 @@
 package DAO;
 
-import Model.Setores;
+import Conexao.Conexao;
+import Model.SetorModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 
 public class SetoresDAO {
 //adicionar teste de conexao
-    public boolean inserirSetor(Setores setor){
+    public boolean inserirSetor(SetorModel setor){
         //cria a conexão
         Conexao conexao = new Conexao();
 
@@ -39,7 +40,7 @@ public class SetoresDAO {
         }
     }
 
-    public boolean alterarNome(Setores setor, String nome){
+    public boolean alterarNome(SetorModel setor, String nome){
         //cria a conexao
         Conexao conexao = new Conexao();
 
@@ -67,7 +68,7 @@ public class SetoresDAO {
         }
     }
 
-    public boolean alterarDescricao(Setores setor, String descricao){
+    public boolean alterarDescricao(SetorModel setor, String descricao){
         //cria a conexao
         Conexao conexao = new Conexao();
 
@@ -94,7 +95,7 @@ public class SetoresDAO {
         }
     }
 
-    public boolean alterarIdAreas(Setores setor, int idArea){
+    public boolean alterarIdAreas(SetorModel setor, int idArea){
         //cria a conexao
         Conexao conexao = new Conexao();
 
@@ -123,7 +124,7 @@ public class SetoresDAO {
         }
     }
 
-    public boolean deletarSetor(Setores setor){
+    public boolean deletarSetor(SetorModel setor){
         //cria a conexao
         Conexao conexao = new Conexao();
 
@@ -150,7 +151,7 @@ public class SetoresDAO {
         }
     }
 
-    public void atualizarData(Connection connection, Setores setor) throws SQLException{
+    public void atualizarData(Connection connection, SetorModel setor) throws SQLException{
         //prepara o script sql
         String sql = "UPDATE SETORES SET DATAATUALIZACAO = NOW() WHERE ID = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);

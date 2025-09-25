@@ -1,9 +1,8 @@
 package Model;
 
-import java.sql.Timestamp;
 import java.time.*;
 
-public class Setores {
+public class SetorModel {
     //atributos
     private int id;
     private String descricao; //text
@@ -14,8 +13,8 @@ public class Setores {
     private int idArea;
 
     //construtor com todos atributos, ideal para buscas
-    public Setores(int id, String descricao, String nome, LocalDateTime dataAtualizacao, LocalDateTime dataExclusao, int idArea,
-                   LocalDateTime dataCriacao) {
+    public SetorModel(int id, String descricao, String nome, LocalDateTime dataAtualizacao, LocalDateTime dataExclusao, int idArea,
+                      LocalDateTime dataCriacao) {
         this.id = id;
         this.descricao = descricao;
         this.nome = nome;
@@ -26,7 +25,7 @@ public class Setores {
     }
 
     //construtor simples, ideal para inserts
-    public Setores(String descricao, String nome, int idArea) {
+    public SetorModel(String descricao, String nome, int idArea) {
         this.descricao = descricao;
         this.nome = nome;
         this.idArea = idArea;

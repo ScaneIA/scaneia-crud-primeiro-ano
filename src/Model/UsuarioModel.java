@@ -1,9 +1,8 @@
 package Model;
 
 import java.time.LocalDateTime;
-import java.time.*;
 
-public class Usuarios {
+public class UsuarioModel {
     //atributos
     private int id;
     private String nome; //max 80 chars
@@ -17,9 +16,9 @@ public class Usuarios {
     private int idCargo;
 
     //construtor com todos os atributos, ideal para buscas
-    public Usuarios(int id, String nome, String email, String cpf, String urlFoto, String senha,
-                    LocalDateTime dataAtualizacao,
-                    LocalDateTime dataExclusao, int idCargo, LocalDateTime dataCriacao) {
+    public UsuarioModel(int id, String nome, String email, String cpf, String urlFoto, String senha,
+                        LocalDateTime dataAtualizacao,
+                        LocalDateTime dataExclusao, int idCargo, LocalDateTime dataCriacao) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -33,7 +32,7 @@ public class Usuarios {
     }
 
     //construtor simples, ideal para registros
-    public Usuarios(String nome, String email, String cpf, String senha, int idCargo) {
+    public UsuarioModel(String nome, String email, String cpf, String senha, int idCargo) {
         this.nome = nome;
         this.email = email;
         this.cpf = cpf;
