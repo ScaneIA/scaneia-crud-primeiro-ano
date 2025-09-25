@@ -25,7 +25,7 @@ public class ConexaoTeste {
             System.out.println("Não foi possível inserir");
         }
 
-        //faz um login de usuario
+//        faz um login de usuario
         if (test.login("natalia.flores@gmail.com", "teste")){
             System.out.println("Login feito com sucesso");
         }else{
@@ -41,12 +41,12 @@ public class ConexaoTeste {
         }
 
         //apaga um registro
-        if(test.delete()){
-            System.out.println("Usuario deletado");
-        }
-        else{
-            System.out.println("Não foi possível deletar");
-        }
-        conexao.desconectar();
+//        if(test.delete()){
+//            System.out.println("Usuario deletado");
+//        }
+//        else{
+//            System.out.println("Não foi possível deletar");
+//        }
+//        conexao.desconectar();
     }
 }
