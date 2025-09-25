@@ -97,7 +97,28 @@ public class UsuariosDAO {
 
     }
 
+    public boolean adicionarSetorUsuario(Usuarios usuario, int setorId){
+        //cria a conexão
+        Conexao conexao = new Conexao();
 
+        //faz o script sql
+        try{
+            //prepara o comando
+            String sql = "INSERT INTO SETORES_USUARIOS(IDUSUARIOS, IDSETOES) VALUES (?, ?)";
+            Connection connection = conexao.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            //adiciona os parametros
+            preparedStatement.setInt(1, usuario.getId());
+            preparedStatement.setInt(2, setorId);
+
+            //executa o comando
+            return preparedStatement.executeUpdate() > 0;
+        }catch (SQLException exception){
+            exception.printStackTrace();
+            return false;
+        }
+    }
 
     public void atualizarData(Connection connection, Usuarios usuario)throws SQLException{
         //prepara o script sql
