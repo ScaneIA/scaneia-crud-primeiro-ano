@@ -1,4 +1,4 @@
-package DAO;
+package Model;
 
 import java.time.LocalDateTime;
 

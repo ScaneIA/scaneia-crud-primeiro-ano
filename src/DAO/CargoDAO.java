@@ -1,5 +1,8 @@
 package DAO;
 
+import Conexao.Conexao;
+import Model.CargoModel;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

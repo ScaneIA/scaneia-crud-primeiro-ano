@@ -1,11 +1,12 @@
 package DAO;
 
-import Model.Usuarios;
+import Conexao.Conexao;
+import Model.UsuarioModel;
 
 import java.sql.*;
 
 public class UsuariosDAO {
-    public boolean cadastrar(Usuarios usuario){
+    public boolean cadastrar(UsuarioModel usuario){
         //cria a conexao
         Conexao conexao = new Conexao();
 
@@ -35,7 +36,7 @@ public class UsuariosDAO {
 
     }
 
-    public boolean atualizarNome(Usuarios usuario, String nome){
+    public boolean atualizarNome(UsuarioModel usuario, String nome){
         //cria a conexao
         Conexao conexao = new Conexao();
 
@@ -65,7 +66,7 @@ public class UsuariosDAO {
         }
     }
 
-    public boolean atualizarIdCargo(Usuarios usuario, int idCargo){
+    public boolean atualizarIdCargo(UsuarioModel usuario, int idCargo){
         //cria a conexao
         Conexao conexao = new Conexao();
 
@@ -96,7 +97,7 @@ public class UsuariosDAO {
 
     }
 
-    public boolean adicionarSetorUsuario(Usuarios usuario, int setorId){
+    public boolean adicionarSetorUsuario(UsuarioModel usuario, int setorId){
         //cria a conexão
         Conexao conexao = new Conexao();
 
@@ -119,7 +120,7 @@ public class UsuariosDAO {
         }
     }
 
-    public void atualizarData(Connection connection, Usuarios usuario) throws SQLException{
+    public void atualizarData(Connection connection, UsuarioModel usuario) throws SQLException{
         //prepara o script sql
         String sql = "UPDATE SETORES SET DATAATUALIZACAO = NOW() WHERE ID = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);

@@ -1,13 +1,13 @@
 package TestDAO;
 
 import DAO.UsuariosDAO;
-import Model.Usuarios;
+import Model.UsuarioModel;
 
 public class UsuariosTesteDAO {
     public static void main(String[] args) {
         //variaveis
         UsuariosDAO usuariosDAO = new UsuariosDAO();
-        Usuarios usuario = new Usuarios("Gustavo Costa", "Gustavo.costa@gmail.com", "34331294321", "teste", 4);
+        UsuarioModel usuario = new UsuarioModel("Gustavo Costa", "Gustavo.costa@gmail.com", "34331294321", "teste", 4);
         usuario.setId(17);
 
         //cadastra o usuario
