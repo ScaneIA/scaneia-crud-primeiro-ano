@@ -5,8 +5,6 @@ import Model.Setores;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class SetoresDAO {
@@ -136,14 +134,10 @@ public class SetoresDAO {
             Connection connection = conexao.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            //pega o horario do sistema
-            LocalDateTime horaAtual = LocalDateTime.now();
-            Instant instanteAtual = Instant.from(horaAtual);
-            setor.setDataExclusao(Timestamp.from(instanteAtual));
-
             //coloca os parametros sql
-            preparedStatement.setTimestamp(1, setor.getDataExclusao());
-            preparedStatement.setInt(2, setor.getId());
+            preparedStatement.setInt(1, setor.getId());
+
+            setor.setDataExclusao(LocalDateTime.now());
 
             //executa o comando
             return preparedStatement.executeUpdate() > 0;
@@ -158,17 +152,11 @@ public class SetoresDAO {
 
     public void atualizarData(Connection connection, Setores setor) throws SQLException{
         //prepara o script sql
-        String sql = "UPDATE SETORES SET DATAATUALIZACAO = ? WHERE ID = ?";
+        String sql = "UPDATE SETORES SET DATAATUALIZACAO = NOW() WHERE ID = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-        //prepara o timestamp
-        LocalDateTime timestampLocal = LocalDateTime.now();
-        Timestamp timestamp = Timestamp.valueOf(timestampLocal);
-        setor.setDataAtualizacao(timestamp);
-
         //atualiza os parametros do sql
-        preparedStatement.setTimestamp(1, setor.getDataAtualizacao());
-        preparedStatement.setInt(2, setor.getId());
+        preparedStatement.setInt(1, setor.getId());
 
         //executa o comando
         preparedStatement.executeUpdate();
