@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-public class SetoresDAO {
+public class SetorDAO {
 //adicionar teste de conexao
     public boolean inserirSetor(SetorModel setor){
         //cria a conexão

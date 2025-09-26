@@ -5,7 +5,7 @@ import Model.UsuarioModel;
 
 import java.sql.*;
 
-public class UsuariosDAO {
+public class UsuarioDAO {
     public boolean cadastrar(UsuarioModel usuario){
         //cria a conexao
         Conexao conexao = new Conexao();
@@ -117,6 +117,40 @@ public class UsuariosDAO {
         }catch (SQLException exception){
             exception.printStackTrace();
             return false;
+        }
+    }
+
+    public boolean login(String email, String senha){
+        //cria a conexao
+        Conexao conexao = new Conexao();
+
+        //faz o comando sql
+        try{
+            //prepara o script
+            String sql = "SELECT * FROM USUARIOS WHERE EMAIL = ? AND SENHA = ?";
+            Connection connection = conexao.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            //adiciona os parametros
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, senha);
+
+            //executa a consula
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            //confirma que só teve uma busca
+            int buscas = 0;
+            while (resultSet.next()){
+                buscas++;
+            }
+
+            return buscas == 1;
+
+        }catch (SQLException exception){
+            exception.printStackTrace();
+            return false;
+        }finally {
+            conexao.desconectar();
         }
     }
 
