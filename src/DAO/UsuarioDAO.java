@@ -154,6 +154,28 @@ public class UsuarioDAO {
         }
     }
 
+    public boolean excluirUsuario(UsuarioModel usuario){
+        //cria a conexao
+        Conexao conexao = new Conexao();
+
+        //faz o comando sql
+        try {
+            //prepara o script
+            String sql = "UPDATE USUARIOS SET DATAEXCLUSAO = NOW() WHERE ID = ?";
+            Connection connection = conexao.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            //adiciona os parametros
+            preparedStatement.setInt(1, usuario.getId());
+
+            //executa o comando
+            return preparedStatement.executeUpdate() > 0;
+        }catch (SQLException exception){
+            exception.printStackTrace();
+            return false;
+        }
+    }
+
     public void atualizarData(Connection connection, UsuarioModel usuario) throws SQLException{
         //prepara o script sql
         String sql = "UPDATE SETORES SET DATAATUALIZACAO = NOW() WHERE ID = ?";
