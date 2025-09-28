@@ -1,4 +1,4 @@
-package DAO;
+package com.scaneia.ScaneiaServlet.DAO;
 
 import Conexao.Conexao;
 import Model.SetorModel;

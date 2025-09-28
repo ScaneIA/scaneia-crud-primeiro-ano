@@ -1,4 +1,4 @@
-package Conexao;
+package com.scaneia.ScaneiaServlet.Conexao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

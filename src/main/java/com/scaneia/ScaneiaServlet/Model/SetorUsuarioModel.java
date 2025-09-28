@@ -1,4 +1,4 @@
-package Model;
+package com.scaneia.ScaneiaServlet.Model;
 
 public class SetorUsuarioModel {
     //atributos

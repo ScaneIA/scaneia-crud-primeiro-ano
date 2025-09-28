@@ -1,4 +1,4 @@
-package Model;
+package com.scaneia.ScaneiaServlet.Model;
 
 import java.time.*;
 
