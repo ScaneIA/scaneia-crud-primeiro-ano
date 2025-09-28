@@ -1,7 +1,7 @@
 package com.scaneia.ScaneiaServlet.DAO;
 
-import Conexao.Conexao;
-import Model.UsuarioModel;
+import com.scaneia.ScaneiaServlet.Model.UsuarioModel;
+import com.scaneia.ScaneiaServlet.conexao.Conexao;
 
 import java.sql.*;
 

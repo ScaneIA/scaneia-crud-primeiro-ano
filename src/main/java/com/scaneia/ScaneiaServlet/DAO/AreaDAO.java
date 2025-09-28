@@ -1,7 +1,7 @@
 package com.scaneia.ScaneiaServlet.DAO;
 
-import Conexao.Conexao;
-import Model.AreaModel;
+import com.scaneia.ScaneiaServlet.Model.AreaModel;
+import com.scaneia.ScaneiaServlet.conexao.Conexao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -216,7 +216,7 @@ public class AreaDAO {
     public List<AreaModel> buscarPorNome(AreaModel area){
         Conexao conexao= new Conexao();
         Connection conn= conexao.getConnection();
-        ResultSet rset = null;
+        ResultSet rset;
         List<AreaModel> listaBusca= new ArrayList<>();
         try{
             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM AREAS WHERE NOME = ? ORDER BY 1");

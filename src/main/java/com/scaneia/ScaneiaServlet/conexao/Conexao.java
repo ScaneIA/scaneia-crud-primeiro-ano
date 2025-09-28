@@ -1,4 +1,6 @@
-package com.scaneia.ScaneiaServlet.Conexao;
+package com.scaneia.ScaneiaServlet.conexao;
+
+import com.scaneia.ScaneiaServlet.Config.EnvConfig;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,9 +15,9 @@ public class Conexao {
             Class.forName("org.postgresql.Driver");
 
             //pega as variaveis de ambiente
-            String url = System.getenv("JDBC_URL");
-            String user = System.getenv("JDBC_USER_NAME");
-            String password = System.getenv("JDBC_PASS_WORD");
+            String url = EnvConfig.getEnv("JDBC_URL");
+            String user = EnvConfig.getEnv("JDBC_USER_NAME");
+            String password = EnvConfig.getEnv("JDBC_PASS_WORD");
 
             //cria a conexão
             connection = DriverManager.getConnection(url,user,password);
@@ -34,7 +36,7 @@ public class Conexao {
         try {
             this.connection.close(); //fecha a conexão
         }catch (SQLException sqle){
-            System.out.println("Não foi possivel fechar a conexão");
+            sqle.printStackTrace();
         }
     }
 }

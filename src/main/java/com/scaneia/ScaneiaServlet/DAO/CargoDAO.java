@@ -1,7 +1,7 @@
 package com.scaneia.ScaneiaServlet.DAO;
 
-import Conexao.Conexao;
-import Model.CargoModel;
+import com.scaneia.ScaneiaServlet.Model.CargoModel;
+import com.scaneia.ScaneiaServlet.conexao.Conexao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
