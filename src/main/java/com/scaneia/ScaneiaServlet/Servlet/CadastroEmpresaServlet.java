@@ -12,7 +12,7 @@ import java.sql.SQLException;
 @WebServlet(name = "CadastroEmpresa", value = "/cadastro-empresa")
 public class CadastroEmpresaServlet extends HttpServlet {
 
-    public void doPost(HttpServletRequest req, HttpServletResponse res){
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
         //variaveis gerais
 
 
@@ -23,22 +23,34 @@ public class CadastroEmpresaServlet extends HttpServlet {
         String senha = req.getParameter("senha");
         String senhaConfimacao = req.getParameter("senhaConfirmacao");
 
-        //valida se as senhas são iguais
-        if (!senha.equals(senhaConfimacao)){
-            req.setAttribute("status",  400);
-            req.setAttribute("mensagem", "As senhas não coincidem");
-        }
+        //validação de entrada
+        try {
+            //valida se as senhas são iguais
+            if (!senha.equals(senhaConfimacao)){
+                req.setAttribute("status",  400);
+                req.setAttribute("mensagem", "As senhas não coincidem");
+                req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
+                return;
+            }
 
-        //valida o formato da senha
-        if (!senha.matches("^(?=[A-Z])*(?=[a-z])*(?=[0-9])*(?=[\\W_)*\\S{6,}$])")){
-            req.setAttribute("status", 400);
-            req.setAttribute("mensagem", "A senha não cumpre com os resquisitos");
-        }
+            //valida o formato da senha
+            if (!senha.matches("^(?=[A-Z])*(?=[a-z])*(?=[0-9])*(?=[\\W_)*\\S{6,}$])")){
+                req.setAttribute("status", 400);
+                req.setAttribute("mensagem", "A senha não cumpre com os resquisitos");
+                req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
+                return;
+            }
 
-        //valida o formato do cnpj
-        if (!cnpj.matches("^\\d{2}[. -/]?\\d{3}[. -/]?\\d{3}[. -/]?\\d{4}[. -/]?\\d{2}")){
-            req.setAttribute("status", 400);
-            req.setAttribute("mensagem", "cnpj inválido");
+            //valida o formato do cnpj
+            if (!cnpj.matches("^\\d{2}[. -/]?\\d{3}[. -/]?\\d{3}[. -/]?\\d{4}[. -/]?\\d{2}")){
+                req.setAttribute("status", 400);
+                req.setAttribute("mensagem", "cnpj inválido");
+                req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
+                return;
+            }
+        }catch (NullPointerException npe){
+            req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
+            return;
         }
 
         //manda as informações pro banco
