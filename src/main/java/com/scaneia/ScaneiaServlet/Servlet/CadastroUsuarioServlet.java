@@ -12,6 +12,7 @@ import java.io.IOException;
 public class CadastroUsuarioServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         //variaveis gerais
+        UsuarioDAO
 
         //pega os parametros da req
         String nome = req.getParameter("nome");
@@ -43,5 +44,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
             return;
         }
+
+        //manda as informações pro banco de dados
     }
 }
