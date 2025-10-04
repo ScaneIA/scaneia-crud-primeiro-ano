@@ -55,10 +55,11 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         //encaminha para as paginas coerentes
         if (cadastroAutorizado){
-            req.getRequestDispatcher("/WEB-INF/cadastroAutorizado").forward(req, res);
+            req.getRequestDispatcher("/WEB-INF/cadastroAutorizado.jsp").forward(req, res);
         }else{
             req.setAttribute("status", 500);
             req.setAttribute("mensagem", "tente novamente");
+            req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
         }
     }
 }
