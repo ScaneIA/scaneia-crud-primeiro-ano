@@ -1,5 +1,7 @@
 package com.scaneia.ScaneiaServlet.Servlet;
 
+import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
+import com.scaneia.ScaneiaServlet.Model.UsuarioModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,7 +14,8 @@ import java.io.IOException;
 public class CadastroUsuarioServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         //variaveis gerais
-        UsuarioDAO
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        boolean cadastroAutorizado;
 
         //pega os parametros da req
         String nome = req.getParameter("nome");
@@ -46,5 +49,16 @@ public class CadastroUsuarioServlet extends HttpServlet {
         }
 
         //manda as informações pro banco de dados
+        cadastroAutorizado = usuarioDAO.cadastrar(new UsuarioModel(
+                nome, email, senha, cpf, Integer.parseInt(idAreaString)
+        ));
+
+        //encaminha para as paginas coerentes
+        if (cadastroAutorizado){
+            req.getRequestDispatcher("/WEB-INF/cadastroAutorizado").forward(req, res);
+        }else{
+            req.setAttribute("status", 500);
+            req.setAttribute("mensagem", "tente novamente");
+        }
     }
 }
