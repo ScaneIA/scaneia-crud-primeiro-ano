@@ -34,7 +34,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
                 return;
             }
 
-            if (!cpf.matches("[0-9]{3}\\\\.?[0-9]{3}\\\\.?[0-9]{3}[^0-9A-Za-z]?[0-9]{2}")){
+            if (!cpf.matches("[0-9]{3}\\.?[0-9]{3}\\.?[0-9]{3}[^0-9A-Za-z]?[0-9]{2}")){
                 req.setAttribute("status", 400);
                 req.setAttribute("mensagem", "formato invalido do cpf");
                 req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
