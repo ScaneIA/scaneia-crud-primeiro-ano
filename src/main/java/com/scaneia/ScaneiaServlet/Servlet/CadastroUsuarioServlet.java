@@ -42,6 +42,9 @@ public class CadastroUsuarioServlet extends HttpServlet {
                 req.setAttribute("mensagem", "formato inválido do cpf");
                 req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
                 return;
+            }else{
+                //remove os caracteres que não são numeros
+                cpf = cpf.replaceAll("[^0-9]", "");
             }
 
             //valida o formato do email
