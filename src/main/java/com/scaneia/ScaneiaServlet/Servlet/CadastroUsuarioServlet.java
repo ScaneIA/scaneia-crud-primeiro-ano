@@ -27,6 +27,8 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         //validação de entrada
         try {
+
+            //valida se as senhas são iguais
             if (!senha.equals(senhaConfirmacao)){
                 req.setAttribute("status", 400);
                 req.setAttribute("mensagem", "as senhas são diferentes");
@@ -34,13 +36,40 @@ public class CadastroUsuarioServlet extends HttpServlet {
                 return;
             }
 
-            if (!cpf.matches("[0-9]{3}\\\\.?[0-9]{3}\\\\.?[0-9]{3}[^0-9A-Za-z]?[0-9]{2}")){
+            //valida o formato do cpf
+            if (!cpf.matches("^\\s*\\d{3}\\s*[.-]?\\s*\\d{3}\\s*[.-]?\\s*\\d{3}\\s*[.-]?\\s*\\d{2}\\s*$")){
                 req.setAttribute("status", 400);
-                req.setAttribute("mensagem", "formato invalido do cpf");
+                req.setAttribute("mensagem", "formato inválido do cpf");
+                req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
+                return;
+            }else{
+                //remove os caracteres que não são numeros
+                cpf = cpf.replaceAll("[^0-9]", "");
+            }
+
+            //valida o formato do email
+            if (!email.matches("^[A-Za-z0-9]+([._]?[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){
+                req.setAttribute("status", 400);
+                req.setAttribute("mensagem", "formato inválido do email");
                 req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
                 return;
             }
 
+            //valida o formato da senha
+            if (!senha.matches("adicionar regex")){
+                req.setAttribute("status", 400);
+                req.setAttribute("mensagem", "formato inválido da senha");
+                req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
+                return;
+            }
+
+            //valida o formato do nome
+            if (!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ]+)+$")){
+                req.setAttribute("status", 400);
+                req.setAttribute("mensagem", "formato inválido do nome");
+                req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
+                return;
+            }
         }catch (NullPointerException npe){
             req.setAttribute("status", 400);
             req.setAttribute("mensagem", "campos não preenchidos");
@@ -55,10 +84,11 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         //encaminha para as paginas coerentes
         if (cadastroAutorizado){
-            req.getRequestDispatcher("/WEB-INF/cadastroAutorizado").forward(req, res);
+            req.getRequestDispatcher("/WEB-INF/cadastroAutorizado.jsp").forward(req, res);
         }else{
             req.setAttribute("status", 500);
             req.setAttribute("mensagem", "tente novamente");
+            req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
         }
     }
 }
