@@ -48,6 +48,20 @@ public class CadastroEmpresaServlet extends HttpServlet {
                 req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
                 return;
             }
+
+            //valida o formato do nome
+            if(!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ]+)+$")){
+                req.setAttribute("status", 400);
+                req.setAttribute("mensagem", "formato do nome inválido");
+                req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
+            }
+
+            //valida o formato do email
+            if (!email.matches("^[A-Za-z0-9]+([._]?[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){
+                req.setAttribute("status", 400);
+                req.setAttribute("mensagem", "formato do email inválido");
+            }
+
         }catch (NullPointerException npe){
             req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
             return;
