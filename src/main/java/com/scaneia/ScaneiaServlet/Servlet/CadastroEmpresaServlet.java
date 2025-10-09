@@ -47,6 +47,9 @@ public class CadastroEmpresaServlet extends HttpServlet {
                 req.setAttribute("mensagem", "cnpj inválido");
                 req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
                 return;
+            }else{
+                //extrai apenas os numeros
+                cnpj = cnpj.replaceAll("[^0-9]", "");
             }
 
             //valida o formato do nome
