@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "CadastroEmpresa", value = "/cadastro-empresa")
+@WebServlet(name = "CadastroEmpresa", value = "/Cadastro/cadastro-empresa")
 public class CadastroEmpresaServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
@@ -29,7 +29,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
             if (!senha.equals(senhaConfimacao)){
                 req.setAttribute("status",  400);
                 req.setAttribute("mensagem", "As senhas não coincidem");
-                req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
+                req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
                 return;
             }
 
@@ -37,7 +37,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
             if (!senha.matches("^(?=[A-Z])*(?=[a-z])*(?=[0-9])*(?=[\\W_)*\\S{6,}$])")){
                 req.setAttribute("status", 400);
                 req.setAttribute("mensagem", "A senha não cumpre com os resquisitos");
-                req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
+                req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
                 return;
             }
 
@@ -45,7 +45,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
             if (!cnpj.matches("^\\d{2}[. -/]?\\d{3}[. -/]?\\d{3}[. -/]?\\d{4}[. -/]?\\d{2}")){
                 req.setAttribute("status", 400);
                 req.setAttribute("mensagem", "cnpj inválido");
-                req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
+                req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
                 return;
             }
 
@@ -53,7 +53,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
             if(!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ]+)+$")){
                 req.setAttribute("status", 400);
                 req.setAttribute("mensagem", "formato do nome inválido");
-                req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
+                req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
                 return;
             }
 
@@ -61,14 +61,14 @@ public class CadastroEmpresaServlet extends HttpServlet {
             if (!email.matches("^[A-Za-z0-9]+([._]?[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){
                 req.setAttribute("status", 400);
                 req.setAttribute("mensagem", "formato do email inválido");
-                req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp");
+                req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp");
                 return;
             }
 
         }catch (NullPointerException npe){
             req.setAttribute("status", 400);
             req.setAttribute("mensagem", "preencha todos os itens");
-            req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
+            req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
             return;
         }
 
