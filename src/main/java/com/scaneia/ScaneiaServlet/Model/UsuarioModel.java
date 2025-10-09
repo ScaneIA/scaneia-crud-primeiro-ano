@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 public class UsuarioModel {
     //atributos
     private int id;
-    private String nome; //max 80 chars
-    private String email; //max 200 chars
-    private String cpf; //max 12 chars
+    private String nome; //max 40 chars
+    private String email; //max 50 chars
+    private String cpf; //max 12 -- em mudança chars
     private String urlFoto; //tipo text
-    private String senha; //max 200 chars
+    private String senha; //max 20 chars
     private LocalDateTime dataCriacao; //LocalDateTime timezone z
     private LocalDateTime dataAtualizacao; //LocalDateTime timezone z
     private LocalDateTime dataExclusao; //LocalDateTime timezone z
