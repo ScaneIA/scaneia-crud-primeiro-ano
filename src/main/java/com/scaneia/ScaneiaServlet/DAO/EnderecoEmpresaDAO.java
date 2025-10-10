@@ -133,15 +133,8 @@ public class EnderecoEmpresaDAO {
                 int numero = rset.getInt("numero");
                 String complemento = rset.getString("complemento");
 
-                LocalDateTime dataCriacao = null;
-                if (rset.getTimestamp("dataCriacao") != null) {
-                    dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
-                }
-
-                LocalDateTime dataAtualizacao = null;
-                if (rset.getTimestamp("dataAtualizacao") != null) {
-                    dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
-                }
+                LocalDateTime dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
+                LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
 
                 LocalDateTime dataExclusao = null;
                 if (rset.getTimestamp("dataExclusao") != null) {
@@ -191,15 +184,8 @@ public class EnderecoEmpresaDAO {
                 int numero = rset.getInt("numero");
                 String complemento = rset.getString("complemento");
 
-                LocalDateTime dataCriacao = null;
-                if (rset.getTimestamp("dataCriacao") != null) {
-                    dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
-                }
-
-                LocalDateTime dataAtualizacao = null;
-                if (rset.getTimestamp("dataAtualizacao") != null) {
-                    dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
-                }
+                LocalDateTime dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
+                LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
 
                 LocalDateTime dataExclusao = null;
                 if (rset.getTimestamp("dataExclusao") != null) {

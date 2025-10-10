@@ -7,8 +7,10 @@ public class EmpresaModel {
     private String nome;
     private String cnpj;
     private String senha;
-    private LocalDateTime dataExclusao;
+    private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
+    private LocalDateTime dataExclusao;
+
     private String email;
 
     public EmpresaModel() {}
@@ -20,14 +22,17 @@ public class EmpresaModel {
         this.senha=senha;
     }
 
-    public EmpresaModel(int id, String nome, String cnpj,String email,String senha, LocalDateTime dataExclusao, LocalDateTime dataAtualizacao) {
+    public EmpresaModel(int id, String nome, String cnpj,String email,String senha,LocalDateTime dataCriacao ,LocalDateTime dataAtualizacao, LocalDateTime dataExclusao ) {
         this.id = id;
         this.nome = nome;
         this.cnpj=cnpj;
         this.email=email;
         this.senha=senha;
-        this.dataExclusao = dataExclusao;
+        this.dataCriacao=dataCriacao;
         this.dataAtualizacao = dataAtualizacao;
+        this.dataExclusao = dataExclusao;
+
+
     }
 
     // Getters e Setters

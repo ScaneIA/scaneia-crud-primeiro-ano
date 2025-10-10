@@ -198,12 +198,9 @@ public class EmpresaDAO {
                     dataExclusao = rset.getTimestamp("dataExclusao").toLocalDateTime();
                 }
 
-                LocalDateTime dataAtualizacao = null;
-                if (rset.getTimestamp("dataAtualizacao") != null) {
-                    dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
-                }
-
-                EmpresaModel emp = new EmpresaModel(id, nome, cnpj, email, senha, dataExclusao, dataAtualizacao);
+                LocalDateTime dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
+                LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
+                EmpresaModel emp = new EmpresaModel(id, nome, cnpj, email, senha, dataCriacao, dataAtualizacao,dataExclusao);
                 lista.add(emp);
             }
         } catch (SQLException se) {
@@ -242,12 +239,10 @@ public class EmpresaDAO {
                     dataExclusao = rset.getTimestamp("dataExclusao").toLocalDateTime();
                 }
 
-                LocalDateTime dataAtualizacao = null;
-                if (rset.getTimestamp("dataAtualizacao") != null) {
-                    dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
-                }
+                LocalDateTime dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
+                LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
 
-                EmpresaModel emp = new EmpresaModel(id, nome, cnpj, email, senha, dataExclusao, dataAtualizacao);
+                EmpresaModel emp = new EmpresaModel(id, nome, cnpj, email, senha, dataCriacao, dataAtualizacao,dataExclusao);
                 lista.add(emp);
             }
         } catch (SQLException se) {
