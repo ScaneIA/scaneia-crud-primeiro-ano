@@ -1,0 +1,103 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: rgba(0, 12, 25, 0.048);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 40px;
+  box-sizing: border-box;
+  background-color: white;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.155);
+}
+
+#imgHeader{
+  margin-top: 10px;
+  background-color: #3f51b5;
+  width: 179.71279907226562px;
+  height:42.508296966552734px;
+}
+
+nav{
+  margin-top: 23px;
+}
+
+a {
+  text-decoration: none;
+  border: 1px solid #3f51b5;
+  padding: 7px 35px;
+  border-radius: 2px;
+  font-size: 14px;
+  color: #333;
+}
+
+
+form {
+  background: white;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding: 40px;
+  border-radius: 60px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.155);
+  width: 700px;
+  height: 1150px;
+  text-align: center;
+}
+
+#figDireita{
+  position: absolute;
+  z-index: -1;
+  right: 60px;
+  bottom: -380px
+}
+
+#figEsquerda{
+  width: 300px;
+  height: 350px;
+    position: absolute;
+  z-index: -1;
+  left: 70px;
+  bottom: 150px;
+}
+
+#imgMain{
+  width: 388.9997863769531px;
+  height: 76.91556167602539px;
+}
+
+input {
+  width: 500px;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background-color: rgba(247, 248, 255, 1);
+  font-size: 14px;
+  margin-top: 40px;
+}
+
+button {
+  width: 179px;
+  padding: 12px;
+  margin-top: 40px;
+  border: none;
+  border-radius: 6px;
+  background-color: #3f51b5;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #32408f;
+}
+
+

@@ -20,7 +20,7 @@ public class EnderecoEmpresaDAO {
             return false;
         } else {
             try (PreparedStatement pstmt = conn.prepareStatement(
-                    "INSERT INTO ENDERECOSEMPRESAS (EMPRESA_ID, RUA, NUMERO,COMPLEMENTO,ESTADO,CIDADE,BAIRRO, CEP) VALUES (?, ?, ?, ?, ?, ?,?,?)",
+                    "INSERT INTO ENDERECOSEMPRESAS (IDEMPRESAS, RUA, NUMERO,COMPLEMENTO,ESTADO,CIDADE,BAIRRO, CEP) VALUES (?, ?, ?, ?, ?, ?,?,?)",
                     Statement.RETURN_GENERATED_KEYS)) {
 
                 pstmt.setInt(1, endereco.getIdEmpresa());
