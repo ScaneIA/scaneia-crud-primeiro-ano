@@ -57,7 +57,7 @@ public class CargoModel {
 
     @Override
     public String toString() {
-        return "AreaModel" + "id=" + id + ", nome='" + nome + '\n' + ", descricao='" + descricao + '\n' + ", dataExclusao=" + dataExclusao + ", dataAtualizacao=" + dataAtualizacao + ", dataCriacao=" + dataCriacao;
+        return "CargoModel" + "id=" + id + ", nome='" + nome + '\n' + ", descricao='" + descricao + '\n' + ", dataExclusao=" + dataExclusao + ", dataAtualizacao=" + dataAtualizacao + ", dataCriacao=" + dataCriacao;
     }
 }
 
