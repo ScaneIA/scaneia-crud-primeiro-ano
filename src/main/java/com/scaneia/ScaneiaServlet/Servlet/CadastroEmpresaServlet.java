@@ -29,7 +29,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
         String senha = req.getParameter("senha");
         String senhaConfimacao = req.getParameter("senhaConfirmacao");
         String nome = req.getParameter("nome");
-        String cnpj = req.getParameter("senha");
+        String cnpj = req.getParameter("cnpj");
         String email = req.getParameter("email");
 
         //pega os parametros do endereço
@@ -78,9 +78,9 @@ public class CadastroEmpresaServlet extends HttpServlet {
             }
 
             //valida se o cnpj é valido
-            if (!nome.matches("^\\d{2}[. -/]?\\d{3}[. -/]?\\d{3}[. -/]?\\d{4}[. -/]?\\d{2}")){
+            if (!cnpj.matches("^\\d{2}[. -/]?\\d{3}[. -/]?\\d{3}[. -/]?\\d{4}[. -/]?\\d{2}")){
                 req.setAttribute("status",  400);
-                req.setAttribute("mensagem", "Nome da empresa inválido!");
+                req.setAttribute("mensagem", "formato inválido do cnpj!");
                 req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
                 return;
             }else{
@@ -97,7 +97,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
             }
 
             //valida o formato do estado
-            if (!estado.matches("^(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)$\n")){
+            if (!estado.matches("^(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)$")){
                 req.setAttribute("status",  400);
                 req.setAttribute("mensagem", "Estado inválido!");
                 req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
@@ -185,7 +185,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
         }
 
-        //qual será a resposta? login ou area interna
-
+        //envia o usuario para o login
+        res.sendRedirect("Login/login");
     }
 }

@@ -23,17 +23,21 @@
         <img src="img/imagem_300x300.png" alt="" class="fig" id="figDireita">
         <form action="cadastro-empresa" method="post">
             <img id="imgMain" src="img/scaneia_logo_resized.png" alt="">
-            <input type="text" placeholder="Nome da empresa" name="nome_empresa">
-            <input type="text" placeholder="CNPJ" name="cnpj">
-            <input type="email" placeholder="E-mail corporativo" name="email">
-            <input type="password" placeholder="Senha" name="senha">
-            <input type="password" placeholder="Confirmar senha" name="senhaConfirmacao">
-            <input type="text" placeholder="Endereco" name="endereco">
-            <input type="text" placeholder="Número" name="numero">
-            <input type="text" placeholder="Bairro" name="bairro">
-            <input type="text" placeholder="Cidade" name="cidade">
-            <input type="text" placeholder="UF" name="uf">
-            <input type="text" placeholder="CEP" name="cep">
+            <!-- Dados da empresa -->
+            <input type="text" placeholder="Nome da empresa" name="nome" required>
+            <input type="text" placeholder="CNPJ" name="cnpj" required>
+            <input type="email" placeholder="E-mail corporativo" name="email" required>
+            <input type="password" placeholder="Senha" name="senha" required>
+            <input type="password" placeholder="Confirmar senha" name="senhaConfirmacao" required>
+
+            <!-- Endereço -->
+            <input type="text" placeholder="Rua" name="rua" required>
+            <input type="text" placeholder="Número" name="numero" required>
+            <input type="text" placeholder="Bairro" name="bairro" required>
+            <input type="text" placeholder="Cidade" name="cidade" required>
+            <input type="text" placeholder="Estado (UF)" name="estado" required>
+            <input type="text" placeholder="CEP" name="cep" required>
+            <input type="text" placeholder="Complemento" name="complemento">
             <div id="mensagemErro"></div>
             <button type="submit">Criar conta</button>
         </form>
