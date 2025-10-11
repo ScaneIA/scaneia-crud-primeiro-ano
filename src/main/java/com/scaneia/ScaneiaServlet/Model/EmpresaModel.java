@@ -22,7 +22,15 @@ public class EmpresaModel {
         this.senha=senha;
     }
 
-    public EmpresaModel(int id, String nome, String cnpj,String email,String senha,LocalDateTime dataCriacao ,LocalDateTime dataAtualizacao, LocalDateTime dataExclusao ) {
+    public EmpresaModel(int id, String nome, String cnpj, String email, String senha) {
+        this.id = id;
+        this.nome = nome;
+        this.cnpj = cnpj;
+        this.senha = senha;
+        this.email = email;
+    }
+
+    public EmpresaModel(int id, String nome, String cnpj, String email, String senha, LocalDateTime dataCriacao , LocalDateTime dataAtualizacao, LocalDateTime dataExclusao ) {
         this.id = id;
         this.nome = nome;
         this.cnpj=cnpj;
