@@ -263,7 +263,7 @@ public class EmpresaDAO {
         int encontrados = 0;
 
         if (conn == null){
-            return false;
+            return null;
         }
 
         //faz a consulta sql
@@ -291,10 +291,10 @@ public class EmpresaDAO {
                 String newDataExclusao = rs.getString("dataexclusao");
 
                 //vê se é uma empresa apagada
-                if (newDataExclusao != null){
+                if (newDataExclusao == null){
                      empresas.add(new EmpresaModel(newId, newNome, newCnpj, newEmail, newSenha));
+                     encontrados++;
                 }
-                encontrados++;
             }
 
             //retorna true se só encontar 1

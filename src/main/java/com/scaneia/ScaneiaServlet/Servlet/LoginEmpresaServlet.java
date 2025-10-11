@@ -33,6 +33,7 @@ public class LoginEmpresaServlet extends HttpServlet {
                 req.setAttribute("status", 400);
                 req.setAttribute("mensagem", "Formato inválido do email!");
                 req.getRequestDispatcher("/WEB-INF/VIEW/erroLoginEmpresa.jsp").forward(req, res);
+                return;
             }
 
             //valida o formato da senha
@@ -40,6 +41,7 @@ public class LoginEmpresaServlet extends HttpServlet {
                 req.setAttribute("status", 400);
                 req.setAttribute("mensagem", "Formato inválido da senha!");
                 req.getRequestDispatcher("/WEB-INF/VIEW/erroLoginEmpresa.jsp").forward(req, res);
+                return;
             }else{
                 //pega o hash da senha
                 try {
@@ -49,6 +51,7 @@ public class LoginEmpresaServlet extends HttpServlet {
                     req.setAttribute("status",  500);
                     req.setAttribute("mensagem", "Ops... Tente novamente!");
                     req.getRequestDispatcher("/WEB-INF/VIEW/erroLoginEmpresa.jsp").forward(req, res);
+                    return;
                 }
             }
 
@@ -57,6 +60,7 @@ public class LoginEmpresaServlet extends HttpServlet {
                 req.setAttribute("status", 400);
                 req.setAttribute("mensagem", "Formato inválido do cnpj!");
                 req.getRequestDispatcher("/WEB-INF/VIEW/erroLoginEmpresa.jsp").forward(req, res);
+                return;
             }else{
                 //extaí os numeros
                 cnpj = cnpj.replaceAll("[^0-9]", "");
@@ -66,15 +70,20 @@ public class LoginEmpresaServlet extends HttpServlet {
             req.setAttribute("status", 400);
             req.setAttribute("mensagem", "Insira todos os campos!");
             req.getRequestDispatcher("/WEB-INF/VIEW/erroLoginEmpresa.jsp").forward(req, res);
+            return;
         }
 
         //faz o login
         empresa = empresaDAO.login(email, senha, cnpj);
 
-        if (email == null){
+        System.out.println(empresa);
+        System.out.println(senha);
+
+        if (empresa == null){
             req.setAttribute("status", 400);
             req.setAttribute("mensagem", "Credenciais inválidos!");
             req.getRequestDispatcher("/WEB-INF/VIEW/erroLoginEmpresa.jsp").forward(req, res);
+            return;
         }
 
         //salva a sessão
