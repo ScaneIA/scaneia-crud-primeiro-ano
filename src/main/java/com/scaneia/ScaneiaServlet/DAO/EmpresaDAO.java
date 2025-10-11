@@ -255,7 +255,7 @@ public class EmpresaDAO {
         return lista;
     }
 
-    public boolean login(String email, String senha, String cnpj){
+    public EmpresaModel login(String email, String senha, String cnpj){
         //variaveis gerais
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
@@ -298,10 +298,14 @@ public class EmpresaDAO {
             }
 
             //retorna true se só encontar 1
-            return encontrados == 1;
+            if (encontrados == 1){
+                return empresas.getFirst();
+            }else {
+                return null;
+            }
 
         }catch (SQLException e){
-            return false;
+            return null;
         }finally {
             conexao.desconectar();
         }
