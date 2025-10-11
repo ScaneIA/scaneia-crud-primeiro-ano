@@ -1,5 +1,6 @@
 package com.scaneia.ScaneiaServlet.Servlet;
 
+import com.scaneia.ScaneiaServlet.Config.HashSenha;
 import com.scaneia.ScaneiaServlet.DAO.EmpresaDAO;
 import com.scaneia.ScaneiaServlet.DAO.EnderecoEmpresaDAO;
 import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 @WebServlet(name = "CadastroEmpresa", value = "/Cadastro/cadastro-empresa")
@@ -55,6 +57,16 @@ public class CadastroEmpresaServlet extends HttpServlet {
                 req.setAttribute("mensagem", "Senha deve ter: 1 minúscula, 1 maiúscula, 1 número, 1 símbolo, mínimo 8 caracteres e sem espaços.");
                 req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
                 return;
+            }else{
+                //coloca o hash da senha
+                try {
+                    senha = HashSenha.hashSenha(senha);
+
+                }catch (NoSuchAlgorithmException nsae){
+                    req.setAttribute("status",  500);
+                    req.setAttribute("mensagem", "Ops... Tente novamente!");
+                    req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
+                }
             }
 
             //valida se o nome é válido
