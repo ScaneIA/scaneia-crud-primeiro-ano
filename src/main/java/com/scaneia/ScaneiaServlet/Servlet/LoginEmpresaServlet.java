@@ -2,6 +2,7 @@ package com.scaneia.ScaneiaServlet.Servlet;
 
 import com.scaneia.ScaneiaServlet.Config.HashSenha;
 import com.scaneia.ScaneiaServlet.DAO.EmpresaDAO;
+import com.scaneia.ScaneiaServlet.DAO.UsuarioViewDAO;
 import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,6 +21,7 @@ public class LoginEmpresaServlet extends HttpServlet {
         EmpresaDAO empresaDAO = new EmpresaDAO();
         EmpresaModel empresa;
         HttpSession httpSession = req.getSession();
+        UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
 
         //pega os parametros da empresa
         String email = req.getParameter("email");
@@ -91,6 +93,7 @@ public class LoginEmpresaServlet extends HttpServlet {
         httpSession.setMaxInactiveInterval(1800); //30m
 
         //manda para a area interna
+        req.setAttribute("usuarios", usuarioViewDAO.buscarTodos());
         req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/areaRestritaEmpresa.jsp").forward(req, res);
     }
 }
