@@ -5,6 +5,7 @@ import com.scaneia.ScaneiaServlet.conexao.Conexao;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -331,5 +332,61 @@ public class EmpresaDAO {
 
         return lista;
         // retorna a lisat
+    }
+
+    public EmpresaModel login(String email, String senha, String cnpj){
+        //variaveis gerais
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        List<EmpresaModel> empresas = new ArrayList<>();
+        int encontrados = 0;
+
+        if (conn == null){
+            return null;
+        }
+
+        //faz a consulta sql
+        try{
+            //prepara o statement
+            String sql = "SELECT * FROM EMPRESAS WHERE CNPJ = ? AND EMAIL = ? AND SENHA = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            //atualiza os parametros
+            pstmt.setString(1, cnpj);
+            pstmt.setString(2, email);
+            pstmt.setString(3, senha);
+
+            //faz a consulta
+            ResultSet rs = pstmt.executeQuery();
+
+            //itera sob os dados
+            while (rs.next()){
+                //pega os campos
+                int newId = rs.getInt("id");
+                String newNome = rs.getString("nome");
+                String newCnpj = rs.getString("cnpj");
+                String newEmail = rs.getString("email");
+                String newSenha = rs.getString("senha");
+                String newDataExclusao = rs.getString("dataexclusao");
+
+                //vê se é uma empresa apagada
+                if (newDataExclusao == null){
+                     empresas.add(new EmpresaModel(newId, newNome, newCnpj, newEmail, newSenha));
+                     encontrados++;
+                }
+            }
+
+            //retorna true se só encontar 1
+            if (encontrados == 1){
+                return empresas.getFirst();
+            }else {
+                return null;
+            }
+
+        }catch (SQLException e){
+            return null;
+        }finally {
+            conexao.desconectar();
+        }
     }
 }

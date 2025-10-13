@@ -24,6 +24,8 @@ public class CadastroEmpresaServlet extends HttpServlet {
         EnderecoEmpresaDAO enderecoEmpresaDAO = new EnderecoEmpresaDAO();
         EmpresaModel empresa;
         EnderecoEmpresaModel enderecoEmpresa;
+        int registroEmpresa;
+        int registroEndereco;
 
         //pega os parametros da empresa
         String senha = req.getParameter("senha");
@@ -166,10 +168,16 @@ public class CadastroEmpresaServlet extends HttpServlet {
         empresa = new EmpresaModel(nome, cnpj, email, senha);
 
         //envia a empresa para o banco
-        if(!empresaDAO.inserir(empresa)){
-            //jsp de erro caso dar errado
+        registroEmpresa = empresaDAO.inserir(empresa);
+
+        if(registroEmpresa == -2){
+            req.setAttribute("status", 409);
+            req.setAttribute("mensagem", "Ja existe essa empresa!");
+            req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
+
+        }else if(registroEmpresa == 0 || registroEmpresa ==-1 || registroEmpresa == -3){
             req.setAttribute("status", 500);
-            req.setAttribute("mensagem", "tente novamente");
+            req.setAttribute("mensagem", "Tente novamente!");
             req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
         }
 
@@ -179,9 +187,15 @@ public class CadastroEmpresaServlet extends HttpServlet {
         );
 
         //envia o endereco para o banco
-        if (!enderecoEmpresaDAO.inserir(enderecoEmpresa)){
+        registroEndereco = enderecoEmpresaDAO.inserir(enderecoEmpresa);
+        if (registroEmpresa == -2){
+            req.setAttribute("status", 409);
+            req.setAttribute("mensagem", "Já exite outra empresa nesse endereço!");
+            req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
+
+        }else if(registroEndereco == 0 || registroEndereco == -1 || registroEndereco == -3){
             req.setAttribute("status", 500);
-            req.setAttribute("mensagem", "tente novamente");
+            req.setAttribute("mensagem", "Tente novamente!");
             req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
         }
 

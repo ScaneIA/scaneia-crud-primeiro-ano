@@ -1,5 +1,7 @@
 package com.scaneia.ScaneiaServlet.Model;
 
+import com.scaneia.ScaneiaServlet.DAO.EmpresaDAO;
+
 import java.time.LocalDateTime;
 
 public class EmpresaModel {
@@ -20,6 +22,15 @@ public class EmpresaModel {
         this.cnpj=cnpj;
         this.email=email;
         this.senha=senha;
+    }
+
+    //construtor médio, ideal para validar credenciais
+    public EmpresaModel(int id, String nome, String cnpj, String senha, String email) {
+        this.id = id;
+        this.nome = nome;
+        this.cnpj = cnpj;
+        this.senha = senha;
+        this.email = email;
     }
 
     //construtor com todos os atributos, ideal para buscas

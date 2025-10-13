@@ -15,7 +15,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         //variaveis gerais
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        boolean cadastroAutorizado;
+        int cadastroAutorizado;
 
         //pega os parametros da req
         String nome = req.getParameter("nome");
@@ -78,16 +78,20 @@ public class CadastroUsuarioServlet extends HttpServlet {
         }
 
         //manda as informações pro banco de dados
-        cadastroAutorizado = usuarioDAO.cadastrar(new UsuarioModel(
+        cadastroAutorizado = usuarioDAO.insert(new UsuarioModel(
                 nome, email, senha, cpf, Integer.parseInt(idAreaString)
         ));
 
         //encaminha para as paginas coerentes
-        if (cadastroAutorizado){
+        if (cadastroAutorizado == 1){
             req.getRequestDispatcher("/WEB-INF/cadastroAutorizado.jsp").forward(req, res);
+        }else if(cadastroAutorizado == -2){
+            req.setAttribute("status", 409);
+            req.setAttribute("mensagem", "Esse registro já existe!");
+            req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
         }else{
             req.setAttribute("status", 500);
-            req.setAttribute("mensagem", "tente novamente");
+            req.setAttribute("mensagem", "Tente novamente!");
             req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
         }
     }
