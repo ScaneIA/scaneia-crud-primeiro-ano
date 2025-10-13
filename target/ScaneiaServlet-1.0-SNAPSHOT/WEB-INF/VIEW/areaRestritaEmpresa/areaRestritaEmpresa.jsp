@@ -3,12 +3,11 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.scaneia.ScaneiaServlet.Model.CargoModel" %>
 <%@ page import="com.scaneia.ScaneiaServlet.Model.SetorModel" %>
+<%@ page import="com.scaneia.ScaneiaServlet.Model.UsuarioViewModel" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%
     //carrega os atributos
-    List<UsuarioModel> usuarios = (List<UsuarioModel>) request.getAttribute("usuarios");
-    List<CargoModel> cargos = (List<CargoModel>) request.getAttribute("cargos");
-    List<SetorModel> setores = (List<SetorModel>) request.getAttribute("setores");
+    List<UsuarioViewModel> usuarios = (List<UsuarioViewModel>) request.getAttribute("usuarios");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,19 +28,18 @@
         <div id="caixaFundo">
             <table>
                 <tr>
-                    <th>ID</th>
                     <th>NOME</th>
-                    <th>EMAIL</th>
+                    <th>CARGO</th>
+                    <th>SETOR</th>
                     <th>CPF</th>
-                    <th>Cargo</th>
-                    <th>Setor</th>
+                    <th>REGISTRO</th>
                     <th>Telefone</th>
                 </tr>
                 <%
                     for (int index = 0; index < usuarios.size(); index++){
                         UsuarioModel usuario = usuarios.get(index);
                         CargoModel cargo = cargos.get(index);
-                        SetorModel setor = setores.get(index);
+                        SetorModel setor = setores.get(index); //arrumar depois
                 %>
                 <tr>
                     <td>

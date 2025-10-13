@@ -49,6 +49,10 @@ public class UsuarioViewModel {
         return urlFoto;
     }
 
+    public String getRegistro() {
+        return registro;
+    }
+
     //metodos gerais
     private String formatarCPF(String cpf){
         return cpf.substring(0, 3) + "." +

@@ -37,25 +37,23 @@
                 </tr>
                 <%
                     for (int index = 0; index < usuarios.size(); index++){
-                        UsuarioModel usuario = usuarios.get(index);
-                        CargoModel cargo = cargos.get(index);
-                        SetorModel setor = setores.get(index); //arrumar depois
+                        UsuarioViewModel usuario = usuarios.get(index);
                 %>
                 <tr>
-                    <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getId()%></a>
-                    </td>
                     <td>
                         <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getNome()%></a>
                     </td>
                     <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=cargo.getNome()%></a>
+                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getCargo()%></a>
                     </td>
                     <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=setor.getNome()%></a>
+                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getSetor()%></a>
                     </td>
                     <td>
                         <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getCpf()%></a>
+                    </td>
+                    <td>
+                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getRegistro()%></a>
                     </td>
                     <td>
                         <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getEmail()%></a>
