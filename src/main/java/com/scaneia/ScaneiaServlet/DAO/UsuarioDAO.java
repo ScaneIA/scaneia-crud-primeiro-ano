@@ -4,187 +4,252 @@ import com.scaneia.ScaneiaServlet.Model.UsuarioModel;
 import com.scaneia.ScaneiaServlet.conexao.Conexao;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 
 public class UsuarioDAO {
-    public boolean cadastrar(UsuarioModel usuario){
-        //cria a conexao
+
+    // Cadastrar usuário
+    public int insert(UsuarioModel usuario) {
         Conexao conexao = new Conexao();
-
-        //prepara o comando sql
-        try{
-            //script sql
-            String sql = "INSERT INTO USUARIOS(NOME, EMAIL, CPF, SENHA, IDCARGOS) VALUES (?, ?, ?, ?, ?)";
-            Connection connection = conexao.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            //adiciona os parametros
-            preparedStatement.setString(1, usuario.getNome());
-            preparedStatement.setString(2, usuario.getEmail());
-            preparedStatement.setString(3, usuario.getCpf());
-            preparedStatement.setString(4, usuario.getSenha());
-            preparedStatement.setInt(5, usuario.getIdCargo());
-
-            //executa o comando
-            preparedStatement.executeUpdate();
-            return true;
-        }catch (SQLException exception){
-            exception.printStackTrace();
-            return false;
-        }finally {
-            conexao.desconectar();
+        Connection conn = conexao.getConnection();
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return -1; // erro na conexão
         }
 
-    }
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "INSERT INTO USUARIOS (NOME, EMAIL, CPF, SENHA, IDCARGOS) VALUES (?, ?, ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS)) {
 
-    public boolean atualizarNome(UsuarioModel usuario, String nome){
-        //cria a conexao
-        Conexao conexao = new Conexao();
+            // adiciona os parâmetros
+            pstmt.setString(1, usuario.getNome());
+            pstmt.setString(2, usuario.getEmail());
+            pstmt.setString(3, usuario.getCpf());
+            pstmt.setString(4, usuario.getSenha());
+            pstmt.setInt(5, usuario.getIdCargo());
 
-        //faz o script
-        try {
-            //prepara o script
-            String sql = "UPDATE USUARIOS SET NOME = ? WHERE ID = ?";
-            Connection connection = conexao.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            
-            //adiciona os parametros
-            preparedStatement.setString(1, nome);
-            preparedStatement.setInt(2, usuario.getId());
+            // executa
+            int retorno = pstmt.executeUpdate();
 
-            //muda a data de atualizacao
-            atualizarData(connection, usuario);
-
-            //executa o comando
-            preparedStatement.executeUpdate();
-            return true;
-
-        }catch (SQLException exception){
-            exception.printStackTrace();
-            return false;
-        }finally {
-            conexao.desconectar();
-        }
-    }
-
-    public boolean atualizarIdCargo(UsuarioModel usuario, int idCargo){
-        //cria a conexao
-        Conexao conexao = new Conexao();
-
-        //faz o script
-        try {
-            //Prepara o script
-            String sql = "UPDATE USUARIOS SET IDCARGOS = ? WHERE ID = ?";
-            Connection connection = conexao.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            //adiciona os parametros
-            preparedStatement.setInt(1, idCargo);
-            preparedStatement.setInt(2, usuario.getId());
-
-            //muda a data de atualizacao
-            atualizarData(connection, usuario);
-
-            //executa o comando
-            preparedStatement.executeUpdate();
-            return true;
-
-        }catch (SQLException exception){
-            exception.printStackTrace();
-            return false;
-        }finally {
-            conexao.desconectar();
-        }
-
-    }
-
-    public boolean adicionarSetorUsuario(UsuarioModel usuario, int setorId){
-        //cria a conexão
-        Conexao conexao = new Conexao();
-
-        //faz o script sql
-        try{
-            //prepara o comando
-            String sql = "INSERT INTO SETORES_USUARIOS(IDUSUARIOS, IDSETOES) VALUES (?, ?)";
-            Connection connection = conexao.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            //adiciona os parametros
-            preparedStatement.setInt(1, usuario.getId());
-            preparedStatement.setInt(2, setorId);
-
-            //executa o comando
-            return preparedStatement.executeUpdate() > 0;
-        }catch (SQLException exception){
-            exception.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean login(String email, String senha){
-        //cria a conexao
-        Conexao conexao = new Conexao();
-
-        //faz o comando sql
-        try{
-            //prepara o script
-            String sql = "SELECT * FROM USUARIOS WHERE EMAIL = ? AND SENHA = ?";
-            Connection connection = conexao.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            //adiciona os parametros
-            preparedStatement.setString(1, email);
-            preparedStatement.setString(2, senha);
-
-            //executa a consula
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            //confirma que só teve uma busca
-            int buscas = 0;
-            while (resultSet.next()){
-                buscas++;
+            // pega ID gerado
+            try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    usuario.setId(rs.getInt(1));
+                }
             }
 
-            return buscas == 1;
+            if (retorno > 0) {
+                usuario.setDataCriacao(LocalDateTime.now());
+                usuario.setDataAtualizacao(LocalDateTime.now());
+                // colocando datas no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
+            }
 
-        }catch (SQLException exception){
-            exception.printStackTrace();
-            return false;
-        }finally {
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
             conexao.desconectar();
+            // desconecta
         }
     }
 
-    public boolean excluirUsuario(UsuarioModel usuario){
-        //cria a conexao
+    // Atualizar nome
+    public int updateNome(UsuarioModel usuario) {
         Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return -1; // erro na conexão
+        }
 
-        //faz o comando sql
         try {
-            //prepara o script
-            String sql = "UPDATE USUARIOS SET DATAEXCLUSAO = NOW() WHERE ID = ?";
-            Connection connection = conexao.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE USUARIOS SET NOME = ?, DATAATUALIZACAO = NOW() WHERE ID = ?"
+            );
+            pstmt.setString(1, usuario.getNome());
+            pstmt.setInt(2, usuario.getId());
 
-            //adiciona os parametros
-            preparedStatement.setInt(1, usuario.getId());
+            // executa
+            int retorno = pstmt.executeUpdate();
 
-            //executa o comando
-            return preparedStatement.executeUpdate() > 0;
-        }catch (SQLException exception){
-            exception.printStackTrace();
-            return false;
+            if (retorno > 0) {
+                usuario.setDataAtualizacao(LocalDateTime.now());
+                // atualiza data no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
         }
     }
 
-    public void atualizarData(Connection connection, UsuarioModel usuario) throws SQLException{
-        //prepara o script sql
-        String sql = "UPDATE SETORES SET DATAATUALIZACAO = NOW() WHERE ID = ?";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+    // Atualizar ID do cargo
+    public int updateIdCargo(UsuarioModel usuario) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return -1; // erro na conexão
+        }
 
-        //atualiza os parametros do sql
-        preparedStatement.setInt(1, usuario.getId());
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE USUARIOS SET IDCARGOS = ?, DATAATUALIZACAO = NOW() WHERE ID = ?"
+            );
+            pstmt.setInt(1, usuario.getIdCargo());
+            pstmt.setInt(2, usuario.getId());
 
-        //executa o comando
-        preparedStatement.executeUpdate();
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            if (retorno > 0) {
+                usuario.setDataAtualizacao(LocalDateTime.now());
+                // atualiza data no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
+        }
+    }
+
+    // Adicionar setor ao usuário
+    public int adicionarSetorUsuario(UsuarioModel usuario, int setorId) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return -1; // erro na conexão
+        }
+
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "INSERT INTO SETORES_USUARIOS (IDUSUARIOS, IDSETORES) VALUES (?, ?)"
+        )) {
+            pstmt.setInt(1, usuario.getId());
+            pstmt.setInt(2, setorId);
+
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            if (retorno > 0) {
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
+        }
+    }
+
+    // Login
+    public int login(String email, String senha) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return -1; // erro na conexão
+        }
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "SELECT * FROM USUARIOS WHERE EMAIL = ? AND SENHA = ?"
+            );
+            pstmt.setString(1, email);
+            pstmt.setString(2, senha);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            // conta resultados
+            int count = 0;
+            while (rs.next()) count++;
+
+            return (count == 1) ? 1 : 0; // sucesso se encontrou um usuário
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
+        }
+    }
+
+    // Deletar usuário
+    public int delete(UsuarioModel usuario) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return -1; // erro na conexão
+        }
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE USUARIOS SET DATAEXCLUSAO = NOW() WHERE ID = ?"
+            );
+            pstmt.setInt(1, usuario.getId());
+
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            if (retorno > 0) {
+                usuario.setDataExclusao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
+        }
     }
 }

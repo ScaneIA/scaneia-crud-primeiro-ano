@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 public class UsuarioModel {
     //atributos
     private int id;
-    private String nome; //max 40 chars
-    private String email; //max 50 chars
-    private String cpf; //max 12 -- em mudança chars
+    private String nome;
+    private String email;
+    private String cpf;
     private String urlFoto; //tipo text
-    private String senha; //max 20 chars
+    private String senha;
     private LocalDateTime dataCriacao; //LocalDateTime timezone z
     private LocalDateTime dataAtualizacao; //LocalDateTime timezone z
     private LocalDateTime dataExclusao; //LocalDateTime timezone z
@@ -31,7 +31,7 @@ public class UsuarioModel {
         this.dataCriacao = dataCriacao;
     }
 
-    //construtor simples, ideal para registros
+    //Construtor simples, ideal para registros
     public UsuarioModel(String nome, String email, String cpf, String senha, int idCargo) {
         this.nome = nome;
         this.email = email;
@@ -40,7 +40,7 @@ public class UsuarioModel {
         this.idCargo = idCargo;
     }
 
-    //getters
+    //Getters
     public int getId() {
         return id;
     }
@@ -81,21 +81,9 @@ public class UsuarioModel {
         return dataCriacao;
     }
 
-    //setters
+    //Setters necessários
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setUrlFoto(String urlFoto) {
-        this.urlFoto = urlFoto;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
@@ -104,6 +92,10 @@ public class UsuarioModel {
 
     public void setDataExclusao(LocalDateTime dataExclusao) {
         this.dataExclusao = dataExclusao;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
     }
 
     public void setIdCargo(int idCargo) {
