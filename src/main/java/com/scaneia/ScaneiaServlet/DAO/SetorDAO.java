@@ -3,163 +3,220 @@ package com.scaneia.ScaneiaServlet.DAO;
 import com.scaneia.ScaneiaServlet.Model.SetorModel;
 import com.scaneia.ScaneiaServlet.conexao.Conexao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SetorDAO {
-//adicionar teste de conexao
-    public boolean inserirSetor(SetorModel setor){
-        //cria a conexão
+
+    // Inserir setor
+    public int inserir(SetorModel setor) {
         Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
 
-        //prepara o comando sql
-        try{
-            //prepara o sql
-            String sql = "INSERT INTO SETORES(DESCRICAO, NOME, IDAREAS) VALUES ?,?,?";
-            Connection connection = conexao.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return -1; // erro na conexão
+        }
 
-            //coloca os parametros
-            preparedStatement.setString(1, setor.getDescricao());
-            preparedStatement.setString(2, setor.getNome());
-            preparedStatement.setInt(3, setor.getIdArea());
+        // prepara o comando
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "INSERT INTO SETORES (DESCRICAO, NOME, IDAREAS) VALUES (?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS)) {
 
-            //atualiza data de modificacao
-            atualizarData(connection, setor);
+            pstmt.setString(1, setor.getDescricao());
+            pstmt.setString(2, setor.getNome());
+            pstmt.setInt(3, setor.getIdArea());
 
-            //executa o comando
-            return preparedStatement.executeUpdate() > 0;
-        }catch (SQLException exception){
-            exception.printStackTrace();
-            return false;
-        }finally {
-            //fecha a conexão
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            // pega o ID gerado
+            try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    setor.setId(rs.getInt(1));
+                }
+            }
+
+            if (retorno > 0) {
+                setor.setDataCriacao(LocalDateTime.now());
+                setor.setDataAtualizacao(LocalDateTime.now());
+                // // colocando esses valores no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erroSQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            // desconecta
             conexao.desconectar();
         }
     }
 
-    public boolean alterarNome(SetorModel setor, String nome){
-        //cria a conexao
+    // Atualizar nome
+    public int atualizarNome(SetorModel setor) {
         Conexao conexao = new Conexao();
-
-        //prepara o comando sql
+        Connection conn = conexao.getConnection();
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return -1; // erro na conexão
+        }
+        // prepara o comando
         try {
-            //script sql
-            String sql = "UPDATE SETORES SET NOME = ? WHERE ID = ?";
-            Connection connection = conexao.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE SETORES SET NOME = ?, DATAATUALIZACAO = NOW() WHERE ID = ?"
+            );
+            pstmt.setString(1, setor.getNome());
+            pstmt.setInt(2, setor.getId());
+            // executa
+            int retorno = pstmt.executeUpdate();
 
-            //coloca os parametros
-            preparedStatement.setString(1, nome);
-            preparedStatement.setInt(2, setor.getId());
+            if (retorno > 0) {
+                setor.setDataAtualizacao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
+            }
 
-            //atualiza data de modificacao
-            atualizarData(connection, setor);
-
-            //executa o comando
-            return preparedStatement.executeUpdate() == 1;
-        }catch (SQLException exception){
-            exception.printStackTrace();
-            return false;
-        }finally {
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            // desconecta
             conexao.desconectar();
         }
     }
 
-    public boolean alterarDescricao(SetorModel setor, String descricao){
-        //cria a conexao
+    // Atualizar descrição
+    public int atualizarDescricao(SetorModel setor) {
         Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
 
-        //prepara o comando sql
-        try {
-            //cria o prepared statement
-            String sql = "UPDATE SETORES SET DESCRICAO = ? WHERE ID = ?";
-            Connection connection = conexao.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            //coloca os parametros
-            preparedStatement.setString(1, descricao);
-            preparedStatement.setInt(2, setor.getId());
-
-            //atualiza data de modificacao
-            atualizarData(connection, setor);
-
-            //executa o comando
-            return preparedStatement.executeUpdate() == 1;
-
-        }catch (SQLException exception){
-            exception.printStackTrace();
-            return false;
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return -1; // erro na conexão
         }
-    }
-
-    public boolean alterarIdAreas(SetorModel setor, int idArea){
-        //cria a conexao
-        Conexao conexao = new Conexao();
-
-        //prepara o comando sql
+        // prepara o comando
         try {
-            //cria o prepared statement
-            String sql = "UPDATE SETORES SET IDAREAS = ? WHERE ID = ?";
-            Connection connection = conexao.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE SETORES SET DESCRICAO = ?, DATAATUALIZACAO = NOW() WHERE ID = ?"
+            );
+            pstmt.setString(1, setor.getDescricao());
+            pstmt.setInt(2, setor.getId());
+            // executa
+            int retorno = pstmt.executeUpdate();
 
-            //coloca os parametros
-            preparedStatement.setInt(1, idArea);
-            preparedStatement.setInt(2, setor.getId());
+            if (retorno > 0) {
+                setor.setDataAtualizacao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
+            }
 
-            //atualiza data de modificacao
-            atualizarData(connection, setor);
-
-            //executa o comando
-            return preparedStatement.executeUpdate() == 1;
-
-        }catch (SQLException exception){
-            exception.printStackTrace();
-            return false;
-        }finally {
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
             conexao.desconectar();
+            // desconecta
         }
     }
 
-    public boolean deletarSetor(SetorModel setor){
-        //cria a conexao
+    // Atualizar ID da área
+    public int updateIdArea(SetorModel setor) {
         Conexao conexao = new Conexao();
-
-        //prepara o comando sql
+        Connection conn = conexao.getConnection();
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return -1; // erro na conexão
+        }
+        // prepara o comando
         try {
-            //cria o prepared statement
-            String sql = "UPDATE SETORES SET DATAEXCLUSAO = NOW() WHERE ID = ?";
-            Connection connection = conexao.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE SETORES SET IDAREAS = ?, DATAATUALIZACAO = NOW() WHERE ID = ?"
+            );
+            pstmt.setInt(1, setor.getIdArea());
+            pstmt.setInt(2, setor.getId());
 
-            //coloca os parametros sql
-            preparedStatement.setInt(1, setor.getId());
+            // executa
+            int retorno = pstmt.executeUpdate();
 
-            setor.setDataExclusao(LocalDateTime.now());
+            if (retorno > 0) {
+                setor.setDataAtualizacao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada altarado
+            }
 
-            //executa o comando
-            return preparedStatement.executeUpdate() > 0;
-
-        }catch (SQLException exception){
-            exception.printStackTrace();
-            return false;
-        }finally {
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
             conexao.desconectar();
+            // desconecta
         }
     }
 
-    public void atualizarData(Connection connection, SetorModel setor) throws SQLException{
-        //prepara o script sql
-        String sql = "UPDATE SETORES SET DATAATUALIZACAO = NOW() WHERE ID = ?";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+    // Deletar setor
+    public int delete(SetorModel setor) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return -1; // erro na conexão
+        }
+        // prepara
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE SETORES SET DATAEXCLUSAO = NOW() WHERE ID = ?"
+            );
+            pstmt.setInt(1, setor.getId());
 
-        //atualiza os parametros do sql
-        preparedStatement.setInt(1, setor.getId());
+            // executa
+            int retorno = pstmt.executeUpdate();
 
-        //executa o comando
-        preparedStatement.executeUpdate();
+            if (retorno > 0) {
+                setor.setDataExclusao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
+        }
     }
+
 }

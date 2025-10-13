@@ -11,99 +11,143 @@ import java.util.List;
 public class EnderecoEmpresaDAO {
 
     // Inserir endereço
-    public boolean inserir(EnderecoEmpresaModel endereco) {
+    public int inserir(EnderecoEmpresaModel endereco) {
+        //cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
 
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
-        } else {
-            try (PreparedStatement pstmt = conn.prepareStatement(
-                    "INSERT INTO ENDERECOSEMPRESAS (IDEMPRESAS, RUA, NUMERO,COMPLEMENTO,ESTADO,CIDADE,BAIRRO, CEP) VALUES (?, ?, ?, ?, ?, ?,?,?)",
-                    Statement.RETURN_GENERATED_KEYS)) {
+            return -1; // erro na conexão
+        }
+        //prepara o sql
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "INSERT INTO ENDERECOSEMPRESAS (IDEMPRESAS, RUA, NUMERO, COMPLEMENTO, ESTADO, CIDADE, BAIRRO, CEP) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS)) {
+            //coloca os parametros
+            pstmt.setInt(1, endereco.getIdEmpresa());
+            pstmt.setString(2, endereco.getRua());
+            pstmt.setInt(3, endereco.getNumero());
+            pstmt.setString(4, endereco.getComplemento());
+            pstmt.setString(5, endereco.getEstado());
+            pstmt.setString(6, endereco.getCidade());
+            pstmt.setString(7, endereco.getBairro());
+            pstmt.setString(8, endereco.getCep());
 
-                pstmt.setInt(1, endereco.getIdEmpresa());
-                pstmt.setString(2, endereco.getRua());
-                pstmt.setInt(3, endereco.getNumero());
-                pstmt.setString(4,endereco.getComplemento());
-                pstmt.setString(5, endereco.getEstado());
-                pstmt.setString(6, endereco.getCidade());
-                pstmt.setString(7, endereco.getBairro());
-                pstmt.setString(8, endereco.getCep());
+            //executa o comando
+            int retorno = pstmt.executeUpdate();
 
-                int retorno = pstmt.executeUpdate();
-
-                try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        endereco.setId(rs.getInt(1));
-                    }
+            // pega o ID gerado
+            try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    endereco.setId(rs.getInt(1));
                 }
-
-                return retorno > 0;
-            } catch (SQLException se) {
-                se.printStackTrace();
-                return false;
-            } finally {
-                conexao.desconectar();
             }
+
+            if (retorno > 0) {
+                endereco.setDataCriacao(LocalDateTime.now());
+                endereco.setDataAtualizacao(LocalDateTime.now());
+                // colocando esses valores no objeto
+                return 1; // sucesso
+            } else {
+                return 0; // nada alterado
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            // fecha a conexão
+            conexao.desconectar();
         }
     }
 
     // Atualizar endereço completo
-    public boolean update(EnderecoEmpresaModel endereco) {
+    public int atualizar(EnderecoEmpresaModel endereco) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-
+        // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
-        } else {
-            try {
-                PreparedStatement pstmt = conn.prepareStatement(
-                        "UPDATE ENDERECOSEMPRESAS SET RUA=?, NUMERO=?,COMPLEMENTO=?,ESTADO=?,CIDADE=?,BAIRRO=?, CEP=?, DATAATUALIZACAO=NOW() WHERE ID=?");
+            return -1; // erro na conexão
+        }
+        // prepara o comando sql
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE ENDERECOSEMPRESAS SET RUA=?, NUMERO=?, COMPLEMENTO=?, ESTADO=?, CIDADE=?, BAIRRO=?, CEP=?, DATAATUALIZACAO=NOW() WHERE ID=?"
+            );
 
-                pstmt.setString(1, endereco.getRua());
-                pstmt.setInt(2, endereco.getNumero());
-                pstmt.setString(3,endereco.getComplemento());
-                pstmt.setString(4, endereco.getEstado());
-                pstmt.setString(5, endereco.getCidade());
-                pstmt.setString(6, endereco.getBairro());
-                pstmt.setString(7, endereco.getCep());
-                pstmt.setInt(8, endereco.getId());
+            // coloca os parametros
+            pstmt.setString(1, endereco.getRua());
+            pstmt.setInt(2, endereco.getNumero());
+            pstmt.setString(3, endereco.getComplemento());
+            pstmt.setString(4, endereco.getEstado());
+            pstmt.setString(5, endereco.getCidade());
+            pstmt.setString(6, endereco.getBairro());
+            pstmt.setString(7, endereco.getCep());
+            pstmt.setInt(8, endereco.getId());
 
-                return pstmt.executeUpdate() > 0;
-            } catch (SQLException se) {
-                se.printStackTrace();
-                return false;
-            } finally {
-                conexao.desconectar();
+            // executa o comando
+            int retorno = pstmt.executeUpdate();
+
+            if (retorno > 0) {
+                endereco.setDataAtualizacao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // sucesso
+            } else {
+                return 0; // nada alterado
             }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            // desconecta
+            conexao.desconectar();
         }
     }
 
-    // Deletando endereço
-    public boolean delete(EnderecoEmpresaModel endereco) {
+    // Deletar endereço
+    public int deletar(EnderecoEmpresaModel endereco) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-
+        // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
-        } else {
-            try {
-                PreparedStatement pstmt = conn.prepareStatement(
-                        "UPDATE ENDERECO_EMPRESA SET DATAEXCLUSAO = NOW() WHERE ID=?");
-                pstmt.setInt(1, endereco.getId());
-                endereco.setDataExclusao(LocalDateTime.now());
+            return -1; // erro na conexão
+        }
+        // prepara o comando
+        try {
+            String remover = "UPDATE ENDERECOSEMPRESAS SET DATAEXCLUSAO = NOW() WHERE ID=?";
+            PreparedStatement pstmt = conn.prepareStatement(remover);
+            pstmt.setInt(1, endereco.getId());
 
-                return pstmt.executeUpdate() > 0;
-            } catch (SQLException se) {
-                se.printStackTrace();
-                return false;
-            } finally {
-                conexao.desconectar();
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            if (retorno > 0) {
+                endereco.setDataExclusao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // sucesso
+            } else {
+                return 0; // nada alterado
             }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            // desconecta
+            conexao.desconectar();
         }
     }
 
@@ -112,19 +156,20 @@ public class EnderecoEmpresaDAO {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         List<EnderecoEmpresaModel> lista = new ArrayList<>();
-
+       // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
             return lista;
         }
 
+        // prepara o comando
         try {
             Statement stmt = conn.createStatement();
-            ResultSet rset = stmt.executeQuery("SELECT * FROM ENDERECO_EMPRESA");
+            ResultSet rset = stmt.executeQuery("SELECT * FROM ENDERECOSEMPRESAS");
 
             while (rset.next()) {
                 int id = rset.getInt("id");
-                int idEmpresa = rset.getInt("empresa_id");
+                int idEmpresa = rset.getInt("idEmpresas");
                 String estado = rset.getString("estado");
                 String cep = rset.getString("cep");
                 String cidade = rset.getString("cidade");
@@ -136,6 +181,7 @@ public class EnderecoEmpresaDAO {
                 LocalDateTime dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
                 LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
 
+                // verifica se dataExclusao é null
                 LocalDateTime dataExclusao = null;
                 if (rset.getTimestamp("dataExclusao") != null) {
                     dataExclusao = rset.getTimestamp("dataExclusao").toLocalDateTime();
@@ -147,35 +193,39 @@ public class EnderecoEmpresaDAO {
                 );
                 lista.add(end);
             }
+
         } catch (SQLException se) {
             se.printStackTrace();
         } finally {
+            // desconecta
             conexao.desconectar();
         }
+        // retorna a lista
         return lista;
     }
 
     // Buscar por cidade
-    public List<EnderecoEmpresaModel> buscarPorCidade(EnderecoEmpresaModel end) {
+    public List<EnderecoEmpresaModel> buscarPorCidade(EnderecoEmpresaModel endereco) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         List<EnderecoEmpresaModel> lista = new ArrayList<>();
 
+        // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
             return lista;
         }
-
+        // prepara o comando
         try {
             PreparedStatement pstmt = conn.prepareStatement(
-                    "SELECT * FROM ENDERECO_EMPRESA WHERE CIDADE = ? ORDER BY 1"
+                    "SELECT * FROM ENDERECOSEMPRESAS WHERE CIDADE = ? ORDER BY 1"
             );
-            pstmt.setString(1, end.getCidade());
+            pstmt.setString(1, endereco.getCidade());
             ResultSet rset = pstmt.executeQuery();
 
             while (rset.next()) {
                 int id = rset.getInt("id");
-                int idEmpresa = rset.getInt("empresa_id");
+                int idEmpresa = rset.getInt("idEmpresas");
                 String estado = rset.getString("estado");
                 String cep = rset.getString("cep");
                 String cidade = rset.getString("cidade");
@@ -187,23 +237,26 @@ public class EnderecoEmpresaDAO {
                 LocalDateTime dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
                 LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
 
+                // verifica se dataExclusao é null
                 LocalDateTime dataExclusao = null;
                 if (rset.getTimestamp("dataExclusao") != null) {
                     dataExclusao = rset.getTimestamp("dataExclusao").toLocalDateTime();
                 }
 
-                EnderecoEmpresaModel ends = new EnderecoEmpresaModel(
+                EnderecoEmpresaModel end = new EnderecoEmpresaModel(
                         id, estado, cep, cidade, bairro, rua, numero, complemento,
                         dataCriacao, dataAtualizacao, dataExclusao, idEmpresa
                 );
-                lista.add(ends);
+                lista.add(end);
             }
+
         } catch (SQLException se) {
             se.printStackTrace();
         } finally {
+            // desconecta
             conexao.desconectar();
         }
-
+        // retorna a lista
         return lista;
     }
 }

@@ -3,191 +3,291 @@ package com.scaneia.ScaneiaServlet.DAO;
 import com.scaneia.ScaneiaServlet.Model.CargoModel;
 import com.scaneia.ScaneiaServlet.conexao.Conexao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CargoDAO {
-    public boolean insert(CargoModel cargo){
+
+    // Insert normal, inserindo todos os dados
+    public int insert(CargoModel cargo) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
+        // cria conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
+            return -1; // erro na conexão
         }
-        else{
-            try(PreparedStatement pstmt = conn.prepareStatement(
-                    "INSERT INTO CARGOS (NOME, DESCRICAO) VALUES (?, ?)",
-                    Statement.RETURN_GENERATED_KEYS)){
+        // prepara
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "INSERT INTO CARGOS (NOME, DESCRICAO) VALUES (?, ?)",
+                Statement.RETURN_GENERATED_KEYS)) {
 
-                ResultSet rs = pstmt.getGeneratedKeys();
-                pstmt.setString(1,cargo.getNome());
-                pstmt.setString(2, cargo.getDescricao());
-                int retorno=pstmt.executeUpdate();
+            pstmt.setString(1, cargo.getNome());
+            pstmt.setString(2, cargo.getDescricao());
+            // executa
+            int retorno = pstmt.executeUpdate();
 
+            // pega o ID gerado
+            try (ResultSet rs = pstmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     cargo.setId(rs.getInt(1));
                 }
-
-                return retorno>0;
-            } catch (SQLException se) {
-                se.printStackTrace();
-                return false;
-            } finally {
-                conexao.desconectar();
             }
-        }
 
+            if (retorno > 0) {
+                cargo.setDataCriacao(LocalDateTime.now());
+                cargo.setDataAtualizacao(LocalDateTime.now());
+                // colocando esses valores no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada foi alterado
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
+        }
     }
 
-    public boolean insertNome(CargoModel cargo){
+    // Inserindo apenas o nome
+    public int insertNome(CargoModel cargo) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
+        // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
+            return -1; // erro na conexão
         }
-        else{
-            try(PreparedStatement pstmt = conn.prepareStatement(
-                    "INSERT INTO CARGOS (NOME) VALUES (?)",
-                    Statement.RETURN_GENERATED_KEYS)){
+        // prepara
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "INSERT INTO CARGOS (NOME) VALUES (?)",
+                Statement.RETURN_GENERATED_KEYS)) {
 
-                ResultSet rs = pstmt.getGeneratedKeys();
-                pstmt.setString(1,cargo.getNome());
+            pstmt.setString(1, cargo.getNome());
+
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            // pega o ID gerado
+            try (ResultSet rs = pstmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     cargo.setId(rs.getInt(1));
                 }
-                return pstmt.executeUpdate()>0;
-
-            } catch (SQLException se) {
-                se.printStackTrace();
-                return false;
-            } finally {
-                conexao.desconectar();
             }
-        }
 
+            if (retorno > 0) {
+                cargo.setDataCriacao(LocalDateTime.now());
+                cargo.setDataAtualizacao(LocalDateTime.now());
+                // colocando esses valores no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada foi alterado
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
+        }
     }
 
-    public boolean update(CargoModel cargo){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
+    // Atualizando tudo
+    public int update(CargoModel cargo) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
+            return -1; // erro na conexão
         }
-        else{
 
-            try{
-                PreparedStatement pstmt = conn.prepareStatement("UPDATE CARGOS SET NOME=?, DESCRICAO=? WHERE ID=?");
-                pstmt.setString(1, cargo.getNome());
-                pstmt.setString(2, cargo.getDescricao());
-                pstmt.setInt(3, cargo.getId());
-                return pstmt.executeUpdate()>0;
-            }
-            catch (SQLException se){
-                se.printStackTrace();
-                return false;
-            }
-            finally {
-                conexao.desconectar();
+        // prepara o comando
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE CARGOS SET NOME=?, DESCRICAO=?, DATAATUALIZACAO=NOW() WHERE ID=?"
+            );
+            pstmt.setString(1, cargo.getNome());
+            pstmt.setString(2, cargo.getDescricao());
+            pstmt.setInt(3, cargo.getId());
+
+            // executa
+            int linhasAfetadas = pstmt.executeUpdate();
+
+            if (linhasAfetadas > 0) {
+                cargo.setDataAtualizacao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
             }
 
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
         }
     }
 
-    public boolean updateNome(CargoModel cargo){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
+    // Atualizando só nome
+    public int updateNome(CargoModel cargo) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
+            return -1; // erro na conexão
         }
-        else{
+        // prepara a conexão
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE CARGOS SET NOME=?, DATAATUALIZACAO=NOW() WHERE ID=?"
+            );
+            pstmt.setString(1, cargo.getNome());
+            pstmt.setInt(2, cargo.getId());
 
-            try{
-                PreparedStatement pstmt = conn.prepareStatement("UPDATE CARGOS SET NOME=? WHERE ID=?");
-                pstmt.setString(1, cargo.getNome());
-                pstmt.setInt(2, cargo.getId());
-                return pstmt.executeUpdate()>0;
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            if (retorno > 0) {
+                cargo.setDataAtualizacao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
             }
-            catch (SQLException se){
-                se.printStackTrace();
-                return false;
-            }
-            finally {
-                conexao.desconectar();
-            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
         }
     }
-    public boolean updateDescricao(CargoModel cargo){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
+
+    // Atualizando só a descriação
+    public int updateDescricao(CargoModel cargo) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
+            return -1; // erro na conexão
         }
-        else{
+        // prepara
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE CARGOS SET DESCRICAO=?, DATAATUALIZACAO=NOW() WHERE ID=?"
+            );
+            pstmt.setString(1, cargo.getDescricao());
+            pstmt.setInt(2, cargo.getId());
 
-            try{
-                PreparedStatement pstmt = conn.prepareStatement("UPDATE CARGOS SET DESCRICAO=? WHERE ID=?");
-                pstmt.setString(1, cargo.getDescricao());
-                pstmt.setInt(2, cargo.getId());
-                return pstmt.executeUpdate()>0;
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            if (retorno > 0) {
+                cargo.setDataAtualizacao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
             }
-            catch (SQLException se){
-                se.printStackTrace();
-                return false;
-            }
-            finally {
-                conexao.desconectar();
-            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
         }
     }
-    public boolean delete(CargoModel cargo){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
-        if(conn==null){
+
+    // deletando
+    public int deletar(CargoModel cargo) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria conexão
+        if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
-        }
-        else{
-            try{
-                String remover="UPDATE CARGOS SET DATAEXCLUSAO = NOW() WHERE ID=?";
-                PreparedStatement pstmt= conn.prepareStatement(remover);
-                pstmt.setInt(1,cargo.getId());
-                return pstmt.executeUpdate() >0;
-            }
-            catch (SQLException se){
-                se.printStackTrace();
-                return false;
-            }
-            finally {
-                conexao.desconectar();
-            }
+            return -1; // erro na conexão
         }
 
+        // prepara
+        try {
+            String remover = "UPDATE CARGOS SET DATAEXCLUSAO = NOW() WHERE ID=?";
+            PreparedStatement pstmt = conn.prepareStatement(remover);
+            pstmt.setInt(1, cargo.getId());
+
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            if (retorno > 0) {
+                cargo.setDataExclusao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
+        }
     }
 
-    public List<CargoModel> buscar(CargoModel cargo){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
+    // Fazendo uma busca geral
+    public List<CargoModel> buscar() {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+
         ResultSet rset = null;
-        List<CargoModel> listaBusca= new ArrayList<>();
-        try{
-            Statement stmt = conn.createStatement();
-            rset= stmt.executeQuery("SELECT * FROM CARGOS");
+        List<CargoModel> listaBusca = new ArrayList<>();
 
-            while (rset.next()){
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return listaBusca;
+        }
+
+        try {
+            Statement stmt = conn.createStatement();
+            rset = stmt.executeQuery("SELECT * FROM CARGOS");
+
+            while (rset.next()) {
                 int id = rset.getInt("id");
                 String nome = rset.getString("nome");
                 String descricao = rset.getString("descricao");
-
+                // verifica se dataExclusao é null
                 LocalDateTime dataExclusao = null;
                 if (rset.getTimestamp("dataExclusao") != null) {
                     dataExclusao = rset.getTimestamp("dataExclusao").toLocalDateTime();
@@ -197,35 +297,44 @@ public class CargoDAO {
                 LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
 
                 CargoModel cargo1 = new CargoModel(id, nome, descricao, dataExclusao, dataAtualizacao, dataCriacao);
-
                 listaBusca.add(cargo1);
             }
 
-        }
-        catch (SQLException se){
+        } catch (SQLException se) {
             se.printStackTrace();
             return null;
-        }
-        finally {
+        } finally {
             conexao.desconectar();
+            // desconecta
         }
         return listaBusca;
+        // retorna lista
     }
-
-    public List<CargoModel> buscarPorNome(CargoModel cargo){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
-        ResultSet rset = null;
-        List<CargoModel> listaBusca= new ArrayList<>();
-        try{
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM CARGOS WHERE NOME = ? ORDER BY 1");
+    // Busca só pelo nome
+    public List<CargoModel> buscarPorNome(CargoModel cargo) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        ResultSet rset;
+        List<CargoModel> listaBusca = new ArrayList<>();
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return listaBusca;
+        }
+        // prepara
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "SELECT * FROM CARGOS WHERE NOME = ? ORDER BY 1"
+            );
             pstmt.setString(1, cargo.getNome());
             rset = pstmt.executeQuery();
-            while (rset.next()){
+
+            while (rset.next()) {
                 int id = rset.getInt("id");
                 String nome = rset.getString("nome");
                 String descricao = rset.getString("descricao");
 
+                // verifica se dataExclusao é null
                 LocalDateTime dataExclusao = null;
                 if (rset.getTimestamp("dataExclusao") != null) {
                     dataExclusao = rset.getTimestamp("dataExclusao").toLocalDateTime();
@@ -234,19 +343,18 @@ public class CargoDAO {
                 LocalDateTime dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
                 LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
 
-                CargoModel area1 = new CargoModel(id, nome, descricao, dataExclusao, dataAtualizacao, dataCriacao);
-
-                listaBusca.add(area1);
+                CargoModel cargo1 = new CargoModel(id, nome, descricao, dataExclusao, dataAtualizacao, dataCriacao);
+                listaBusca.add(cargo1);
             }
 
-        }
-        catch (SQLException se){
+        } catch (SQLException se) {
             se.printStackTrace();
             return null;
-        }
-        finally {
+        } finally {
             conexao.desconectar();
+            // desconecta
         }
         return listaBusca;
+        // lista
     }
 }

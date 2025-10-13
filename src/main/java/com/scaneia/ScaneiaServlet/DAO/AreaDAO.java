@@ -3,192 +3,297 @@ package com.scaneia.ScaneiaServlet.DAO;
 import com.scaneia.ScaneiaServlet.Model.AreaModel;
 import com.scaneia.ScaneiaServlet.conexao.Conexao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDateTime;
 
 public class AreaDAO {
-    public boolean inserir(AreaModel area){
+
+    // Inserir área (com nome e descrição)
+    public int inserir(AreaModel area) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
+        // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
+            return -1; // erro na conexão
         }
-        else{
-            try(PreparedStatement pstmt = conn.prepareStatement(
-                    "INSERT INTO AREAS (NOME, DESCRICAO) VALUES (?, ?)",
-                    Statement.RETURN_GENERATED_KEYS)){
 
-                pstmt.setString(1,area.getNome());
-                pstmt.setString(2, area.getDescricao());
-                int retorno = pstmt.executeUpdate();
-                try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        area.setId(rs.getInt(1));
-                    }
+        // prepara
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "INSERT INTO AREAS (NOME, DESCRICAO) VALUES (?, ?)",
+                Statement.RETURN_GENERATED_KEYS)) {
+
+            pstmt.setString(1, area.getNome());
+            pstmt.setString(2, area.getDescricao());
+
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            // pega ID gerado
+            try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    area.setId(rs.getInt(1));
                 }
-                return retorno > 0;
-            } catch (SQLException se) {
-                se.printStackTrace();
-                return false;
-            } finally {
-                conexao.desconectar();
             }
-        }
 
+            if (retorno > 0) {
+                area.setDataCriacao(LocalDateTime.now());
+                area.setDataAtualizacao(LocalDateTime.now());
+                // colocando esses valores no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
+        }
     }
 
-    public boolean inserirNome(AreaModel area){
+    // Inserindo apenas o nome
+    public int inserirNome(AreaModel area) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
+        // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
+            return -1; // erro na conexão
         }
-        else{
-            try(PreparedStatement pstmt = conn.prepareStatement(
-                    "INSERT INTO AREAS (NOME) VALUES (?)",
-                    Statement.RETURN_GENERATED_KEYS)){
 
-                pstmt.setString(1,area.getNome());
-                int retorno = pstmt.executeUpdate();
-                try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        area.setId(rs.getInt(1));
-                    }
+        // prepara
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "INSERT INTO AREAS (NOME) VALUES (?)",
+                Statement.RETURN_GENERATED_KEYS)) {
+
+            pstmt.setString(1, area.getNome());
+
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            // pega ID gerado
+            try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    area.setId(rs.getInt(1));
                 }
-                return retorno > 0;
-
-            } catch (SQLException se) {
-                se.printStackTrace();
-                return false;
-            } finally {
-                conexao.desconectar();
             }
-        }
 
+            if (retorno > 0) {
+                area.setDataCriacao(LocalDateTime.now());
+                area.setDataAtualizacao(LocalDateTime.now());
+                // colocando esses valores no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
+        }
     }
 
-    public boolean update(AreaModel area){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
+    // Atualizando todas as informações
+    public int atualizar(AreaModel area) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
+            return -1; // erro na conexão
         }
-        else{
 
-            try{
-                PreparedStatement pstmt = conn.prepareStatement("UPDATE AREAS SET NOME=?, DESCRICAO=? WHERE ID=?");
-                pstmt.setString(1, area.getNome());
-                pstmt.setString(2, area.getDescricao());
-                pstmt.setInt(3, area.getId());
-                return pstmt.executeUpdate()>0;
+        // prepara
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE AREAS SET NOME=?, DESCRICAO=?, DATAATUALIZACAO=NOW() WHERE ID=?"
+            );
+            pstmt.setString(1, area.getNome());
+            pstmt.setString(2, area.getDescricao());
+            pstmt.setInt(3, area.getId());
+
+            // executa
+            int linhasAfetadas = pstmt.executeUpdate();
+
+            if (linhasAfetadas > 0) {
+                area.setDataAtualizacao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
             }
-            catch (SQLException se){
-                se.printStackTrace();
-                return false;
-            }
-            finally {
-                conexao.desconectar();
-            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
         }
     }
 
-    public boolean updateNome(AreaModel area){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
+    // Atualizando apenas o nome
+    public int atualizarNome(AreaModel area) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
+            return -1; // erro na conexão
         }
-        else{
 
-            try{
-                PreparedStatement pstmt = conn.prepareStatement("UPDATE AREAS SET NOME=? WHERE ID=?");
-                pstmt.setString(1, area.getNome());
-                pstmt.setInt(2, area.getId());
-                return pstmt.executeUpdate()>0;
+        // prepara
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE AREAS SET NOME=?, DATAATUALIZACAO=NOW() WHERE ID=?"
+            );
+            pstmt.setString(1, area.getNome());
+            pstmt.setInt(2, area.getId());
+
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            if (retorno > 0) {
+                area.setDataAtualizacao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
             }
-            catch (SQLException se){
-                se.printStackTrace();
-                return false;
-            }
-            finally {
-                conexao.desconectar();
-            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
         }
     }
-    public boolean updateDescricao(AreaModel area){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
+
+    // Atualizando apenas a descrição
+    public int atualizarDescricao(AreaModel area) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
+            return -1; // erro na conexão
         }
-        else{
 
-            try{
-                PreparedStatement pstmt = conn.prepareStatement("UPDATE AREAS SET DESCRICAO=? WHERE ID=?");
-                pstmt.setString(1, area.getDescricao());
-                pstmt.setInt(2, area.getId());
-                return pstmt.executeUpdate()>0;
+        // prepara
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "UPDATE AREAS SET DESCRICAO=?, DATAATUALIZACAO=NOW() WHERE ID=?"
+            );
+            pstmt.setString(1, area.getDescricao());
+            pstmt.setInt(2, area.getId());
+
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            if (retorno > 0) {
+                area.setDataAtualizacao(LocalDateTime.now());
+                // colocando esse valor no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
             }
-            catch (SQLException se){
-                se.printStackTrace();
-                return false;
-            }
-            finally {
-                conexao.desconectar();
-            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
         }
     }
-    public boolean delete(AreaModel area){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
-        if(conn==null){
+
+    // Deletar área
+    public int deletar(AreaModel area) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        // cria a conexão
+        if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return false;
+            return -1; // erro na conexão
         }
-        else{
-            try{
-                String remover="UPDATE AREAS SET DATAEXCLUSAO = NOW() WHERE ID=?";
-                PreparedStatement pstmt= conn.prepareStatement(remover);
-                pstmt.setInt(1,area.getId());
+
+        // prepara
+        try {
+            String remover = "UPDATE AREAS SET DATAEXCLUSAO = NOW() WHERE ID=?";
+            PreparedStatement pstmt = conn.prepareStatement(remover);
+            pstmt.setInt(1, area.getId());
+
+            // executa
+            int retorno = pstmt.executeUpdate();
+
+            if (retorno > 0) {
                 area.setDataExclusao(LocalDateTime.now());
-                return pstmt.executeUpdate()>0;
+                // colocando esse valor no objeto
+                return 1; // deu certo
+            } else {
+                return 0; // nada alterado
             }
-            catch (SQLException se){
-                se.printStackTrace();
-                return false;
-            }
-            finally {
-                conexao.desconectar();
-            }
-        }
 
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2; // erro SQL
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3; // outro erro
+        } finally {
+            conexao.desconectar();
+            // desconecta
+        }
     }
 
-    public List<AreaModel> buscar(){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
+    // Fazendo uma busca geral
+    public List<AreaModel> buscar() {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
         ResultSet rset = null;
-        List<AreaModel> listaBusca= new ArrayList<>();
-        try{
-            Statement stmt = conn.createStatement();
-            rset= stmt.executeQuery("SELECT * FROM AREAS");
+        List<AreaModel> listaBusca = new ArrayList<>();
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return listaBusca;
+        }
 
-            while (rset.next()){
+        // prepara e executa
+        try {
+            Statement stmt = conn.createStatement();
+            rset = stmt.executeQuery("SELECT * FROM AREAS");
+
+            // percorre resultados
+            while (rset.next()) {
                 int id = rset.getInt("id");
                 String nome = rset.getString("nome");
                 String descricao = rset.getString("descricao");
 
+                // verifica se dataExclusao é null
                 LocalDateTime dataExclusao = null;
                 if (rset.getTimestamp("dataExclusao") != null) {
                     dataExclusao = rset.getTimestamp("dataExclusao").toLocalDateTime();
@@ -198,35 +303,46 @@ public class AreaDAO {
                 LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
 
                 AreaModel area1 = new AreaModel(id, nome, descricao, dataExclusao, dataAtualizacao, dataCriacao);
-
                 listaBusca.add(area1);
             }
 
-        }
-        catch (SQLException se){
+        } catch (SQLException se) {
             se.printStackTrace();
             return null;
-        }
-        finally {
+        } finally {
             conexao.desconectar();
+            // desconecta
         }
         return listaBusca;
     }
 
-    public List<AreaModel> buscarPorNome(AreaModel area){
-        Conexao conexao= new Conexao();
-        Connection conn= conexao.getConnection();
+    // Buscando apenas pelo nome
+    public List<AreaModel> buscarPorNome(AreaModel area) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
         ResultSet rset;
-        List<AreaModel> listaBusca= new ArrayList<>();
-        try{
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM AREAS WHERE NOME = ? ORDER BY 1");
+        List<AreaModel> listaBusca = new ArrayList<>();
+        // cria a conexão
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return listaBusca;
+        }
+
+        // prepara e executa
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "SELECT * FROM AREAS WHERE NOME = ? ORDER BY 1"
+            );
             pstmt.setString(1, area.getNome());
             rset = pstmt.executeQuery();
-            while (rset.next()){
+
+            // percorre resultados
+            while (rset.next()) {
                 int id = rset.getInt("id");
                 String nome = rset.getString("nome");
                 String descricao = rset.getString("descricao");
 
+                // verifica se dataExclusao é null
                 LocalDateTime dataExclusao = null;
                 if (rset.getTimestamp("dataExclusao") != null) {
                     dataExclusao = rset.getTimestamp("dataExclusao").toLocalDateTime();
@@ -236,17 +352,15 @@ public class AreaDAO {
                 LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
 
                 AreaModel area1 = new AreaModel(id, nome, descricao, dataExclusao, dataAtualizacao, dataCriacao);
-
                 listaBusca.add(area1);
             }
 
-        }
-        catch (SQLException se){
+        } catch (SQLException se) {
             se.printStackTrace();
             return null;
-        }
-        finally {
+        } finally {
             conexao.desconectar();
+            // desconecta
         }
         return listaBusca;
     }

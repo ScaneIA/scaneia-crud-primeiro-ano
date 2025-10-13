@@ -3,6 +3,7 @@ package com.scaneia.ScaneiaServlet.Model;
 import java.time.LocalDateTime;
 
 public class EnderecoEmpresaModel {
+    // atributos
     private int id;
     private String estado;
     private String cep;
@@ -11,13 +12,12 @@ public class EnderecoEmpresaModel {
     private String rua;
     private int numero;
     private String complemento;
-    private LocalDateTime dataCriacao;
-    private LocalDateTime dataAtualizacao;
-    private LocalDateTime dataExclusao;
+    private LocalDateTime dataCriacao; //LocalDateTime timezone z
+    private LocalDateTime dataAtualizacao; //LocalDateTime timezone z
+    private LocalDateTime dataExclusao; //LocalDateTime timezone z
     private int idEmpresa;
 
-    public EnderecoEmpresaModel() {}
-
+    //construtor simples, ideal para registros
     public EnderecoEmpresaModel(String estado, String cep, String cidade, String bairro, String rua, int numero, String complemento, int idEmpresa) {
         this.estado = estado;
         this.cep = cep;
@@ -29,7 +29,7 @@ public class EnderecoEmpresaModel {
         this.idEmpresa = idEmpresa;
         this.dataCriacao = LocalDateTime.now();
     }
-
+    //construtor com todos os atributos, ideal para buscas
     public EnderecoEmpresaModel(int id, String estado, String cep, String cidade, String bairro, String rua, int numero, String complemento, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao, LocalDateTime dataExclusao, int idEmpresa) {
         this.id = id;
         this.estado = estado;
@@ -59,12 +59,20 @@ public class EnderecoEmpresaModel {
     public LocalDateTime getDataExclusao() { return dataExclusao; }
     public int getIdEmpresa() { return idEmpresa; }
 
-    // Setters apenas para id e idEmpresa
+    // Setters necessários
     public void setId(int id) { this.id = id; }
     public void setIdEmpresa(int idEmpresa) { this.idEmpresa = idEmpresa; }
 
     public void setDataExclusao(LocalDateTime dataExclusao) {
         this.dataExclusao = dataExclusao;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     @Override

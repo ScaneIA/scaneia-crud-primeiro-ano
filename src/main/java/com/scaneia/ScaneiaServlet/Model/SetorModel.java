@@ -1,83 +1,37 @@
 package com.scaneia.ScaneiaServlet.Model;
 
-import java.time.*;
+import java.time.LocalDateTime;
 
-public class SetorModel {
-    //atributos
-    private int id;
-    private String descricao; //text
-    private String nome; //max 80 chars
-    private LocalDateTime dataCriacao; //timestamp z
-    private LocalDateTime dataAtualizacao; //timestamp z
-    private LocalDateTime dataExclusao; //timestamp z
+public class SetorModel extends BaseModel {
+    // atributo
     private int idArea;
 
-    //construtor com todos atributos, ideal para buscas
-    public SetorModel(int id, String descricao, String nome, LocalDateTime dataAtualizacao, LocalDateTime dataExclusao, int idArea,
-                      LocalDateTime dataCriacao) {
-        this.id = id;
-        this.descricao = descricao;
-        this.nome = nome;
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;
-        this.dataExclusao = dataExclusao;
+
+    //construtor simples, ideal para registros
+    public SetorModel(String nome, String descricao, int idArea) {
+        super(nome, descricao);
+        this.idArea = idArea;
+    }
+    //construtor com todos os atributos, ideal para buscas
+    public SetorModel(int id, String nome, String descricao,
+                      LocalDateTime dataExclusao, LocalDateTime dataAtualizacao, LocalDateTime dataCriacao,
+                      int idArea) {
+        super(id, nome, descricao, dataExclusao, dataAtualizacao, dataCriacao);
         this.idArea = idArea;
     }
 
-    //construtor simples, ideal para inserts
-    public SetorModel(String descricao, String nome, int idArea) {
-        this.descricao = descricao;
-        this.nome = nome;
-        this.idArea = idArea;
-    }
-
-    //getters
-    public int getId() {
-        return id;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public LocalDateTime getDataAtualizacao() {
-        return dataAtualizacao;
-    }
-
-    public LocalDateTime getDataExclusao() {
-        return dataExclusao;
-    }
-
+    // Getter e Setter específicos
     public int getIdArea() {
         return idArea;
-    }
-
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
-
-    //setters
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
-    public void setDataExclusao(LocalDateTime dataExclusao) {
-        this.dataExclusao = dataExclusao;
     }
 
     public void setIdArea(int idArea) {
         this.idArea = idArea;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", idArea=" + idArea;
+    }
 }
+
