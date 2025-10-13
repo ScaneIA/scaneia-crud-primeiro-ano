@@ -78,9 +78,6 @@ public class LoginEmpresaServlet extends HttpServlet {
         //faz o login
         empresa = empresaDAO.login(email, senha, cnpj);
 
-        System.out.println(empresa);
-        System.out.println(senha);
-
         if (empresa == null){
             req.setAttribute("status", 400);
             req.setAttribute("mensagem", "Credenciais inválidos!");
