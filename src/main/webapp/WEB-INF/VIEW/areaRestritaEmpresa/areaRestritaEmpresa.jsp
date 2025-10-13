@@ -55,9 +55,6 @@
                     <td>
                         <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getRegistro()%></a>
                     </td>
-                    <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getEmail()%></a>
-                    </td>
                 </tr>
                 <%
                     }

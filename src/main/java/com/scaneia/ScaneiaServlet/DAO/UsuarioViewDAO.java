@@ -34,6 +34,7 @@ public class UsuarioViewDAO {
 
             //itera sob o resultado
             while (rs.next()){
+                int id = rs.getInt("id_usuario");
                 String nome = rs.getString("nome_usuario");
                 String email = rs.getString("email");
                 String cpf = rs.getString("cpf_usuario");
@@ -43,7 +44,7 @@ public class UsuarioViewDAO {
                 String registro = rs.getString("registro_usuario"); //ainda vai adicionar no banco
 
                 usuarios.add(new UsuarioViewModel(
-                        nome, email, cpf, setor, cargo, urlFoto, formatarHora(registro)
+                        id, nome, email, cpf, setor, cargo, urlFoto, formatarHora(registro)
                 ));
             }
 
