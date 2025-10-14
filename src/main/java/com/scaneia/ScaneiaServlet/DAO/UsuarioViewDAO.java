@@ -34,16 +34,17 @@ public class UsuarioViewDAO {
 
             //itera sob o resultado
             while (rs.next()){
+                int id = rs.getInt("id_usuario");
                 String nome = rs.getString("nome_usuario");
-                String email = rs.getString("email");
+                String email = rs.getString("email_usuario");
                 String cpf = rs.getString("cpf_usuario");
-                String setor = rs.getString("setor");
-                String cargo = rs.getString("cargo");
+                String setor = rs.getString("setor_usuario");
+                String cargo = rs.getString("cargo_usuario");
                 String urlFoto = rs.getString("url_foto_usuario");
-                String registro = rs.getString("registro_usuario"); //ainda vai adicionar no banco
+                String registro = rs.getString("data_criacao");
 
                 usuarios.add(new UsuarioViewModel(
-                        nome, email, cpf, setor, cargo, urlFoto, formatarHora(registro)
+                        id, nome, email, cpf, setor, cargo, urlFoto, formatarHora(registro)
                 ));
             }
 

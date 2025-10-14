@@ -2,6 +2,7 @@ package com.scaneia.ScaneiaServlet.Model;
 
 public class UsuarioViewModel {
     //atributos
+    int id;
     String nome;
     String email;
     String cpf;
@@ -12,7 +13,9 @@ public class UsuarioViewModel {
 
     //construtor proprio para consultas da view
 
-    public UsuarioViewModel(String nome, String email, String cpf, String setor, String cargo, String urlFoto, String registro) {
+    public UsuarioViewModel(int id, String nome, String email, String cpf, String setor, String cargo, String urlFoto,
+                            String registro) {
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.cpf = formatarCPF(cpf);
@@ -47,6 +50,14 @@ public class UsuarioViewModel {
 
     public String getUrlFoto() {
         return urlFoto;
+    }
+
+    public String getRegistro() {
+        return registro;
+    }
+
+    public int getId() {
+        return id;
     }
 
     //metodos gerais
