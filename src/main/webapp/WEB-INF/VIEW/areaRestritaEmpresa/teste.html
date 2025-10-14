@@ -1,59 +1,77 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/areaRestritaAssets/style.css" />
     <title>Área Restrita</title>
-    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
-        <img id="imgHeader" src="logoHeader.png" alt="Logo do ScaneIA">
+        <img id="imgHeader" src="/areaRestritaAssets/LogoCompleta.png" alt="Logo do ScaneIA" />
         <nav>
             <a href="#" id="aHeader">Sair</a>
         </nav>
     </header>
+
     <main>
         <div id="caixaFundo">
+            <div id="campoFiltro">
+                <select name="filtroCargo" id="filtroCargo">
+                    <option value="Operario">Operario</option>
+                    <option value="ChefeDeArea">Chefe de Área</option>
+                    <option value="RH">Recursos Humanos</option>
+                    <option value="Diretor">Diretor</option>
+                </select>
+            </div>
             <table>
                 <tr>
-                    <th>ID</th>
+                <tr>
                     <th>NOME</th>
-                    <th>EMAIL</th>
+                    <th>CARGO</th>
+                    <th>SETOR</th>
                     <th>CPF</th>
-                    <th>Cargo</th>
-                    <th>Setor</th>
-                    <th>Telefone</th>
+                    <th>REGISTRO</th>
                 </tr>
-                <tr>
-                    <td><a href="EditarFuncionario?id=1">1</a></td>
-                    <td><a href="EditarFuncionario?id=1">Ana Souza</a></td>
-                    <td><a href="EditarFuncionario?id=1">ana.souza@empresa.com</a></td>
-                    <td><a href="EditarFuncionario?id=1">123.456.789-00</a></td>
-                    <td><a href="EditarFuncionario?id=1">Analista</a></td>
-                    <td><a href="EditarFuncionario?id=1">TI</a></td>
-                    <td><a href="EditarFuncionario?id=1">(11) 91234-5678</a></td>
                 </tr>
-                <tr>
-                    <td><a href="EditarFuncionario?id=2">2</a></td>
-                    <td><a href="EditarFuncionario?id=2">Bruno Lima</a></td>
-                    <td><a href="EditarFuncionario?id=2">bruno.lima@empresa.com</a></td>
-                    <td><a href="EditarFuncionario?id=2">987.654.321-00</a></td>
-                    <td><a href="EditarFuncionario?id=2">Coordenador</a></td>
-                    <td><a href="EditarFuncionario?id=2">RH</a></td>
-                    <td><a href="EditarFuncionario?id=2">(11) 99876-5432</a></td>
-                </tr>
-                <tr>
-                    <td><a href="EditarFuncionario?id=3">3</a></td>
-                    <td><a href="EditarFuncionario?id=3">Carla Mendes</a></td>
-                    <td><a href="EditarFuncionario?id=3">carla.mendes@empresa.com</a></td>
-                    <td><a href="EditarFuncionario?id=3">321.654.987-00</a></td>
-                    <td><a href="EditarFuncionario?id=3">Gerente</a></td>
-                    <td><a href="EditarFuncionario?id=3">Financeiro</a></td>
-                    <td><a href="EditarFuncionario?id=3">(11) 93456-7890</a></td>
-                </tr>
+                <tbody id="tabelaUsuarios"></tbody>
             </table>
         </div>
     </main>
+
+    <script>
+        // Simulação dos dados que viriam do backend
+        const usuarios = [
+            { id: 26, nome: "Ana Souza", cargo: "Analista", setor: "Financeiro", cpf: "123.456.789-01", registro: "2023-01-15" },
+            { id: 27, nome: "Bruno Lima", cargo: "Gerente", setor: "RH", cpf: "234.567.890-12", registro: "2022-11-03" },
+            { id: 28, nome: "Carla Mendes", cargo: "Assistente", setor: "Marketing", cpf: "345.678.901-23", registro: "2023-05-22" },
+            { id: 29, nome: "Diego Rocha", cargo: "Supervisor", setor: "TI", cpf: "456.789.012-34", registro: "2021-09-10" },
+            { id: 30, nome: "Eduarda Silva", cargo: "Coordenadora", setor: "Vendas", cpf: "567.890.123-45", registro: "2022-03-18" }
+        ];
+
+        const tabela = document.getElementById("tabelaUsuarios");
+
+        usuarios.forEach(usuario => {
+            const linha = document.createElement("tr");
+            linha.innerHTML = `
+        <td><a href="EditarFuncionario?id=${usuario.id}">${usuario.nome}</a></td>
+        <td><a href="EditarFuncionario?id=${usuario.id}">${usuario.cargo}</a></td>
+        <td><a href="EditarFuncionario?id=${usuario.id}">${usuario.setor}</a></td>
+        <td><a href="EditarFuncionario?id=${usuario.id}">${usuario.cpf}</a></td>
+        <td><a href="EditarFuncionario?id=${usuario.id}">${usuario.registro}</a></td>
+      `;
+            tabela.appendChild(linha);
+        });
+    </script>
+    <script>
+        document.querySelector('#filtroCargo').addEventListener("change", function(){
+            const escolha = this.value;
+            const 
+            window.location.href = '/cargo?= ' + this.value
+        })
+    </script>
 </body>
+
 </html>

@@ -41,7 +41,7 @@ public class UsuarioViewDAO {
                 String setor = rs.getString("setor_usuario");
                 String cargo = rs.getString("cargo_usuario");
                 String urlFoto = rs.getString("url_foto_usuario");
-                String registro = rs.getString("datacriacao_usuario");
+                String registro = rs.getString("data_criacao");
 
                 usuarios.add(new UsuarioViewModel(
                         id, nome, email, cpf, setor, cargo, urlFoto, formatarHora(registro)
