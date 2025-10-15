@@ -1,4 +1,4 @@
-package com.scaneia.ScaneiaServlet.Servlet;
+package com.scaneia.ScaneiaServlet.Servlet.Auth;
 
 import com.scaneia.ScaneiaServlet.Config.HashSenha;
 import com.scaneia.ScaneiaServlet.DAO.EmpresaDAO;
@@ -21,7 +21,6 @@ public class LoginEmpresaServlet extends HttpServlet {
         EmpresaDAO empresaDAO = new EmpresaDAO();
         EmpresaModel empresa;
         HttpSession httpSession = req.getSession();
-        UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
 
         //pega os parametros da empresa
         String email = req.getParameter("email");
@@ -90,7 +89,6 @@ public class LoginEmpresaServlet extends HttpServlet {
         httpSession.setMaxInactiveInterval(1800); //30m
 
         //manda para a area interna
-        req.setAttribute("usuarios", usuarioViewDAO.buscarTodos());
-        req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/areaRestritaEmpresa.jsp").forward(req, res);
+        res.sendRedirect(req.getContextPath() + "/areaRH");
     }
 }

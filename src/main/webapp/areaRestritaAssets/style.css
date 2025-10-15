@@ -55,8 +55,12 @@ main{
     margin: 0 auto;
     text-align: center;
     justify-content: center;
+
+    flex-direction: column;
 }
 
 tr, td, th{
     border: solid 1px black;
 }
+
+a > 

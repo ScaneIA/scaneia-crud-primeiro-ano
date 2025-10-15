@@ -69,5 +69,13 @@
             </table>
         </div>
     </main>
+
+    <script>
+        document.querySelector('#filtroCargo').addEventListener("change", function(){
+            const escolha = this.value;
+            const contextPath = window.location.pathname.split('/')[1]
+            window.location.href = contextPath + '/cargo?cargo=' + this.value
+        })
+    </script>
 </body>
 </html>

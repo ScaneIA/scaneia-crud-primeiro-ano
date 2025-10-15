@@ -3,17 +3,14 @@ package com.scaneia.ScaneiaServlet.DAO;
 import com.scaneia.ScaneiaServlet.Model.UsuarioViewModel;
 import com.scaneia.ScaneiaServlet.conexao.Conexao;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioViewDAO {
-    public List<UsuarioViewModel> buscarTodos(){
+    public List<UsuarioViewModel> buscarPorEmpresa(int idEmpresa){
         //variaveis gerais
         List<UsuarioViewModel> usuarios = new ArrayList<>();
 
@@ -28,9 +25,13 @@ public class UsuarioViewDAO {
         //cria o script sql
         try{
             //realiza a consulta
-            String sql = "SELECT * FROM USUARIOS_SETORES_CARGO";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+            String sql = "SELECT * FROM USUARIOS_SETORES_CARGO WHERE ID_EMPRESA = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            //atualiza os atributos
+            pstmt.setInt(1, idEmpresa);
+
+            ResultSet rs = pstmt.executeQuery();
 
             //itera sob o resultado
             while (rs.next()){
