@@ -24,7 +24,7 @@ public class UsuarioViewDAO {
 
         //cria o script sql
         try{
-            //realiza a consulta
+
             String sql = "SELECT * FROM USUARIOS_SETORES_CARGO WHERE ID_EMPRESA = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
@@ -51,6 +51,54 @@ public class UsuarioViewDAO {
 
             return usuarios;
         }catch (SQLException sqle){
+            return null;
+        }finally {
+            conexao.desconectar();
+        }
+    }
+
+    public List<UsuarioViewModel> filtrarPorCargo(String cargoFiltro, int idEmpresa){
+        //variaveis gerais
+        List<UsuarioViewModel> usuarios = new ArrayList<>();
+
+        //cria a conexão
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+
+        if (conn == null){
+            return null;
+        }
+
+        //cria o script sql
+        try {
+            //prepara a consulta
+            String sql = "SELECT * FROM USUARIOS_SETORES_CARGO WHERE CARGO_USUARIO = ? AND ID_EMPRESA = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            //atualiza os parametros
+            pstmt.setString(1, cargoFiltro);
+            pstmt.setInt(2, idEmpresa);
+
+            //executa o comando
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                int id = rs.getInt("id_usuario");
+                String nome = rs.getString("nome_usuario");
+                String email = rs.getString("email_usuario");
+                String cpf = rs.getString("cpf_usuario");
+                String setor = rs.getString("setor_usuario");
+                String cargo = rs.getString("cargo_usuario");
+                String urlFoto = rs.getString("url_foto_usuario");
+                String registro = rs.getString("data_criacao");
+
+                usuarios.add(new UsuarioViewModel(
+                        id, nome, email, cpf, setor, cargo, urlFoto, formatarHora(registro)
+                ));
+            }
+            return usuarios;
+
+        }catch (SQLException exception){
             return null;
         }finally {
             conexao.desconectar();
