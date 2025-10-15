@@ -1,4 +1,4 @@
-package com.scaneia.ScaneiaServlet.Servlet;
+package com.scaneia.ScaneiaServlet.Servlet.Auth;
 
 import com.scaneia.ScaneiaServlet.Config.HashSenha;
 import com.scaneia.ScaneiaServlet.DAO.EmpresaDAO;
@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 
 @WebServlet(name = "CadastroEmpresa", value = "/Cadastro/cadastro-empresa")
 public class CadastroEmpresaServlet extends HttpServlet {

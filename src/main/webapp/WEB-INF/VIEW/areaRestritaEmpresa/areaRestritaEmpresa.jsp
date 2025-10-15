@@ -26,15 +26,27 @@
     </header>
     <main>
         <div id="caixaFundo">
-            <table>
-                <div id="campoFiltro">
-                    <select name="filtroCargo" id="filtroCargo">
-                        <option value="cargo">Operario</option>
-                        <option value="cargo">Chefe de Área</option>
-                        <option value="cargo">Recursos Humanos</option>
-                        <option value="cargo">Diretor</option>
+            <div id="campoFiltro">
+                    <div>
+                        <select name="filtroCargo" id="filtroCargo">
+                        <option selected value="" hidden>Todos os cargos</option>
+                        <option value="operario">Operario</option>
+                        <option value="chefeDeArea">Chefe de Área</option>
+                        <option value="RH">Recursos Humanos</option>
+                        <option value="diretor">Diretor</option>
                     </select>
+                    </div>
+                    <div>
+                        <form action="filtro/nome">
+                            <input type="text">
+                            <button type="submit">Enviar</button>
+                        </form>
+                    </div>
+                    <div>
+                        <button>Adicionar funcionário</button>
+                    </div>
                 </div>
+            <table>
                 <tr>
                     <th>NOME</th>
                     <th>CARGO</th>
@@ -69,5 +81,13 @@
             </table>
         </div>
     </main>
+
+    <script>
+        document.querySelector('#filtroCargo').addEventListener("change", function(){
+            const escolha = this.value;
+            const contextPath = window.location.pathname.split('/')[1]
+            window.location.href = '/' + contextPath + '/areaRH/filtro?cargo=' + this.value
+        })
+    </script>
 </body>
 </html>
