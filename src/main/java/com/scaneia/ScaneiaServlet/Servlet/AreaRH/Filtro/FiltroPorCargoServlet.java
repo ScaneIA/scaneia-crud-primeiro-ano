@@ -33,7 +33,7 @@ public class FiltroPorCargoServlet extends HttpServlet {
 
         //validação de entrada
         try {
-            if (!cargo.matches("(operario|chefeDeArea|RH|diretor)")){
+            if (!cargo.matches("(operario|chefeDeArea|RH|diretor|todos)")){
                 req.setAttribute("status", 400);
                 req.setAttribute("mensagem", "Cargo inválido!");
                 req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/erro.jsp"); //fazer jsp
@@ -45,7 +45,7 @@ public class FiltroPorCargoServlet extends HttpServlet {
                         cargo = "Colaborador";
                     }
                     case "chefeDeArea" -> {
-                        cargo = "Chefe de Área";
+                        cargo = "Chefe de área";
                     }
                     case "diretor" -> {
                         cargo = "Diretor";
@@ -57,6 +57,12 @@ public class FiltroPorCargoServlet extends HttpServlet {
             req.setAttribute("status", 400);
             req.setAttribute("mensagem", "Insira todos os campos");
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/erro.jsp"); //fazer jsp
+            return;
+        }
+
+        //verifica se são todos os filtros
+        if (cargo.equals("todos")){
+            res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 
