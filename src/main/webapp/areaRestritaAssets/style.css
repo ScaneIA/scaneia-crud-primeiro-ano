@@ -59,8 +59,15 @@ main{
     flex-direction: column;
 }
 
+/* campo do filtro */
+#campoFiltro{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+
 tr, td, th{
     border: solid 1px black;
 }
-
-a > 
