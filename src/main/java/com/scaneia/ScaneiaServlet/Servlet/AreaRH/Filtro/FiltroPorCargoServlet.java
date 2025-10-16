@@ -34,9 +34,7 @@ public class FiltroPorCargoServlet extends HttpServlet {
         //validação de entrada
         try {
             if (!cargo.matches("(operario|chefeDeArea|RH|diretor|todos)")){
-                req.setAttribute("status", 400);
-                req.setAttribute("mensagem", "Cargo inválido!");
-                req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/erro.jsp"); //fazer jsp
+                res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }else{
                 //deixa o cargo igual o banco
@@ -54,9 +52,7 @@ public class FiltroPorCargoServlet extends HttpServlet {
             }
 
         }catch (NullPointerException exception){
-            req.setAttribute("status", 400);
-            req.setAttribute("mensagem", "Insira todos os campos");
-            req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/erro.jsp"); //fazer jsp
+            res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 

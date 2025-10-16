@@ -61,19 +61,19 @@
                 %>
                 <tr>
                     <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getNome()%></a>
+                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getNome()%></a>
                     </td>
                     <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getCargo()%></a>
+                        <a href="areaRH/EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getCargo()%></a>
                     </td>
                     <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getSetor()%></a>
+                        <a href="areaRH/EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getSetor()%></a>
                     </td>
                     <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getCpf()%></a>
+                        <a href="areaRH/EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getCpf()%></a>
                     </td>
                     <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getRegistro()%></a>
+                        <a href="areaRH/EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getRegistro()%></a>
                     </td>
                 </tr>
                 <%

@@ -1,4 +1,4 @@
-package com.scaneia.ScaneiaServlet.Servlet.AreaRH;
+package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 
 import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
 import com.scaneia.ScaneiaServlet.Model.UsuarioModel;

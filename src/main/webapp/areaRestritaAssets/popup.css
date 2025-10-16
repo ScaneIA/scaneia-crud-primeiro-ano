@@ -1,0 +1,46 @@
+/* style para parte do usuario */
+#campoUsuario{
+    padding: 2%;
+    width: 60vw;
+    height: 60vh;
+
+    background-color: #D6E2FB;
+    border-radius: 25px;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#campoUsuario > div{
+    display: flex;
+    justify-content: center;
+}
+
+#campoUsuario > div > form{
+    margin-left: 5%;
+}
+
+#campoUsuario > div > form > input[type="text"]{
+    margin-left: 15%;
+    height: 2.5vh;
+}
+
+.fundoForm{
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 5%;
+    background-color: #B6C6E0;
+
+    padding: 1%;
+    border-radius: 15px;
+}
+
+.saveIcon {
+    width: 20px;
+    height: 20px;
+    vertical-align: centers;
+    margin-bottom: -2px;
+}
