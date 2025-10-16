@@ -17,30 +17,40 @@
         </div>
         <div class="fundoForm">
             <!-- Input para informações empresariais -->
-            <form action="">
+            <form action="teste" method="post">
                 <label for="inputCargo" class="inputLabel"><b>Cargo</b></label>
-                <input type="text" size="50" name="input" class="inputText" id="inputCargo" value="<%=usuario.getCargo()%>">
+                <select name="cargo">
+                    <option selected><%=usuario.getCargo()%></option>
+                    <option value="Diretor">Diretor</option>
+                    <option value="Chefe de área">Chefe de área</option>
+                    <option value="RH">RH</option>
+                    <option value="Colaborador">Operario</option>
+                </select>
+                <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
             </form>
 
-            <form action="">
+            <form action="" method="post">
                 <label for="inputSetor" class="inputLabel"><b>Setor</b></label>
                 <input type="text" size="50" name="input" class="inputText" id="inputSetor" value="<%=usuario.getSetor()%>">
+                <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
             </form>
         </div>
 
         <div class="fundoForm">
             <!-- Input para informações pessoais -->
-            <form action="">
+            <form action="" method="post">
                 <label for="inputCpf" class="inputLabel"><b>CPF</b></label>
                 <input type="text" size="50" name="input" class="inputText" id="inputCpf" value="<%=usuario.getCpf()%>">
+                <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
             </form>
 
-            <form action="">
+            <form action="" method="post">
                 <label for="inputEmail" class="inputLabel"><b>E-mail</b></label>
                 <input type="text" size="50" name="input" class="inputText" id="inputEmail" value="<%=usuario.getEmail()%>">
+                <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
             </form>
         </div>

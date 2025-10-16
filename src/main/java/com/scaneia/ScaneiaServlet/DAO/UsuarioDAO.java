@@ -101,7 +101,7 @@ public class UsuarioDAO {
     }
 
     // Atualizar ID do cargo
-    public int updateIdCargo(UsuarioModel usuario) {
+    public int updateIdCargo(int idCargo, int idUsuario) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         // cria a conexão
@@ -114,15 +114,13 @@ public class UsuarioDAO {
             PreparedStatement pstmt = conn.prepareStatement(
                     "UPDATE USUARIOS SET IDCARGOS = ?, DATAATUALIZACAO = NOW() WHERE ID = ?"
             );
-            pstmt.setInt(1, usuario.getIdCargo());
-            pstmt.setInt(2, usuario.getId());
+            pstmt.setInt(1, idCargo);
+            pstmt.setInt(2, idUsuario);
 
             // executa
             int retorno = pstmt.executeUpdate();
 
             if (retorno > 0) {
-                usuario.setDataAtualizacao(LocalDateTime.now());
-                // atualiza data no objeto
                 return 1; // deu certo
             } else {
                 return 0; // nada alterado
@@ -135,8 +133,7 @@ public class UsuarioDAO {
             e.printStackTrace();
             return -3; // outro erro
         } finally {
-            conexao.desconectar();
-            // desconecta
+            conexao.desconectar();// desconecta
         }
     }
 
