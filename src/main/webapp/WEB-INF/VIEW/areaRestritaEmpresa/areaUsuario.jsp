@@ -19,7 +19,7 @@
             <!-- Input para informações empresariais -->
             <form action="alterarCargo" method="post">
                 <label for="inputCargo" class="inputLabel"><b>Cargo</b></label>
-                <select name="cargo">
+                <select name="cargo" id="inputCargo">
                     <option selected><%=usuario.getCargo()%></option>
                     <option value="Diretor">Diretor</option>
                     <option value="Chefe de área">Chefe de área</option>
@@ -47,9 +47,9 @@
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
             </form>
 
-            <form action="" method="post">
+            <form action="alterarEmail" method="post">
                 <label for="inputEmail" class="inputLabel"><b>E-mail</b></label>
-                <input type="text" size="50" name="input" class="inputText" id="inputEmail" value="<%=usuario.getEmail()%>">
+                <input type="text" size="50" name="email" class="inputText" id="inputEmail" value="<%=usuario.getEmail()%>">
                 <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
             </form>
