@@ -174,40 +174,40 @@ public class UsuarioDAO {
         }
     }
 
-    // Login
-    public int login(String email, String senha) {
+    public int alterarIdSetor(int novoId, int idUsuario){
+        //cria a conexao
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
-        if (conn == null) {
-            System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+
+        if (conn == null){
+            return -1;
         }
 
+        //faz o script
         try {
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "SELECT * FROM USUARIOS WHERE EMAIL = ? AND SENHA = ?"
-            );
-            pstmt.setString(1, email);
-            pstmt.setString(2, senha);
+            //prepara o sql
+            String sql = "UPDATE SETORES_USUARIOS SET IDSETORES = ? WHERE IDUSUARIOS = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
 
-            ResultSet rs = pstmt.executeQuery();
+            //atualiza os parametros
+            pstmt.setInt(1, novoId);
+            pstmt.setInt(2, idUsuario);
 
-            // conta resultados
-            int count = 0;
-            while (rs.next()) count++;
+            //realiza a requisição
+            int afetadas = pstmt.executeUpdate();
 
-            return (count == 1) ? 1 : 0; // sucesso se encontrou um usuário
+            if (afetadas > 0){
+                return 1;
+            }else{
+                return 0;
+            }
 
-        } catch (SQLException se) {
-            se.printStackTrace();
-            return -2; // erro SQL
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -3; // outro erro
-        } finally {
+        }catch (SQLException exception){
+            return -2;
+        }catch (Exception exception){
+            return -3;
+        }finally {
             conexao.desconectar();
-            // desconecta
         }
     }
 

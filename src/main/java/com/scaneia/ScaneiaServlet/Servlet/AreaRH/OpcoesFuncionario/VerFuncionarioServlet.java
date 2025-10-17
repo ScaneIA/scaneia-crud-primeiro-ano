@@ -22,7 +22,7 @@ public class VerFuncionarioServlet extends HttpServlet {
         HttpSession httpSession = req.getSession();
         EmpresaModel empresa;
         UsuarioViewModel usuario;
-        List<UsuarioViewModel> usuarios = new ArrayList<>();
+        List<UsuarioViewModel> usuarios;
 
         //verifica se a sessão é existente
         if (httpSession == null){
@@ -41,8 +41,13 @@ public class VerFuncionarioServlet extends HttpServlet {
                 return;
             }
         }catch (NullPointerException exception){
-            res.sendRedirect(req.getContextPath() + "/areaRH");
-            return;
+            //ve se está salvo no atributo
+            if (req.getAttribute("id") != null){
+                id = (String) req.getAttribute("id");
+            }else {
+                res.sendRedirect(req.getContextPath() + "/areaRH");
+                return;
+            }
         }
 
         //carrega a empresa

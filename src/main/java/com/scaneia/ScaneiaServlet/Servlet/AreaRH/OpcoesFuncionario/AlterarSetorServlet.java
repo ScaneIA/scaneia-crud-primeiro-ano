@@ -1,5 +1,6 @@
 package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 
+import com.scaneia.ScaneiaServlet.DAO.SetorDAO;
 import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
 import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
 import jakarta.servlet.ServletException;
@@ -11,21 +12,21 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-
-@WebServlet(name = "alterarCargo", value = "/areaRH/alterarCargo")
-public class AlterarCargoServlet extends HttpServlet {
+@WebServlet(name = "AlterarSetor", value = "/areaRH/alterarSetor")
+public class AlterarSetorServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         //variaveis gerais
+        SetorDAO setorDAO = new SetorDAO();
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         HttpSession httpSession = req.getSession();
+        int idSetor;
         int resultado;
-        int idCargo = -1;
 
         //variaveis da requisição
+        String novoSetor = req.getParameter("setor");
         String idUsuario = req.getParameter("idUsuario");
-        String novoCargo = req.getParameter("cargo");
 
-        //valida se a sessão existe
+        //valida se tem a conexao
         if (httpSession == null){
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
@@ -33,51 +34,45 @@ public class AlterarCargoServlet extends HttpServlet {
 
         //validação de entrada
         try {
-            //valida o id
-            if (!idUsuario.matches("[0-9]+")){
+            //valida o novo setor
+            if (!novoSetor.matches("^[a-zA-ZáàâãäéèêëíïîóôõöúüçñÁÀÂÃÄÉÈÊËÍÏÎÓÔÕÖÚÜÇÑ ]+$")) {
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }
 
-            //valida o nome do cargo
-            if (!novoCargo.matches("(Diretor|Chefe de área|RH|Colaborador)")){
+            //valida o id do usuario
+            if (!idUsuario.matches("[0-9]+")) {
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }
 
-        }catch (NullPointerException exception){
+        } catch (NullPointerException exception) {
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 
-        //pega o id do cargo
-        switch (novoCargo){
-            case "Diretor" -> {
-                idCargo = 5;
-            }
-            case "Chefe de área" -> {
-                idCargo = 6;
-            }
-            case "RH" -> {
-                idCargo = 7;
-            }
-            case "Colaborador" -> {
-                idCargo = 8;
-            }
-        }
+        //pega o id do setor novo
+        idSetor = setorDAO.descobrirId(novoSetor);
 
-        //atualiza o idCargo
-        resultado = usuarioDAO.updateIdCargo(idCargo, Integer.parseInt(idUsuario));
-
-        //sai da operação caso der erro
-        if (resultado != 1){
+        //valida se deu erro
+        if (idSetor < 0){
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 
-        //responde para a mesma pagina
-        res.sendRedirect(req.getContextPath() + "/areaRH/EditarFuncionario?id=" + idUsuario);
+        //atualiza o setor
+        resultado = usuarioDAO.alterarIdSetor(idSetor, Integer.parseInt(idUsuario));
+
+        //valida se deu certo
+        if (resultado == 1){
+            //responde para a mesma pagina
+            res.sendRedirect(req.getContextPath() + "/areaRH/EditarFuncionario?id=" + idUsuario);
+            return;
+        }else{
+            //responde para a pagina do RH
+            res.sendRedirect(req.getContextPath() + "/areaRH");
+            return;
+        }
+
     }
-
-
 }

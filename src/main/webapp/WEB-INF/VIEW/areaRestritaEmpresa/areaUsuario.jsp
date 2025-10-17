@@ -17,7 +17,7 @@
         </div>
         <div class="fundoForm">
             <!-- Input para informações empresariais -->
-            <form action="teste" method="post">
+            <form action="alterarCargo" method="post">
                 <label for="inputCargo" class="inputLabel"><b>Cargo</b></label>
                 <select name="cargo">
                     <option selected><%=usuario.getCargo()%></option>
@@ -30,9 +30,9 @@
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
             </form>
 
-            <form action="" method="post">
+            <form action="alterarSetor" method="post">
                 <label for="inputSetor" class="inputLabel"><b>Setor</b></label>
-                <input type="text" size="50" name="input" class="inputText" id="inputSetor" value="<%=usuario.getSetor()%>">
+                <input type="text" size="50" name="setor" class="inputText" id="inputSetor" value="<%=usuario.getSetor()%>">
                 <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
             </form>
