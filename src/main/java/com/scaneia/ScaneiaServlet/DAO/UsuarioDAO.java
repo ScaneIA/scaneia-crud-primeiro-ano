@@ -137,6 +137,40 @@ public class UsuarioDAO {
         }
     }
 
+    public int alterarCpf(String novoCpf, int idUsuario){
+        //cria conexao
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+
+        if (conn == null){
+            return -1;
+        }
+
+        //faz o comando sql
+        try {
+            //prepara o script
+            String sql = "UPDATE USUARIOS SET CPF = ? WHERE ID = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            //atualiza os parametro
+            pstmt.setString(1, novoCpf);
+            pstmt.setInt(2, idUsuario);
+
+            //manda a resposta
+            int resultado = pstmt.executeUpdate();
+
+            if (resultado > 0){
+                return 1;
+            }
+            return 0;
+
+        }catch (SQLException exception){
+            return -2;
+        }catch (Exception exception){
+            return -3;
+        }
+    }
+
     // Adicionar setor ao usuário
     public int adicionarSetorUsuario(UsuarioModel usuario, int setorId) {
         Conexao conexao = new Conexao();

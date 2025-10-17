@@ -40,9 +40,9 @@
 
         <div class="fundoForm">
             <!-- Input para informações pessoais -->
-            <form action="" method="post">
+            <form action="alterarCpf" method="post">
                 <label for="inputCpf" class="inputLabel"><b>CPF</b></label>
-                <input type="text" size="50" name="input" class="inputText" id="inputCpf" value="<%=usuario.getCpf()%>">
+                <input type="text" size="50" name="cpf" class="inputText" id="inputCpf" value="<%=usuario.getCpf()%>">
                 <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
             </form>
