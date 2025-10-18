@@ -246,7 +246,7 @@ public class UsuarioDAO {
     }
 
     // Deletar usuário
-    public int delete(UsuarioModel usuario) {
+    public int delete(int idUsuario) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         // cria a conexão
@@ -259,14 +259,12 @@ public class UsuarioDAO {
             PreparedStatement pstmt = conn.prepareStatement(
                     "UPDATE USUARIOS SET DATAEXCLUSAO = NOW() WHERE ID = ?"
             );
-            pstmt.setInt(1, usuario.getId());
+            pstmt.setInt(1, idUsuario);
 
             // executa
             int retorno = pstmt.executeUpdate();
 
             if (retorno > 0) {
-                usuario.setDataExclusao(LocalDateTime.now());
-                // colocando esse valor no objeto
                 return 1; // deu certo
             } else {
                 return 0; // nada alterado

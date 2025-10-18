@@ -32,11 +32,10 @@ public class UsuarioModel {
     }
 
     //Construtor simples, ideal para registros
-    public UsuarioModel(String nome, String email, String cpf, String senha, int idCargo) {
+    public UsuarioModel(String nome, String email, String cpf, int idCargo) {
         this.nome = nome;
         this.email = email;
         this.cpf = cpf;
-        this.senha = senha;
         this.idCargo = idCargo;
     }
 

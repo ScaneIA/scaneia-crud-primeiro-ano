@@ -54,6 +54,13 @@
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
             </form>
         </div>
+
+        <div>
+            <form action="excluirUsuario" method="post">
+                <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
+                <button type="submit">Excluir</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

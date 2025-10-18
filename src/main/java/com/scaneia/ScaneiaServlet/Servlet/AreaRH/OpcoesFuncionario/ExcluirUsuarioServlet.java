@@ -1,6 +1,7 @@
 package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 
 import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
+import com.scaneia.ScaneiaServlet.Model.UsuarioModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,11 +10,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.rmi.ServerError;
 
-@WebServlet(name = "AlterarEmail", value = "/areaRH/alterarEmail")
-public class AlterarEmailServlet extends HttpServlet {
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+@WebServlet(name = "ExcluirUsuario", value = "/areaRH/excluirUsuario")
+public class ExcluirUsuarioServlet extends HttpServlet {
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         //variaveis gerais
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         HttpSession httpSession = req.getSession();
@@ -21,7 +22,6 @@ public class AlterarEmailServlet extends HttpServlet {
 
         //variaveis da reqisição
         String idUsuario = req.getParameter("idUsuario");
-        String novoEmail = req.getParameter("email");
 
         //valida se tem cadastro
         if (httpSession == null){
@@ -37,21 +37,15 @@ public class AlterarEmailServlet extends HttpServlet {
                 return;
             }
 
-            //valida o email
-            if (!novoEmail.matches("^[A-Za-z0-9]+([._]?[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){
-                res.sendRedirect(req.getContextPath() + "/areaRH");
-                return;
-            }
-
         }catch (NullPointerException exception){
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 
-        //atualiza o email
-        resultado = usuarioDAO.alterarEmail(novoEmail, Integer.parseInt(idUsuario));
+        //exclui o usuario
+        resultado = usuarioDAO.delete(Integer.parseInt(idUsuario));
 
-        if(resultado != 1){
+        if (resultado != 1){
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }

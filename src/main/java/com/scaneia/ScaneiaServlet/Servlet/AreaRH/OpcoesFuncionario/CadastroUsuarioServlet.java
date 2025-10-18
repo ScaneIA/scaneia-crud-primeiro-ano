@@ -21,21 +21,10 @@ public class CadastroUsuarioServlet extends HttpServlet {
         String nome = req.getParameter("nome");
         String email = req.getParameter("email");
         String cpf = req.getParameter("cpf");
-        String senha = req.getParameter("senha");
-        String senhaConfirmacao = req.getParameter("senhaConfirmacao");
         String idAreaString = req.getParameter("idArea");
 
         //validação de entrada
         try {
-
-            //valida se as senhas são iguais
-            if (!senha.equals(senhaConfirmacao)){
-                req.setAttribute("status", 400);
-                req.setAttribute("mensagem", "as senhas são diferentes");
-                req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
-                return;
-            }
-
             //valida o formato do cpf
             if (!cpf.matches("^\\s*\\d{3}\\s*[.-]?\\s*\\d{3}\\s*[.-]?\\s*\\d{3}\\s*[.-]?\\s*\\d{2}\\s*$")){
                 req.setAttribute("status", 400);
@@ -51,14 +40,6 @@ public class CadastroUsuarioServlet extends HttpServlet {
             if (!email.matches("^[A-Za-z0-9]+([._]?[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){
                 req.setAttribute("status", 400);
                 req.setAttribute("mensagem", "formato inválido do email");
-                req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
-                return;
-            }
-
-            //valida o formato da senha
-            if (!senha.matches("adicionar regex")){
-                req.setAttribute("status", 400);
-                req.setAttribute("mensagem", "formato inválido da senha");
                 req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
                 return;
             }
@@ -79,7 +60,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         //manda as informações pro banco de dados
         cadastroAutorizado = usuarioDAO.insert(new UsuarioModel(
-                nome, email, senha, cpf, Integer.parseInt(idAreaString)
+                nome, email, cpf, Integer.parseInt(idAreaString)
         ));
 
         //encaminha para as paginas coerentes

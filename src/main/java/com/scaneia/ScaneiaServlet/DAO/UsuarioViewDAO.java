@@ -43,10 +43,13 @@ public class UsuarioViewDAO {
                 String cargo = rs.getString("cargo_usuario");
                 String urlFoto = rs.getString("url_foto_usuario");
                 String registro = rs.getString("data_criacao");
+                String dataExclusao = rs.getString("data_exclusao");
 
-                usuarios.add(new UsuarioViewModel(
-                        id, nome, email, cpf, setor, cargo, urlFoto, formatarHora(registro)
-                ));
+                if (dataExclusao == null){
+                    usuarios.add(new UsuarioViewModel(
+                            id, nome, email, cpf, setor, cargo, urlFoto, formatarHora(registro)
+                    ));
+                }
             }
 
             return usuarios;
@@ -91,10 +94,13 @@ public class UsuarioViewDAO {
                 String cargo = rs.getString("cargo_usuario");
                 String urlFoto = rs.getString("url_foto_usuario");
                 String registro = rs.getString("data_criacao");
+                String dataExclusao = rs.getString("data_exclusao");
 
-                usuarios.add(new UsuarioViewModel(
-                        id, nome, email, cpf, setor, cargo, urlFoto, formatarHora(registro)
-                ));
+                if (dataExclusao == null){
+                    usuarios.add(new UsuarioViewModel(
+                            id, nome, email, cpf, setor, cargo, urlFoto, formatarHora(registro)
+                    ));
+                }
             }
             return usuarios;
 
