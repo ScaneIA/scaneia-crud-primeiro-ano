@@ -56,7 +56,7 @@
         </div>
 
         <div>
-            <button type="button" onclick="fechar()">Fechar</button>
+            <button type="button" onclick="fechar()" id="fechar">Fechar</button>
             <form action="excluirUsuario" method="post">
                 <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <button type="submit">Excluir</button>
@@ -65,13 +65,10 @@
     </div>
 
     <script>
-        function fechar(){
-            //pega a div de fundo
-            const divFundo = document.querySelector("#campoUsuario")
-
-            //tira o display
-            divFundo.style.display = "none";
-        }
+        document.querySelector("#fechar").addEventListener("click", function(){
+            const contextPath = window.location.pathname.split('/')[1]
+            window.location.href = '/' + contextPath + '/areaRH'
+        })
     </script>
 </body>
 </html>

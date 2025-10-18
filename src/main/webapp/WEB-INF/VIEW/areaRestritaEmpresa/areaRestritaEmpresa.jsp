@@ -38,8 +38,8 @@
                     </select>
                     </div>
                     <div>
-                        <form action="filtro/nome">
-                            <input type="text">
+                        <form action="areaRH/nome">
+                            <input type="text" name="nome">
                             <button type="submit">Enviar</button>
                         </form>
                     </div>
