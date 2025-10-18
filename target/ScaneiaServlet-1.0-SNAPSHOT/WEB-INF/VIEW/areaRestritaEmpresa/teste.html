@@ -19,8 +19,8 @@
     <main>
         <div id="caixaFundo">
             <div id="campoFiltro">
-                    <div>
-                        <select name="filtroCargo" id="filtroCargo">
+                <div>
+                    <select name="filtroCargo" id="filtroCargo">
                         <option value="" selected hidden="">Escolha um cargo</option>
                         <option value="todos">Todos os cargos</option>
                         <option value="operario">Operario</option>
@@ -28,17 +28,17 @@
                         <option value="RH">Recursos Humanos</option>
                         <option value="diretor">Diretor</option>
                     </select>
-                    </div>
-                    <div>
-                        <form action="filtro/nome">
-                            <input type="text">
-                            <button type="submit">Enviar</button>
-                        </form>
-                    </div>
-                    <div>
-                        <button>Adicionar funcionário</button>
-                    </div>
                 </div>
+                <div>
+                    <form action="filtro/nome">
+                        <input type="text">
+                        <button type="submit">Enviar</button>
+                    </form>
+                </div>
+                <div>
+                    <button onclick="adicionarUsuario()" type="button">Adicionar funcionário</button>
+                </div>
+            </div>
             <table>
                 <tr>
                 <tr>
@@ -53,41 +53,36 @@
             </table>
         </div>
     </main>
-    <div id="campoUsuario">
-        <div>
-            <img src="" alt="foto do usuario">
-            <h1>Nome</h1>
-        </div>
-        <div class="fundoForm">
-            <!-- Input para informações empresariais -->
-             <p>Dados empresariais</p>
-            <form action="">
-                <label for="inputCargo" class="inputLabel"><b>Cargo</b></label>
-                <input type="text" size="50" name="input" class="inputText" id="inputCargo">
-                <input type="image" src="/areaRestritaAssets/saveIcon.png" class="saveIcon">
-            </form>
+    <div id="campoAddUser">
+        <form action="" method="post" id="formAddUser">
 
-            <form action="">
-                <label for="inputSetor" class="inputLabel"><b>Setor</b></label>
-                <input type="text" size="50" name="input" class="inputText" id="inputSetor">
-                <input type="image" src="/areaRestritaAssets/saveIcon.png" class="saveIcon">
-            </form>
-        </div>
+            <div>
+                <label for="addNome">Nome: </label>
+                <input type="text" name="addNome" id="addNome">
+            </div>
 
-        <div class="fundoForm">
-            <!-- Input para informações pessoais -->
-            <form action="">
-                <label for="inputCpf" class="inputLabel"><b>CPF</b></label>
-                <input type="text" size="50" name="input" class="inputText" id="inputCpf">
-                <input type="image" src="/areaRestritaAssets/saveIcon.png" class="saveIcon">
-            </form>
+            <div>
+                <label for="addEmail">Email: </label>
+                <input type="text" name="addEmail" id="addEmail">
+            </div>
 
-            <form action="">
-                <label for="inputEmail" class="inputLabel"><b>E-mail</b></label>
-                <input type="text" size="50" name="input" class="inputText" id="inputEmail">
-                <input type="image" src="/areaRestritaAssets/saveIcon.png" class="saveIcon">
-            </form>
-        </div>
+            <div>
+                <label for="addCpf">Cpf: </label>
+                <input type="text" name="addCpf" id="addCpf">
+            </div>
+
+            <div>
+                <label for="idCargo">Cargo: </label>
+                <select name="idCargo" id="idCargo">
+                    <option value="8" selected>Colaborador</option>
+                    <option value="7">RH</option>
+                    <option value="6">Chefe de Área</option>
+                    <option value="5">Diretor</option>
+                </select>
+            </div>
+
+            <button type="submit">Adicionar</button>
+        </form>
     </div>
 
     <script>
@@ -115,11 +110,21 @@
         });
     </script>
     <script>
-        document.querySelector('#filtroCargo').addEventListener("change", function(){
+        document.querySelector('#filtroCargo').addEventListener("change", function () {
             const escolha = this.value;
             const contextPath = window.location.pathname.split('/')[1]
             window.location.href = '/' + contextPath + '/areaRH/filtro?cargo=' + this.value
         })
+
+        // parte para adicionar usuario
+        function adicionarUsuario() {
+            const campo = document.querySelector("#campoAddUser")
+            if (campo.style.display === "block") {
+                campo.style.display = "none";
+            } else {
+                campo.style.display = "block";
+            }
+        }
     </script>
 </body>
 

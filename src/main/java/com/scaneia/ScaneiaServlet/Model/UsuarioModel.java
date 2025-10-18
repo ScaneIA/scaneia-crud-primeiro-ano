@@ -14,29 +14,30 @@ public class UsuarioModel {
     private LocalDateTime dataAtualizacao; //LocalDateTime timezone z
     private LocalDateTime dataExclusao; //LocalDateTime timezone z
     private int idCargo;
+    private int idEmpresa;
 
     //construtor com todos os atributos, ideal para buscas
-    public UsuarioModel(int id, String nome, String email, String cpf, String urlFoto, String senha,
-                        LocalDateTime dataAtualizacao,
-                        LocalDateTime dataExclusao, int idCargo, LocalDateTime dataCriacao) {
+    public UsuarioModel(int id, String nome, String email, String cpf, String urlFoto, String senha, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao, LocalDateTime dataExclusao, int idCargo, int idEmpresa) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.cpf = cpf;
         this.urlFoto = urlFoto;
         this.senha = senha;
+        this.dataCriacao = dataCriacao;
         this.dataAtualizacao = dataAtualizacao;
         this.dataExclusao = dataExclusao;
         this.idCargo = idCargo;
-        this.dataCriacao = dataCriacao;
+        this.idEmpresa = idEmpresa;
     }
 
     //Construtor simples, ideal para registros
-    public UsuarioModel(String nome, String email, String cpf, int idCargo) {
+    public UsuarioModel(String nome, String email, String cpf, int idCargo, int idEmpresa) {
         this.nome = nome;
         this.email = email;
         this.cpf = cpf;
         this.idCargo = idCargo;
+        this.idEmpresa = idEmpresa;
     }
 
     //Getters
@@ -78,6 +79,10 @@ public class UsuarioModel {
 
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
+    }
+
+    public int getIdEmpresa() {
+        return idEmpresa;
     }
 
     //Setters necessários

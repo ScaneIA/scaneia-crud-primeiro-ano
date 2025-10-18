@@ -1,27 +1,40 @@
 package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 
 import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
+import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
 import com.scaneia.ScaneiaServlet.Model.UsuarioModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebServlet(name = "cadastroUsuario", value = "/cadastro-usuario")
+@WebServlet(name = "cadastroUsuario", value = "/areaRH/cadastroUsuario")
 public class CadastroUsuarioServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         //variaveis gerais
         UsuarioDAO usuarioDAO = new UsuarioDAO();
+        HttpSession httpSession = req.getSession();
+        EmpresaModel empresa;
         int cadastroAutorizado;
 
         //pega os parametros da req
-        String nome = req.getParameter("nome");
-        String email = req.getParameter("email");
-        String cpf = req.getParameter("cpf");
-        String idAreaString = req.getParameter("idArea");
+        String nome = req.getParameter("addNome");
+        String email = req.getParameter("addEmail");
+        String cpf = req.getParameter("addCpf");
+        String idCargo = req.getParameter("idCargo");
+
+        System.out.println(nome + email + cpf + idCargo);
+
+        if (httpSession == null){
+            res.sendRedirect(req.getContextPath() + "/index.html");
+            return;
+        }else{
+            empresa = (EmpresaModel) httpSession.getAttribute("empresa");
+        }
 
         //validação de entrada
         try {
@@ -51,6 +64,14 @@ public class CadastroUsuarioServlet extends HttpServlet {
                 req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
                 return;
             }
+
+            //valida o idCargo
+            if (!idCargo.matches("[0-9]+")){
+                req.setAttribute("status", 400);
+                req.setAttribute("mensagem", "id do cargo inválido");
+                req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
+                return;
+            }
         }catch (NullPointerException npe){
             req.setAttribute("status", 400);
             req.setAttribute("mensagem", "campos não preenchidos");
@@ -60,7 +81,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         //manda as informações pro banco de dados
         cadastroAutorizado = usuarioDAO.insert(new UsuarioModel(
-                nome, email, cpf, Integer.parseInt(idAreaString)
+                nome, email, cpf, Integer.parseInt(idCargo), empresa.getId()
         ));
 
         //encaminha para as paginas coerentes

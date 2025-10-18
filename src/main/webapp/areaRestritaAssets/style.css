@@ -117,3 +117,27 @@ tr, td, th{
     vertical-align: centers;
     margin-bottom: -2px;
 }
+
+/* Editando area de adicionar usuario */
+#campoAddUser{
+    display: none;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: #D6E2FB;
+    border-radius: 25px;
+
+    padding-left: 10vw;
+    padding-right: 10vw;
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+}
+
+#formAddUser{
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}

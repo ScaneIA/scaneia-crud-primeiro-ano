@@ -19,30 +19,19 @@ public class UsuarioDAO {
         }
 
         try (PreparedStatement pstmt = conn.prepareStatement(
-                "INSERT INTO USUARIOS (NOME, EMAIL, CPF, SENHA, IDCARGOS) VALUES (?, ?, ?, ?, ?)",
-                Statement.RETURN_GENERATED_KEYS)) {
+                "INSERT INTO USUARIOS (NOME, EMAIL, CPF, IDCARGOS, IDEMPRESAS) VALUES (?, ?, ?, ?, ?)")) {
 
             // adiciona os parâmetros
             pstmt.setString(1, usuario.getNome());
             pstmt.setString(2, usuario.getEmail());
             pstmt.setString(3, usuario.getCpf());
-            pstmt.setString(4, usuario.getSenha());
-            pstmt.setInt(5, usuario.getIdCargo());
+            pstmt.setInt(4, usuario.getIdCargo());
+            pstmt.setInt(5, usuario.getIdEmpresa());
 
             // executa
             int retorno = pstmt.executeUpdate();
 
-            // pega ID gerado
-            try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                if (rs.next()) {
-                    usuario.setId(rs.getInt(1));
-                }
-            }
-
             if (retorno > 0) {
-                usuario.setDataCriacao(LocalDateTime.now());
-                usuario.setDataAtualizacao(LocalDateTime.now());
-                // colocando datas no objeto
                 return 1; // deu certo
             } else {
                 return 0; // nada alterado

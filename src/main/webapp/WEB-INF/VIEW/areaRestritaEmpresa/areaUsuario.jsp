@@ -56,11 +56,22 @@
         </div>
 
         <div>
+            <button type="button" onclick="fechar()">Fechar</button>
             <form action="excluirUsuario" method="post">
                 <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <button type="submit">Excluir</button>
             </form>
         </div>
     </div>
+
+    <script>
+        function fechar(){
+            //pega a div de fundo
+            const divFundo = document.querySelector("#campoUsuario")
+
+            //tira o display
+            divFundo.style.display = "none";
+        }
+    </script>
 </body>
 </html>
