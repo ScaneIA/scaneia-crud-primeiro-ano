@@ -22,7 +22,7 @@ public class EnderecoEmpresaDAO {
         }
         //prepara o sql
         try (PreparedStatement pstmt = conn.prepareStatement(
-                "INSERT INTO ENDERECOSEMPRESAS (IDEMPRESAS, RUA, NUMERO, COMPLEMENTO, ESTADO, CIDADE, BAIRRO, CEP) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO ENDERECOS_EMPRESAS (IDEMPRESAS, RUA, NUMERO, COMPLEMENTO, ESTADO, CIDADE, BAIRRO, CEP) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS)) {
             //coloca os parametros
             pstmt.setInt(1, endereco.getIdEmpresa());
@@ -77,7 +77,7 @@ public class EnderecoEmpresaDAO {
         // prepara o comando sql
         try {
             PreparedStatement pstmt = conn.prepareStatement(
-                    "UPDATE ENDERECOSEMPRESAS SET RUA=?, NUMERO=?, COMPLEMENTO=?, ESTADO=?, CIDADE=?, BAIRRO=?, CEP=?, DATAATUALIZACAO=NOW() WHERE ID=?"
+                    "UPDATE ENDERECOS_EMPRESAS SET RUA=?, NUMERO=?, COMPLEMENTO=?, ESTADO=?, CIDADE=?, BAIRRO=?, CEP=?, DATAATUALIZACAO=NOW() WHERE ID=?"
             );
 
             // coloca os parametros
@@ -124,7 +124,7 @@ public class EnderecoEmpresaDAO {
         }
         // prepara o comando
         try {
-            String remover = "UPDATE ENDERECOSEMPRESAS SET DATAEXCLUSAO = NOW() WHERE ID=?";
+            String remover = "UPDATE ENDERECOS_EMPRESAS SET DATAEXCLUSAO = NOW() WHERE ID=?";
             PreparedStatement pstmt = conn.prepareStatement(remover);
             pstmt.setInt(1, endereco.getId());
 
@@ -165,7 +165,7 @@ public class EnderecoEmpresaDAO {
         // prepara o comando
         try {
             Statement stmt = conn.createStatement();
-            ResultSet rset = stmt.executeQuery("SELECT * FROM ENDERECOSEMPRESAS");
+            ResultSet rset = stmt.executeQuery("SELECT * FROM ENDERECOS_EMPRESAS");
 
             while (rset.next()) {
                 int id = rset.getInt("id");
@@ -218,7 +218,7 @@ public class EnderecoEmpresaDAO {
         // prepara o comando
         try {
             PreparedStatement pstmt = conn.prepareStatement(
-                    "SELECT * FROM ENDERECOSEMPRESAS WHERE CIDADE = ? ORDER BY 1"
+                    "SELECT * FROM ENDERECOS_EMPRESAS WHERE CIDADE = ? ORDER BY 1"
             );
             pstmt.setString(1, endereco.getCidade());
             ResultSet rset = pstmt.executeQuery();
@@ -259,4 +259,50 @@ public class EnderecoEmpresaDAO {
         // retorna a lista
         return lista;
     }
+    public List<EnderecoEmpresaModel> buscarPorIdEmpresa(int idEmpresa) {
+        List<EnderecoEmpresaModel> lista = new ArrayList<>();
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        if (conn == null) return lista;
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "SELECT * FROM ENDERECOS_EMPRESAS WHERE IDEMPRESAS = ?"
+            );
+            pstmt.setInt(1, idEmpresa);
+            ResultSet rset = pstmt.executeQuery();
+
+            while (rset.next()) {
+                int id = rset.getInt("id");
+                String estado = rset.getString("estado");
+                String cep = rset.getString("cep");
+                String cidade = rset.getString("cidade");
+                String bairro = rset.getString("bairro");
+                String rua = rset.getString("rua");
+                int numero = rset.getInt("numero");
+                String complemento = rset.getString("complemento");
+
+                LocalDateTime dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
+                LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
+                LocalDateTime dataExclusao = null;
+                if (rset.getTimestamp("dataExclusao") != null) {
+                    dataExclusao = rset.getTimestamp("dataExclusao").toLocalDateTime();
+                }
+
+                EnderecoEmpresaModel end = new EnderecoEmpresaModel(
+                        id, estado, cep, cidade, bairro, rua, numero, complemento,
+                        dataCriacao, dataAtualizacao, dataExclusao, idEmpresa
+                );
+                lista.add(end);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conexao.desconectar();
+        }
+
+        return lista;
+    }
+
 }
