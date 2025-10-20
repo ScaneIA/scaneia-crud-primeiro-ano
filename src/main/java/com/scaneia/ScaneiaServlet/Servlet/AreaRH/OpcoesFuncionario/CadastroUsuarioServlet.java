@@ -1,8 +1,10 @@
 package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 
 import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
+import com.scaneia.ScaneiaServlet.DAO.UsuarioViewDAO;
 import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
 import com.scaneia.ScaneiaServlet.Model.UsuarioModel;
+import com.scaneia.ScaneiaServlet.Model.UsuarioViewModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "cadastroUsuario", value = "/areaRH/cadastroUsuario")
 public class CadastroUsuarioServlet extends HttpServlet {
@@ -20,6 +23,8 @@ public class CadastroUsuarioServlet extends HttpServlet {
         HttpSession httpSession = req.getSession();
         EmpresaModel empresa;
         int cadastroAutorizado;
+        List<UsuarioViewModel> usuarios;
+        UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
 
         //pega os parametros da req
         String nome = req.getParameter("addNome");
@@ -27,14 +32,16 @@ public class CadastroUsuarioServlet extends HttpServlet {
         String cpf = req.getParameter("addCpf");
         String idCargo = req.getParameter("idCargo");
 
-        System.out.println(nome + email + cpf + idCargo);
-
         if (httpSession == null){
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
         }else{
             empresa = (EmpresaModel) httpSession.getAttribute("empresa");
         }
+
+        //define os usuarios da empresa
+        usuarios = usuarioViewDAO.buscarPorEmpresa(empresa.getId());
+        req.setAttribute("usuarios", usuarios);
 
         //validação de entrada
         try {

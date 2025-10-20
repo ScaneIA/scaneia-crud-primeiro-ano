@@ -31,8 +31,6 @@ public class FiltroPorNomeServlet extends HttpServlet {
             return;
         }
 
-        System.out.println(nome);
-
         //validação de entrada
         try {
             if (!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ]+)*$")){

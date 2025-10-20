@@ -1,8 +1,4 @@
-<%@ page import="java.awt.*" %>
-<%@ page import="com.scaneia.ScaneiaServlet.Model.UsuarioModel" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.scaneia.ScaneiaServlet.Model.CargoModel" %>
-<%@ page import="com.scaneia.ScaneiaServlet.Model.SetorModel" %>
 <%@ page import="com.scaneia.ScaneiaServlet.Model.UsuarioViewModel" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%
@@ -19,7 +15,7 @@
 </head>
 <body>
     <header>
-        <img id="imgHeader" src="${pageContext.request.contextPath}/areaRestritaAssets/LogoCompleta.svg" alt="Logo do ScaneIA">
+        <img id="imgHeader" src="${pageContext.request.contextPath}/areaRestritaAssets/LogoCompleta.png" alt="Logo do ScaneIA">
         <nav>
             <a href="#" id="aHeader">Sair</a>
         </nav>
@@ -38,13 +34,13 @@
                     </select>
                     </div>
                     <div>
-                        <form action="areaRH/nome">
-                            <input type="text" name="nome">
-                            <button type="submit">Enviar</button>
+                        <form action="/<%=request.getContextPath()%>/areaRH/nome" id="formPesquisar">
+                            <input type="text" name="nome" placeholder="Pesquisar por Nome" id="inputFiltroNome" size="50" maxlength="40">
+                            <input type="image" alt="Enviar" src="${pageContext.request.contextPath}/areaRestritaAssets/pesquisa.png" id="imgEnviar">
                         </form>
                     </div>
                     <div>
-                        <button onclick="adicionarUsuario()" type="button">Adicionar funcionário</button>
+                        <button onclick="adicionarUsuario()" type="button" id="addUserButton">Adicionar funcionário</button>
                     </div>
                 </div>
             <table>
@@ -61,19 +57,19 @@
                 %>
                 <tr>
                     <td>
-                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getNome()%></a>
+                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>" class="aTable"><%=usuario.getNome()%></a>
                     </td>
                     <td>
-                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getCargo()%></a>
+                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>" class="aTable"><%=usuario.getCargo()%></a>
                     </td>
                     <td>
-                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getSetor()%></a>
+                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>" class="aTable"><%=usuario.getSetor()%></a>
                     </td>
                     <td>
-                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getCpf()%></a>
+                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>" class="aTable"><%=usuario.getCpf()%></a>
                     </td>
                     <td>
-                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getRegistro()%></a>
+                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>" class="aTable"><%=usuario.getRegistro()%></a>
                     </td>
                 </tr>
                 <%

@@ -10,6 +10,7 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/VIEW/areaRestritaEmpresa/areaUsuario.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/VIEW/areaRestritaEmpresa" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/VIEW/erroCadastroEmpresa.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/VIEW" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/erroCadastroEmpresa.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/erroCadastroUsuario.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF" />
       </map>
     </option>
   </component>
