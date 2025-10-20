@@ -1,8 +1,4 @@
-<%@ page import="java.awt.*" %>
-<%@ page import="com.scaneia.ScaneiaServlet.Model.UsuarioModel" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.scaneia.ScaneiaServlet.Model.CargoModel" %>
-<%@ page import="com.scaneia.ScaneiaServlet.Model.SetorModel" %>
 <%@ page import="com.scaneia.ScaneiaServlet.Model.UsuarioViewModel" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%
@@ -19,7 +15,7 @@
 </head>
 <body>
     <header>
-        <img id="imgHeader" src="${pageContext.request.contextPath}/areaRestritaAssets/LogoCompleta.svg" alt="Logo do ScaneIA">
+        <img id="imgHeader" src="${pageContext.request.contextPath}/areaRestritaAssets/LogoCompleta.png" alt="Logo do ScaneIA">
         <nav>
             <a href="#" id="aHeader">Sair</a>
         </nav>
@@ -29,7 +25,8 @@
             <div id="campoFiltro">
                     <div>
                         <select name="filtroCargo" id="filtroCargo">
-                        <option selected value="" hidden>Todos os cargos</option>
+                        <option value="" selected hidden="">Escolha um cargo</option>
+                        <option value="todos">Todos os cargos</option>
                         <option value="operario">Operario</option>
                         <option value="chefeDeArea">Chefe de Área</option>
                         <option value="RH">Recursos Humanos</option>
@@ -37,13 +34,13 @@
                     </select>
                     </div>
                     <div>
-                        <form action="filtro/nome">
-                            <input type="text">
-                            <button type="submit">Enviar</button>
+                        <form action="/<%=request.getContextPath()%>/areaRH/nome" id="formPesquisar">
+                            <input type="text" name="nome" placeholder="Pesquisar por Nome" id="inputFiltroNome" size="50" maxlength="40">
+                            <input type="image" alt="Enviar" src="${pageContext.request.contextPath}/areaRestritaAssets/pesquisa.png" id="imgEnviar">
                         </form>
                     </div>
                     <div>
-                        <button>Adicionar funcionário</button>
+                        <button onclick="adicionarUsuario()" type="button" id="addUserButton">Adicionar funcionário</button>
                     </div>
                 </div>
             <table>
@@ -60,19 +57,19 @@
                 %>
                 <tr>
                     <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getNome()%></a>
+                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>" class="aTable"><%=usuario.getNome()%></a>
                     </td>
                     <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getCargo()%></a>
+                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>" class="aTable"><%=usuario.getCargo()%></a>
                     </td>
                     <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getSetor()%></a>
+                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>" class="aTable"><%=usuario.getSetor()%></a>
                     </td>
                     <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getCpf()%></a>
+                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>" class="aTable"><%=usuario.getCpf()%></a>
                     </td>
                     <td>
-                        <a href="EditarFuncionario?id=<%=usuario.getId()%>"><%=usuario.getRegistro()%></a>
+                        <a href="<%=request.getContextPath()%>/areaRH/EditarFuncionario?id=<%=usuario.getId()%>" class="aTable"><%=usuario.getRegistro()%></a>
                     </td>
                 </tr>
                 <%
@@ -82,12 +79,55 @@
         </div>
     </main>
 
+    <div id="campoAddUser">
+        <form action="areaRH/cadastroUsuario" method="post" id="formAddUser">
+
+            <div>
+                <label for="addNome">Nome: </label>
+                <input type="text" name="addNome" id="addNome">
+            </div>
+
+            <div>
+                <label for="addEmail">Email: </label>
+                <input type="text" name="addEmail" id="addEmail">
+            </div>
+
+            <div>
+                <label for="addCpf">Cpf: </label>
+                <input type="text" name="addCpf" id="addCpf">
+            </div>
+
+            <div>
+                <label for="idCargo">Cargo: </label>
+                <select name="idCargo" id="idCargo">
+                    <option value="8" selected>Colaborador</option>
+                    <option value="7">RH</option>
+                    <option value="6">Chefe de Área</option>
+                    <option value="5">Diretor</option>
+                </select>
+            </div>
+
+            <button type="submit">Adicionar</button>
+        </form>
+    </div>
+
+
     <script>
+        // parte para o filtro
         document.querySelector('#filtroCargo').addEventListener("change", function(){
-            const escolha = this.value;
             const contextPath = window.location.pathname.split('/')[1]
             window.location.href = '/' + contextPath + '/areaRH/filtro?cargo=' + this.value
         })
+
+        // parte para adicionar usuario
+        function adicionarUsuario() {
+            const campo = document.querySelector("#campoAddUser")
+            if (campo.style.display === "block") {
+                campo.style.display = "none";
+            } else {
+                campo.style.display = "block";
+            }
+        }
     </script>
 </body>
 </html>

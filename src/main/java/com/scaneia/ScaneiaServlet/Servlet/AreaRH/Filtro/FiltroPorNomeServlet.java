@@ -13,8 +13,8 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "FiltroPorCargo", value = "/areaRH/filtro")
-public class FiltroPorCargoServlet extends HttpServlet {
+@WebServlet(name = "FiltroPorNome", value = "/areaRH/nome")
+public class FiltroPorNomeServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         //variaveis gerais
         UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
@@ -23,7 +23,7 @@ public class FiltroPorCargoServlet extends HttpServlet {
         EmpresaModel empresa;
 
         //variaveis da requisição
-        String cargo = req.getParameter("cargo");
+        String nome = req.getParameter("nome");
 
         //verifica se a sessao existe
         if(httpSession == null){
@@ -33,31 +33,12 @@ public class FiltroPorCargoServlet extends HttpServlet {
 
         //validação de entrada
         try {
-            if (!cargo.matches("(operario|chefeDeArea|RH|diretor|todos)")){
+            if (!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ]+)*$")){
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
-            }else{
-                //deixa o cargo igual o banco
-                switch (cargo){
-                    case "operario" -> {
-                        cargo = "Colaborador";
-                    }
-                    case "chefeDeArea" -> {
-                        cargo = "Chefe de área";
-                    }
-                    case "diretor" -> {
-                        cargo = "Diretor";
-                    }
-                }
             }
 
         }catch (NullPointerException exception){
-            res.sendRedirect(req.getContextPath() + "/areaRH");
-            return;
-        }
-
-        //verifica se são todos os filtros
-        if (cargo.equals("todos")){
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
@@ -66,7 +47,7 @@ public class FiltroPorCargoServlet extends HttpServlet {
         empresa = (EmpresaModel) httpSession.getAttribute("empresa");
 
         //carrega os usuarios
-        usuarios = usuarioViewDAO.filtrarPorCargo(cargo, empresa.getId());
+        usuarios = usuarioViewDAO.filtrarPorNome(nome, empresa.getId());
 
         //responde com jsp
         req.setAttribute("usuarios", usuarios);

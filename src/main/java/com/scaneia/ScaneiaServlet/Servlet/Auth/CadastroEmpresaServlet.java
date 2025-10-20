@@ -173,11 +173,13 @@ public class CadastroEmpresaServlet extends HttpServlet {
             req.setAttribute("status", 409);
             req.setAttribute("mensagem", "Ja existe essa empresa!");
             req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
+            return;
 
         }else if(registroEmpresa == 0 || registroEmpresa ==-1 || registroEmpresa == -3){
             req.setAttribute("status", 500);
             req.setAttribute("mensagem", "Tente novamente!");
             req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
+            return;
         }
 
         //cria o endereco
@@ -191,11 +193,13 @@ public class CadastroEmpresaServlet extends HttpServlet {
             req.setAttribute("status", 409);
             req.setAttribute("mensagem", "Já exite outra empresa nesse endereço!");
             req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
+            return;
 
         }else if(registroEndereco == 0 || registroEndereco == -1 || registroEndereco == -3){
             req.setAttribute("status", 500);
             req.setAttribute("mensagem", "Tente novamente!");
             req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
+            return;
         }
 
         //envia o usuario para o login
