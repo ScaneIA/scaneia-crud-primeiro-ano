@@ -1,0 +1,151 @@
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background-color: #f4f6fc;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 40px;
+  box-sizing: border-box;
+  background-color: #fff;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+#imgHeader {
+  width: 180px;
+  height: auto;
+}
+
+nav a#voltarTopo {
+  text-decoration: none;
+  border: 1px solid #3f51b5;
+  padding: 8px 30px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #3f51b5;
+  transition: all 0.3s ease;
+}
+
+nav a#voltarTopo:hover {
+  background-color: #3f51b5;
+  color: #fff;
+}
+
+main {
+  background: #fff;
+  margin: 50px 0;
+  padding: 50px 60px;
+  border-radius: 40px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  width: 600px;
+  text-align: center;
+  position: relative;
+}
+
+#figDireita {
+  width: 200px;
+  height: 250px;
+  position: absolute;
+  z-index: -1;
+  left: 707px;
+  bottom: 50px;
+}
+
+#figEsquerda {
+  width: 200px;
+  height: 250px;
+  position: absolute;
+  z-index: -1;
+  right: 707px;
+}
+
+#imgMain {
+  width: 380px;
+  height: 72px;
+  margin-bottom: 20px;
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  margin-top: 25px;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f7f8ff;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  border-color: #3f51b5;
+  background-color: #fff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(63, 81, 181, 0.2);
+}
+
+button {
+  width: 200px;
+  padding: 12px;
+  margin-top: 40px;
+  border: none;
+  border-radius: 8px;
+  background-color: #3f51b5;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2e3b8a;
+}
+
+#naoPossui {
+  display: block;
+  margin-top: 20px;
+  color: #3f51b5;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+#naoPossui:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  main {
+    width: 90%;
+    padding: 30px 20px;
+  }
+}

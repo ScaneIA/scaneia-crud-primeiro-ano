@@ -333,6 +333,43 @@ public class EmpresaDAO {
         return lista;
         // retorna a lisat
     }
+    public EmpresaModel buscarId(int id) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        EmpresaModel empresa = null;
+
+        if (conn == null) return null;
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM EMPRESAS WHERE ID=?");
+            pstmt.setInt(1, id);
+            ResultSet rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                String nome = rset.getString("nome");
+                String cnpj = rset.getString("cnpj");
+                String email = rset.getString("email");
+                String senha = rset.getString("senha");
+
+                // datas
+                LocalDateTime dataExclusao = null;
+                if (rset.getTimestamp("dataExclusao") != null)
+                    dataExclusao = rset.getTimestamp("dataExclusao").toLocalDateTime();
+
+                LocalDateTime dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
+                LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
+
+                empresa = new EmpresaModel(id, nome, cnpj, email, senha, dataCriacao, dataAtualizacao, dataExclusao);
+            }
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } finally {
+            conexao.desconectar();
+        }
+
+        return empresa;
+    }
 
     public EmpresaModel login(String email, String senha, String cnpj){
         //variaveis gerais
@@ -378,7 +415,7 @@ public class EmpresaDAO {
 
             //retorna true se só encontar 1
             if (encontrados == 1){
-                return empresas.getFirst();
+                return empresas.get(0);
             }else {
                 return null;
             }

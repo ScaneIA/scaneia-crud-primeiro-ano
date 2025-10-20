@@ -21,11 +21,6 @@ header {
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.155);
 }
 
-#imgHeader {
-    margin-top: 10px;
-    width: 179.71279907226562px;
-    height: 45.508296966552734px;
-}
 
 nav {
     margin-top: 23px;
@@ -40,7 +35,7 @@ nav {
     font-size: 14px;
     color: black;
 }
-/* Div tabela */
+
 main{
     margin-top: 10vh;
 }
@@ -61,7 +56,7 @@ main{
     flex-direction: column;
 }
 
-/* campo do filtro */
+
 #campoFiltro{
     display: flex;
     justify-content: space-between;
