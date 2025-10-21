@@ -1,16 +1,29 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gustavomacal-ieg
-  Date: 11/10/2025
-  Time: 16:48
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Área de Cadastro</title>
 </head>
 <body>
-    <h1>ERRO</h1>
+<!-- inclui a pagina antiga -->
+<jsp:include page="../../Login/login.html"/>
+
+<!-- Coleta a mensagem de erro -->
+<%
+    String mensagemErro = request.getAttribute("mensagem").toString();
+%>
+
+<!-- adiciona a mensagem de erro -->
+<style>
+    #mensagemErro{
+        border: solid 3px red;
+        text-align: center;
+        margin: 0 auto;
+        width: 30%;
+    }
+    #mensagemErro::after{
+        content: "<%=mensagemErro%>";
+    }
+</style>
 </body>
 </html>

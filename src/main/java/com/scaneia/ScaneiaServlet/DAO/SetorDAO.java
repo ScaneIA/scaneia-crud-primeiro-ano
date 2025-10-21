@@ -219,4 +219,39 @@ public class SetorDAO {
         }
     }
 
+    public int descobrirId(String nome){
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+
+        if (conn == null){
+            return -1;
+        }
+
+        //prepara a consulta
+        try {
+            //cria o pstmt
+            String sql = "SELECT ID FROM SETORES WHERE NOME = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            //atualiza os atributos
+            pstmt.setString(1, nome);
+
+            //executa a consulta
+            ResultSet rs = pstmt.executeQuery();
+
+            //retorna o id encontrado
+            while (rs.next()){
+                return rs.getInt("id");
+            }
+        }catch (SQLException exception){
+            return -2;
+        }catch (Exception exception){
+            return -3;
+        }
+        finally {
+            conexao.desconectar();
+        }
+        return -3;
+    }
+
 }

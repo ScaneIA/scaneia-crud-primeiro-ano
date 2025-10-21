@@ -7,9 +7,10 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/Cadastro/erroCadastroEmpresa.jsp" value="file://$PROJECT_DIR$/src/main/webapp/Cadastro" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/Login/login.html" value="file://$PROJECT_DIR$/src/main/webapp/Login" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/VIEW/areaRestritaEmpresa/areaRestritaEmpresa.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/VIEW/areaRestritaEmpresa" />
-        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/VIEW/areaRestritaScaneia/areaRestritaScaneia.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/VIEW/areaRestritaScaneia" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/VIEW/areaRestritaEmpresa/areaUsuario.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/VIEW/areaRestritaEmpresa" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/VIEW/erroCadastroEmpresa.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/VIEW" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/erroCadastroEmpresa.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/erroCadastroUsuario.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF" />
       </map>
     </option>
   </component>

@@ -1,41 +1,50 @@
-package com.scaneia.ScaneiaServlet.Servlet.AreaRH;
+package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 
 import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
+import com.scaneia.ScaneiaServlet.DAO.UsuarioViewDAO;
+import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
 import com.scaneia.ScaneiaServlet.Model.UsuarioModel;
+import com.scaneia.ScaneiaServlet.Model.UsuarioViewModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.List;
 
-@WebServlet(name = "cadastroUsuario", value = "/cadastro-usuario")
+@WebServlet(name = "cadastroUsuario", value = "/areaRH/cadastroUsuario")
 public class CadastroUsuarioServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         //variaveis gerais
         UsuarioDAO usuarioDAO = new UsuarioDAO();
+        HttpSession httpSession = req.getSession();
+        EmpresaModel empresa;
         int cadastroAutorizado;
+        List<UsuarioViewModel> usuarios;
+        UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
 
         //pega os parametros da req
-        String nome = req.getParameter("nome");
-        String email = req.getParameter("email");
-        String cpf = req.getParameter("cpf");
-        String senha = req.getParameter("senha");
-        String senhaConfirmacao = req.getParameter("senhaConfirmacao");
-        String idAreaString = req.getParameter("idArea");
+        String nome = req.getParameter("addNome");
+        String email = req.getParameter("addEmail");
+        String cpf = req.getParameter("addCpf");
+        String idCargo = req.getParameter("idCargo");
+
+        if (httpSession == null){
+            res.sendRedirect(req.getContextPath() + "/index.html");
+            return;
+        }else{
+            empresa = (EmpresaModel) httpSession.getAttribute("empresa");
+        }
+
+        //define os usuarios da empresa
+        usuarios = usuarioViewDAO.buscarPorEmpresa(empresa.getId());
+        req.setAttribute("usuarios", usuarios);
 
         //validação de entrada
         try {
-
-            //valida se as senhas são iguais
-            if (!senha.equals(senhaConfirmacao)){
-                req.setAttribute("status", 400);
-                req.setAttribute("mensagem", "as senhas são diferentes");
-                req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
-                return;
-            }
-
             //valida o formato do cpf
             if (!cpf.matches("^\\s*\\d{3}\\s*[.-]?\\s*\\d{3}\\s*[.-]?\\s*\\d{3}\\s*[.-]?\\s*\\d{2}\\s*$")){
                 req.setAttribute("status", 400);
@@ -55,18 +64,18 @@ public class CadastroUsuarioServlet extends HttpServlet {
                 return;
             }
 
-            //valida o formato da senha
-            if (!senha.matches("adicionar regex")){
-                req.setAttribute("status", 400);
-                req.setAttribute("mensagem", "formato inválido da senha");
-                req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
-                return;
-            }
-
             //valida o formato do nome
             if (!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ]+)+$")){
                 req.setAttribute("status", 400);
                 req.setAttribute("mensagem", "formato inválido do nome");
+                req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
+                return;
+            }
+
+            //valida o idCargo
+            if (!idCargo.matches("[0-9]+")){
+                req.setAttribute("status", 400);
+                req.setAttribute("mensagem", "id do cargo inválido");
                 req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
                 return;
             }
@@ -79,7 +88,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         //manda as informações pro banco de dados
         cadastroAutorizado = usuarioDAO.insert(new UsuarioModel(
-                nome, email, senha, cpf, Integer.parseInt(idAreaString)
+                nome, email, cpf, Integer.parseInt(idCargo), empresa.getId()
         ));
 
         //encaminha para as paginas coerentes

@@ -22,6 +22,12 @@ public class AdministradorModel {
         this.dataExclusao = dataExclusao;
     }
 
+    public AdministradorModel(int id, String email, String senha){
+        this.id = id;
+        this.senha = senha;
+        this.email = email;
+    }
+
     // Getters e Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
