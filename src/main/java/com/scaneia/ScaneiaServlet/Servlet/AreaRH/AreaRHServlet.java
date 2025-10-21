@@ -19,30 +19,31 @@ public class AreaRHServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        //variaveis gerais
+        HttpSession httpSession = req.getSession();
+        EmpresaModel empresa;
 
-        // Recebe o idEmpresa do parâmetro
-        String idEmpresaParam = req.getParameter("idEmpresa");
-        if (idEmpresaParam == null || idEmpresaParam.isEmpty()) {
+        //valida se tem uma sessao
+        if (httpSession == null || (httpSession.getAttribute("empresa") == null && httpSession.getAttribute("admin")
+                == null)){
             res.sendRedirect(req.getContextPath() + "/index.html"); // sem parâmetro
             return;
+        }else {
+            //valida se é admin
+            if (httpSession.getAttribute("admin") != null && httpSession.getAttribute("empresa") == null){
+                try {
+                    httpSession.setAttribute("empresa", new EmpresaModel(
+                            Integer.parseInt(req.getParameter("idEmpresa"))
+                    ));
+
+                }catch (NullPointerException npe){
+                    res.sendRedirect(req.getContextPath() + "/index.html");
+                }
+            }
         }
 
-        int idEmpresa;
-        try {
-            idEmpresa = Integer.parseInt(idEmpresaParam);
-        } catch (NumberFormatException e) {
-            res.sendRedirect(req.getContextPath() + "/index.html");
-            return;
-        }
-
-        // Busca a empresa no banco
-        EmpresaDAO empresaDAO = new EmpresaDAO();
-        EmpresaModel empresa = empresaDAO.buscarId(idEmpresa);
-
-        if (empresa == null) {
-            res.sendRedirect(req.getContextPath() + "/index.html"); // empresa não encontrada
-            return;
-        }
+        //adiciona a empresa
+        empresa = (EmpresaModel) httpSession.getAttribute("empresa");
 
         // Busca os usuários da empresa
         UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();

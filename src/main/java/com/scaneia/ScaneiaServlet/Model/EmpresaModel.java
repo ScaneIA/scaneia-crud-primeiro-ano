@@ -47,6 +47,10 @@ public class EmpresaModel {
 
     }
 
+    public EmpresaModel(int id){
+        this.id = id;
+    }
+
     // Getters
     public int getId() {
         return id;
