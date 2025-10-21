@@ -9,13 +9,15 @@
 <h1>Login Área Restrita</h1>
 
 <form action="<%= request.getContextPath() %>/loginAreaRestrita" method="post">
+  <label for="email">Email: </label>
+  <input type="text" name="email" id="email">
   <label for="senha">Senha:</label>
   <input type="password" id="senha" name="senha" required>
   <button type="submit">Entrar</button>
 </form>
 
 <%
-  String erro = (String) request.getAttribute("erro");
+  String erro = (String) request.getAttribute("mensagem");
   if (erro != null) {
 %>
 <p style="color:red;"><%= erro %></p>

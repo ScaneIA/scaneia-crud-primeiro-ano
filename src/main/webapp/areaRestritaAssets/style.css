@@ -107,7 +107,7 @@ main{
 .saveIcon {
     width: 20px;
     height: 20px;
-    vertical-align: centers;
+    vertical-align: center;
     margin-bottom: -2px;
 }
 

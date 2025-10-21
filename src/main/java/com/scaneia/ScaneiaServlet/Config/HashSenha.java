@@ -9,12 +9,12 @@ public class HashSenha {
     // Hash de qualquer senha
     public static String hashSenha(String password) throws NoSuchAlgorithmException {
         MessageDigest algorithm =
-                MessageDigest.getInstance("SHA-256"); // ou seu algoritmo configurado
+                MessageDigest.getInstance("SHA-256");
         byte[] mensagemDigest =
                 algorithm.digest(password.getBytes(StandardCharsets.UTF_8));
         StringBuilder hashString = new StringBuilder();
         for (byte b : mensagemDigest) {
-            hashString.append(String.format("%02X", 0xFF & b)); // maiúsculo
+            hashString.append(String.format("%02X", 0xFF & b));
         }
         return hashString.toString();
     }

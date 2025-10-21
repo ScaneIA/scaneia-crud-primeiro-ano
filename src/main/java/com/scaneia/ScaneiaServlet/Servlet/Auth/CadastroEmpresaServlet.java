@@ -149,7 +149,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
             }
 
             //valida o complemento
-            if (!complemento.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ]+)*$")){
+            if (!complemento.matches("^[\\w\\s.,-]+$")){
                 req.setAttribute("status",  400);
                 req.setAttribute("mensagem", "Complemento inválido!");
                 req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
@@ -160,6 +160,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
             req.setAttribute("status", 400);
             req.setAttribute("mensagem", "preencha todos os itens");
             req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
+            npe.printStackTrace();
             return;
         }
 
@@ -203,6 +204,6 @@ public class CadastroEmpresaServlet extends HttpServlet {
         }
 
         //envia o usuario para o login
-        res.sendRedirect("Login/login");
+        res.sendRedirect(req.getContextPath() + "/Login/login.html");
     }
 }
