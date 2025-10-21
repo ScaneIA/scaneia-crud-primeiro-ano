@@ -15,6 +15,7 @@ public class LoginAreaRestritaServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+        //variaveis da requisição
         String senhaDigitada = req.getParameter("senha");
 
         try {
