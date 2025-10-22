@@ -19,15 +19,16 @@ public class AlterarEmailServlet extends HttpServlet {
         HttpSession httpSession = req.getSession();
         int resultado;
 
+        //valida se a sessão existe
+        if(httpSession == null || httpSession.getAttribute("empresa") == null){
+            res.sendRedirect(req.getContextPath() + "/index.html");
+            return;
+        }
+
         //variaveis da reqisição
         String idUsuario = req.getParameter("idUsuario");
         String novoEmail = req.getParameter("email");
 
-        //valida se tem cadastro
-        if (httpSession == null){
-            res.sendRedirect(req.getContextPath() + "/areaRH");
-            return;
-        }
 
         //validação de entrada
         try {

@@ -21,15 +21,15 @@ public class AlterarCargoServlet extends HttpServlet {
         int resultado;
         int idCargo = -1;
 
-        //variaveis da requisição
-        String idUsuario = req.getParameter("idUsuario");
-        String novoCargo = req.getParameter("cargo");
-
         //valida se a sessão existe
-        if (httpSession == null){
+        if(httpSession == null || httpSession.getAttribute("empresa") == null){
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
         }
+
+        //variaveis da requisição
+        String idUsuario = req.getParameter("idUsuario");
+        String novoCargo = req.getParameter("cargo");
 
         //validação de entrada
         try {

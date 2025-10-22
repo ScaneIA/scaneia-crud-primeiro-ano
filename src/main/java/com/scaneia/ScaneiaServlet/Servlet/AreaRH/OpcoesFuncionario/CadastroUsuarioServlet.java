@@ -26,18 +26,21 @@ public class CadastroUsuarioServlet extends HttpServlet {
         List<UsuarioViewModel> usuarios;
         UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
 
+        //valida se a sessão existe
+        if(httpSession == null || httpSession.getAttribute("empresa") == null){
+            res.sendRedirect(req.getContextPath() + "/index.html");
+            return;
+        }
+
         //pega os parametros da req
         String nome = req.getParameter("addNome");
         String email = req.getParameter("addEmail");
         String cpf = req.getParameter("addCpf");
         String idCargo = req.getParameter("idCargo");
 
-        if (httpSession == null){
-            res.sendRedirect(req.getContextPath() + "/index.html");
-            return;
-        }else{
-            empresa = (EmpresaModel) httpSession.getAttribute("empresa");
-        }
+
+        //carrega a empresa
+        empresa = (EmpresaModel) httpSession.getAttribute("empresa");
 
         //define os usuarios da empresa
         usuarios = usuarioViewDAO.buscarPorEmpresa(empresa.getId());

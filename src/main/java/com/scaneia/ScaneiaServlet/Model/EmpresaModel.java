@@ -53,6 +53,10 @@ public class EmpresaModel {
         this.email=email;
     }
 
+    public EmpresaModel(int id){
+        this.id = id;
+    }
+
     // Getters
     public int getId() {
         return id;

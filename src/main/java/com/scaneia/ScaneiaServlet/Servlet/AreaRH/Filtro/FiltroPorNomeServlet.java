@@ -22,14 +22,15 @@ public class FiltroPorNomeServlet extends HttpServlet {
         HttpSession httpSession = req.getSession();
         EmpresaModel empresa;
 
-        //variaveis da requisição
-        String nome = req.getParameter("nome");
-
-        //verifica se a sessao existe
-        if(httpSession == null){
+        //valida se a sessão existe
+        if(httpSession == null || httpSession.getAttribute("empresa") == null){
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
         }
+
+        //variaveis da requisição
+        String nome = req.getParameter("nome");
+
 
         //validação de entrada
         try {

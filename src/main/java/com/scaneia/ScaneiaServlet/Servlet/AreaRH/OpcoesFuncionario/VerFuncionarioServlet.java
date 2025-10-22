@@ -24,8 +24,8 @@ public class VerFuncionarioServlet extends HttpServlet {
         UsuarioViewModel usuario;
         List<UsuarioViewModel> usuarios;
 
-        //verifica se a sessão é existente
-        if (httpSession == null){
+        //valida se a sessão existe
+        if(httpSession == null || httpSession.getAttribute("empresa") == null){
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
         }
