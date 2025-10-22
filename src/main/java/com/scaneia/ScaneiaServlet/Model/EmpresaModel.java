@@ -46,6 +46,12 @@ public class EmpresaModel {
 
 
     }
+    public EmpresaModel(int id, String nome, String cnpj,String email) {
+        this.id = id;
+        this.nome = nome;
+        this.cnpj=cnpj;
+        this.email=email;
+    }
 
     public EmpresaModel(int id){
         this.id = id;
@@ -84,6 +90,19 @@ public class EmpresaModel {
     public void setId(int id) {
         this.id = id;
     }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setDataExclusao(LocalDateTime dataExclusao) {
         this.dataExclusao = dataExclusao;
     }
