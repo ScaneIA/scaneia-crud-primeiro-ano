@@ -176,7 +176,7 @@ public class EmpresaDAO {
     }
 
     // Atualizando o email e senha
-    public int atualizarEmailSenha(EmpresaModel empresa) {
+    public int atualizarEmail(EmpresaModel empresa) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         // cria a conexão
@@ -187,11 +187,10 @@ public class EmpresaDAO {
         // prepara
         try {
             PreparedStatement pstmt = conn.prepareStatement(
-                    "UPDATE EMPRESAS SET EMAIL=?, SENHA=?, DATAATUALIZACAO=NOW() WHERE ID=?");
+                    "UPDATE EMPRESAS SET EMAIL=? DATAATUALIZACAO=NOW() WHERE ID=?");
 
             pstmt.setString(1, empresa.getEmail());
-            pstmt.setString(2, empresa.getSenha());
-            pstmt.setInt(3, empresa.getId());
+            pstmt.setInt(2, empresa.getId());
 
             // executa
             int retorno = pstmt.executeUpdate();
