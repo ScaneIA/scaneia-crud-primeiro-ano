@@ -22,15 +22,16 @@ public class AlterarSetorServlet extends HttpServlet {
         int idSetor;
         int resultado;
 
+        //valida se a sessão existe
+        if(httpSession == null || httpSession.getAttribute("empresa") == null){
+            res.sendRedirect(req.getContextPath() + "/index.html");
+            return;
+        }
+
         //variaveis da requisição
         String novoSetor = req.getParameter("setor");
         String idUsuario = req.getParameter("idUsuario");
 
-        //valida se tem a conexao
-        if (httpSession == null){
-            res.sendRedirect(req.getContextPath() + "/index.html");
-            return;
-        }
 
         //validação de entrada
         try {

@@ -18,9 +18,16 @@ public class AlterarCpfServlet extends HttpServlet {
         HttpSession httpSession = req.getSession();
         int resultado;
 
+        //valida se a sessão existe
+        if(httpSession == null || httpSession.getAttribute("empresa") == null){
+            res.sendRedirect(req.getContextPath() + "/index.html");
+            return;
+        }
+
         //variaveis da requisição
         String novoCpf = req.getParameter("cpf");
         String idUsuario = req.getParameter("idUsuario");
+
 
         //validação de entrada
         try {
