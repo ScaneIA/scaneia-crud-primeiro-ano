@@ -96,15 +96,18 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         //encaminha para as paginas coerentes
         if (cadastroAutorizado == 1){
-            req.getRequestDispatcher("/WEB-INF/cadastroAutorizado.jsp").forward(req, res);
+            res.sendRedirect(req.getContextPath() + "/areaRH");
+            return;
         }else if(cadastroAutorizado == -2){
             req.setAttribute("status", 409);
             req.setAttribute("mensagem", "Esse registro já existe!");
             req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
+            return;
         }else{
             req.setAttribute("status", 500);
             req.setAttribute("mensagem", "Tente novamente!");
             req.getRequestDispatcher("/WEB-INF/erroCadastroUsuario.jsp").forward(req, res);
+            return;
         }
     }
 }

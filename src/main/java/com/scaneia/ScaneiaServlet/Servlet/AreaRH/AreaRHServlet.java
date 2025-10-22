@@ -31,7 +31,7 @@ public class AreaRHServlet extends HttpServlet {
             return;
         }else {
             //valida se é admin
-            if (httpSession.getAttribute("admin") != null && httpSession.getAttribute("empresa") == null){
+            if (httpSession.getAttribute("admin") != null){
                 try {
                     httpSession.setAttribute("empresa", new EmpresaModel(
                             Integer.parseInt(req.getParameter("idEmpresa"))
