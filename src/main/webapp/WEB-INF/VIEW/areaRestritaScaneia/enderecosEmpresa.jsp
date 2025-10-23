@@ -41,13 +41,14 @@
 <main>
   <div id="caixaFundo">
     <div id="campoFiltro">
-      <h2>Endereços da Empresa</h2>
-
       <form method="get" action="enderecos" id="formPesquisar">
         <input type="text" name="rua" placeholder="Pesquisar por rua ou cidade" id="inputFiltroNome" size="40" maxlength="50">
         <input type="hidden" name="acao" value="pesquisar">
         <input type="image" alt="Pesquisar" src="<%= request.getContextPath() %>/areaRestritaAssets/pesquisa.png" id="imgEnviar">
       </form>
+      <div>
+        <h2>Endereços da Empresa</h2>
+      </div>
 
       <div>
         <button onclick="abrirCadastroEndereco()" type="button" id="addUserButton">Adicionar Endereço</button>
