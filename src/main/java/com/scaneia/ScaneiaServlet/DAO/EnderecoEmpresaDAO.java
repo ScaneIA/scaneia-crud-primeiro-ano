@@ -165,7 +165,7 @@ public class EnderecoEmpresaDAO {
         // prepara o comando
         try {
             Statement stmt = conn.createStatement();
-            ResultSet rset = stmt.executeQuery("SELECT * FROM ENDERECOS_EMPRESAS");
+            ResultSet rset = stmt.executeQuery("SELECT * FROM ENDERECOS_EMPRESAS WHERE DATAEXCLUSAO IS NULL");
 
             while (rset.next()) {
                 int id = rset.getInt("id");
@@ -218,7 +218,7 @@ public class EnderecoEmpresaDAO {
         // prepara o comando
         try {
             PreparedStatement pstmt = conn.prepareStatement(
-                    "SELECT * FROM ENDERECOS_EMPRESAS WHERE CIDADE = ? ORDER BY 1"
+                    "SELECT * FROM ENDERECOS_EMPRESAS WHERE CIDADE = ? AND DATAEXCLUSAO IS NULL ORDER BY 1"
             );
             pstmt.setString(1, endereco.getCidade());
             ResultSet rset = pstmt.executeQuery();
@@ -267,7 +267,7 @@ public class EnderecoEmpresaDAO {
 
         try {
             PreparedStatement pstmt = conn.prepareStatement(
-                    "SELECT * FROM ENDERECOS_EMPRESAS WHERE IDEMPRESAS = ?"
+                    "SELECT * FROM ENDERECOS_EMPRESAS WHERE IDEMPRESAS = ? AND DATAEXCLUSAO IS NULL"
             );
             pstmt.setInt(1, idEmpresa);
             ResultSet rset = pstmt.executeQuery();

@@ -6,6 +6,7 @@ import com.scaneia.ScaneiaServlet.conexao.Conexao;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -258,7 +259,7 @@ public class EmpresaDAO {
         // prepara
         try {
             Statement stmt = conn.createStatement();
-            ResultSet rset = stmt.executeQuery("SELECT * FROM EMPRESAS");
+            ResultSet rset = stmt.executeQuery("SELECT * FROM EMPRESAS WHERE DATAEXCLUSAO IS NULL");
 
             while (rset.next()) {
                 int id = rset.getInt("id");
@@ -299,7 +300,7 @@ public class EmpresaDAO {
 
         // prepara o comando
         try {
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM EMPRESAS WHERE NOME = ? ORDER BY 1");
+            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM EMPRESAS WHERE NOME = ? AND DATAEXCLUSAO IS NULL ORDER BY 1");
             pstmt.setString(1, empresa.getNome());
             ResultSet rset = pstmt.executeQuery();
 
@@ -340,7 +341,7 @@ public class EmpresaDAO {
         if (conn == null) return null;
 
         try {
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM EMPRESAS WHERE ID=?");
+            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM EMPRESAS WHERE ID=? AND DATAEXCLUSAO IS NULL");
             pstmt.setInt(1, id);
             ResultSet rset = pstmt.executeQuery();
 
@@ -358,7 +359,7 @@ public class EmpresaDAO {
                 LocalDateTime dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
                 LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
 
-                empresa = new EmpresaModel(id, nome, cnpj, email, senha, dataCriacao, dataAtualizacao, dataExclusao);
+                empresa = new EmpresaModel(id, nome, cnpj, email, senha,dataCriacao, dataAtualizacao, dataExclusao);
             }
 
         } catch (SQLException se) {
@@ -384,7 +385,7 @@ public class EmpresaDAO {
         //faz a consulta sql
         try{
             //prepara o statement
-            String sql = "SELECT * FROM EMPRESAS WHERE CNPJ = ? AND EMAIL = ? AND SENHA = ?";
+            String sql = "SELECT * FROM EMPRESAS WHERE CNPJ = ? AND EMAIL = ? AND SENHA = ? AND DATAEXCLUSAO IS NULL";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             //atualiza os parametros
@@ -407,8 +408,8 @@ public class EmpresaDAO {
 
                 //vê se é uma empresa apagada
                 if (newDataExclusao == null){
-                     empresas.add(new EmpresaModel(newId, newNome, newCnpj, newEmail, newSenha));
-                     encontrados++;
+                    empresas.add(new EmpresaModel(newId, newNome, newCnpj, newEmail, newSenha));
+                    encontrados++;
                 }
             }
 
@@ -424,5 +425,15 @@ public class EmpresaDAO {
         }finally {
             conexao.desconectar();
         }
+    }
+    public String formatarHora(String hora){
+        //pega a hora no modelo ceto
+        DateTimeFormatter formatterEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSX");
+        OffsetDateTime horaNormal = OffsetDateTime.parse(hora, formatterEntrada);
+
+        //cria o formatter da saida
+        DateTimeFormatter formatterSaida = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        return horaNormal.format(formatterSaida);
     }
 }

@@ -52,9 +52,11 @@ public class EmpresaModel {
         this.cnpj=cnpj;
         this.email=email;
     }
-
     public EmpresaModel(int id){
         this.id = id;
+    }
+    public EmpresaModel(String nome){
+        this.nome = nome;
     }
 
     // Getters
@@ -93,6 +95,10 @@ public class EmpresaModel {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public void setCnpj(String cnpj) {
