@@ -175,7 +175,7 @@ public class UsuarioViewDAO {
         //cria o script sql
         try {
             //prepara a consulta
-            String sql = "SELECT * FROM USUARIOS_SETORES_CARGO WHERE NOME_USUARIO LIKE ? AND ID_EMPRESA = ?";
+            String sql = "SELECT * FROM USUARIOS_SETORES_CARGO WHERE LOWER(NOME_USUARIO) LIKE ? AND ID_EMPRESA = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             //atualiza os parametros
