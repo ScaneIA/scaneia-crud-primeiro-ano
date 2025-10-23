@@ -34,7 +34,7 @@
                     </select>
                     </div>
                     <div>
-                        <form action="/<%=request.getContextPath()%>/areaRH/nome" id="formPesquisar">
+                        <form action="<%=request.getContextPath()%>/areaRH/nome" id="formPesquisar">
                             <input type="text" name="nome" placeholder="Pesquisar por Nome" id="inputFiltroNome" size="50" maxlength="40">
                             <input type="image" alt="Enviar" src="${pageContext.request.contextPath}/areaRestritaAssets/pesquisa.png" id="imgEnviar">
                         </form>
@@ -44,7 +44,7 @@
                     </div>
                 </div>
             <table>
-                <tr>
+                <tr id="headerTabela">
                     <th>NOME</th>
                     <th>CARGO</th>
                     <th>SETOR</th>

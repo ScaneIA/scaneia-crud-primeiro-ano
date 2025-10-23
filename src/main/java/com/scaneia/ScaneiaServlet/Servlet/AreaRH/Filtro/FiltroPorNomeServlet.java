@@ -34,9 +34,13 @@ public class FiltroPorNomeServlet extends HttpServlet {
 
         //validação de entrada
         try {
+            //valida o nome
             if (!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ]+)*$")){
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
+            }else{
+                //transforma nome em minusculo
+                nome = nome.toLowerCase();
             }
 
         }catch (NullPointerException exception){

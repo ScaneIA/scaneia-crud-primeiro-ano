@@ -60,6 +60,6 @@ public class AreaRHServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        doGet(req, res); // redireciona post para get
+        doGet(req, res); // redireciona para a pagina de login
     }
 }
