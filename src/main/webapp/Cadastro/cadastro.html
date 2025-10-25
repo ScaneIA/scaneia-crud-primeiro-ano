@@ -1,3 +1,5 @@
+cadastro.html
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -9,19 +11,19 @@
 </head>
 
 <body>
-  <header>
-    <img id="imgHeader" src="img/Group_65765-removebg-preview.png" alt="logo ScaneIA">
-    <nav>
-      <a href="#" id="voltarTopo">Voltar</a>
-    </nav>
-  </header>
+<header>
+  <img id="imgHeader" src="img/Group_65765-removebg-preview.png" alt="logo ScaneIA">
+  <nav>
+    <a href="#" id="voltarTopo">Voltar</a>
+  </nav>
+</header>
 
-  <main>
-    <img src="img/IMG_300px.png" alt="" id="figEsquerda">
-    <img src="img/imagem_300x300.png" alt="" id="figDireita">
-    <img id="imgMain" src="img/scaneia_logo_resized.png" alt="">
+<main>
+  <img src="img/IMG_300px.png" alt="" id="figEsquerda">
+  <img src="img/imagem_300x300.png" alt="" id="figDireita">
+  <img id="imgMain" src="img/scaneia_logo_resized.png" alt="">
 
-    <form action="cadastro-empresa" method="post" id="formCadastro">
+  <form action="cadastro-empresa" method="post" id="formCadastro">
 
 
       <div id="parte1">
@@ -50,10 +52,14 @@
           <input type="password" id="cSenha" name="senhaConfirmacao" placeholder="Ex: senha123">
         </div>
 
-        <button type="button" id="btnProximo">Próximo</button>
-        <a href="/Login/login.html" id="jaPossui">Já possui cadastro de empresa? Entre aqui</a>
+      <div class="form-group">
+        <label for="cSenha">Confirmar Senha</label>
+        <input type="password" id="cSenha" name="senhaConfirmacao" placeholder="Ex: senha123">
       </div>
 
+      <button type="button" id="btnProximo">Próximo</button>
+      <a href="/Login/login.html" id="jaPossui">Já possui cadastro de empresa? Entre aqui</a>
+    </div>
 
       <div id="parte2" style="display: none;">
         <div class="endereco-container">
@@ -67,6 +73,7 @@
           <label for="endereco">Endereço</label>
           <input type="text" id="endereco" name="rua" placeholder="Ex: Rua Cachoeirinha ou Avenida Paulista">
         </div>
+      </div>
 
         <div class="grupo_Form">
           <label for="numero">Número</label>
@@ -122,19 +129,53 @@
           </datalist>
         </div>
 
-        <div id="mensagemErro"></div>
-
-        <div class="botoes-acao">
-          <button type="button" id="btnVoltar">Voltar</button>
-          <button type="submit" id="btnCriar">Criar conta</button>
-        </div>
-
-        <a href="/Login/login.html" id="jaPossui">Já possui cadastro de empresa? Entre aqui</a>
+      <div class="form-group">
+        <label for="uf">UF</label>
+        <input list="UFs" id="uf" name="estado" placeholder="Ex: SP">
+        <datalist id="UFs">
+          <option value="AC">
+          <option value="AL">
+          <option value="AP">
+          <option value="AM">
+          <option value="BA">
+          <option value="CE">
+          <option value="DF">
+          <option value="ES">
+          <option value="GO">
+          <option value="MA">
+          <option value="MT">
+          <option value="MS">
+          <option value="MG">
+          <option value="PA">
+          <option value="PB">
+          <option value="PR">
+          <option value="PE">
+          <option value="PI">
+          <option value="RJ">
+          <option value="RN">
+          <option value="RS">
+          <option value="RO">
+          <option value="RR">
+          <option value="SC">
+          <option value="SP">
+          <option value="SE">
+          <option value="TO">
+        </datalist>
       </div>
-    </form>
-  </main>
 
-  <script src="js/cadastroEmpresa.js"></script>
+      <div id="mensagemErro"></div>
+
+      <div class="botoes-acao">
+        <button type="button" id="btnVoltar">Voltar</button>
+        <button type="submit" id="btnCriar">Criar conta</button>
+      </div>
+
+      <a href="/Login/login.html" id="jaPossui">Já possui cadastro de empresa? Entre aqui</a>
+    </div>
+  </form>
+</main>
+
+<script src="js/cadastroEmpresa.js"></script>
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 package com.scaneia.ScaneiaServlet.Servlet.AreaScaneia;
 
+import com.scaneia.ScaneiaServlet.Config.HashSenha;
 import com.scaneia.ScaneiaServlet.DAO.EmpresaDAO;
 import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
 import jakarta.servlet.ServletException;
@@ -10,12 +11,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 @WebServlet(name = "cadastroEmpresa", value = "/areaRestrita/cadastroEmpresa")
 public class CadastroEmpresaServlet extends HttpServlet {
 
     private static final String REGEX_EMAIL = "^[A-Za-z0-9]+([._]?[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
     private static final String REGEX_CNPJ = "\\d{2}\\.?\\d{3}\\.?\\d{3}/?\\d{4}-?\\d{2}";
+    private static final String REGEX_SENHA = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\\W_])\\S{8,}$";
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
@@ -33,6 +36,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
         String nome = req.getParameter("nome");
         String cnpj = req.getParameter("cnpj");
         String email = req.getParameter("email");
+        String senha= req.getParameter("senha");
 
         // Validações
         if (nome == null || nome.isBlank()) {
@@ -54,6 +58,22 @@ public class CadastroEmpresaServlet extends HttpServlet {
             req.setAttribute("mensagem", "Formato de CNPJ inválido.");
             req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
             return;
+        }
+        if (senha == null || !senha.matches(REGEX_SENHA)) {
+            req.setAttribute("status", 400);
+            req.setAttribute("mensagem", "Formato de SENHA inválido.");
+            req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
+            return;
+        }else{
+            try {
+                senha = HashSenha.hashSenha(senha);
+
+            }catch (NoSuchAlgorithmException exception){
+                req.setAttribute("status",  500);
+                req.setAttribute("mensagem", "Ops... Tente novamente!");
+                req.getRequestDispatcher("/WEB-INF/VIEW/erroLoginEmpresa.jsp").forward(req, res);
+                return;
+            }
         }
 
         // Normaliza o CNPJ (apenas números)

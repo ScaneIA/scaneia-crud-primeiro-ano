@@ -358,7 +358,6 @@ public class EmpresaDAO {
 
                 LocalDateTime dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
                 LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
-
                 empresa = new EmpresaModel(id, nome, cnpj, email, senha,dataCriacao, dataAtualizacao, dataExclusao);
             }
 
@@ -425,15 +424,5 @@ public class EmpresaDAO {
         }finally {
             conexao.desconectar();
         }
-    }
-    public String formatarHora(String hora){
-        //pega a hora no modelo ceto
-        DateTimeFormatter formatterEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSX");
-        OffsetDateTime horaNormal = OffsetDateTime.parse(hora, formatterEntrada);
-
-        //cria o formatter da saida
-        DateTimeFormatter formatterSaida = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        return horaNormal.format(formatterSaida);
     }
 }
