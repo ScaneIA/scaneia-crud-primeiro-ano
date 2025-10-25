@@ -6,29 +6,8 @@
   <meta charset="UTF-8">
   <title>Endereços da Empresa</title>
   <link rel="stylesheet" href="<%= request.getContextPath() %>/areaRestritaAssets/style.css">
-  <script>
-    function abrirModalEndereco(id, rua, numero, cidade, estado, bairro, complemento, cep) {
-      document.getElementById('editarEnderecoId').value = id;
-      document.getElementById('editarRua').value = rua;
-      document.getElementById('editarNumero').value = numero;
-      document.getElementById('editarCidade').value = cidade;
-      document.getElementById('editarEstado').value = estado;
-      document.getElementById('editarBairro').value = bairro;
-      document.getElementById('editarComplemento').value = complemento;
-      document.getElementById('editarCep').value = cep;
-      document.getElementById('modalEditarEndereco').style.display = 'flex';
-    }
-
-    function fecharModalEndereco() {
-      document.getElementById('modalEditarEndereco').style.display = 'none';
-    }
-
-    function abrirCadastroEndereco() {
-      const campo = document.querySelector("#campoAddUser");
-      campo.style.display = campo.style.display === "block" ? "none" : "block";
-    }
-  </script>
 </head>
+
 <body>
 
 <header>
@@ -41,15 +20,7 @@
 <main>
   <div id="caixaFundo">
     <div id="campoFiltro">
-      <form method="get" action="enderecos" id="formPesquisar">
-        <input type="text" name="rua" placeholder="Pesquisar por rua ou cidade" id="inputFiltroNome" size="40" maxlength="50">
-        <input type="hidden" name="acao" value="pesquisar">
-        <input type="image" alt="Pesquisar" src="<%= request.getContextPath() %>/areaRestritaAssets/pesquisa.png" id="imgEnviar">
-      </form>
-      <div>
-        <h2>Endereços da Empresa</h2>
-      </div>
-
+      <div><h2>Endereços da Empresa</h2></div>
       <div>
         <button onclick="abrirCadastroEndereco()" type="button" id="addUserButton">Adicionar Endereço</button>
       </div>
@@ -59,7 +30,6 @@
         </a>
       </div>
     </div>
-
     <%
       List<EnderecoEmpresaModel> enderecos = (List<EnderecoEmpresaModel>) request.getAttribute("enderecos");
       if (enderecos != null && !enderecos.isEmpty()) {
@@ -87,12 +57,10 @@
         <td><%= end.getCep() %></td>
         <td>
           <div class="acoes">
-            <button type="button" class="btn editar"
-                    onclick="abrirModalEndereco('<%= end.getId() %>','<%= end.getRua() %>','<%= end.getNumero() %>','<%= end.getCidade() %>','<%= end.getEstado() %>','<%= end.getBairro() %>','<%= end.getComplemento() %>','<%= end.getCep() %>')">
+            <a href="javascript:void(0);" class="btn editar"
+               onclick="abrirModalEndereco('<%= end.getId() %>', '<%= end.getRua() %>', '<%= end.getNumero() %>', '<%= end.getCidade() %>', '<%= end.getEstado() %>', '<%= end.getBairro() %>', '<%= end.getComplemento() %>', '<%= end.getCep() %>')">
               Editar
-            </button>
-            <a href="enderecos?acao=excluir&id=<%= end.getId() %>" class="btn excluir"
-               onclick="return confirm('Excluir este endereço?')">Excluir</a>
+            </a>
           </div>
         </td>
       </tr>
@@ -101,13 +69,13 @@
     <% } else { %>
     <p>Nenhum endereço encontrado para esta empresa.</p>
     <% } %>
-
   </div>
 </main>
 
 <!-- Formulário de Adicionar Endereço -->
 <div id="campoAddUser" style="display:none;">
-  <form action="enderecos?acao=cadastrar" method="post" id="formAddEndereco">
+  <form action="<%= request.getContextPath() %>/areaRestrita/cadastroEndereco" method="post" id="formAddEndereco">
+    <input type="hidden" name="idEmpresa" value="<%= request.getParameter("idEmpresa") %>">
     <div><label for="rua">Rua:</label><input type="text" name="rua" id="rua" required></div>
     <div><label for="numero">Número:</label><input type="text" name="numero" id="numero" required></div>
     <div><label for="cidade">Cidade:</label><input type="text" name="cidade" id="cidade" required></div>
@@ -119,7 +87,7 @@
   </form>
 </div>
 
-<!-- Modal de edição de endereço -->
+<!-- Modal de Edição -->
 <div id="modalEditarEndereco" class="modal" style="display:none;">
   <div class="modal-content">
     <span class="close" onclick="fecharModalEndereco()">&times;</span>
@@ -138,5 +106,67 @@
   </div>
 </div>
 
+<script>
+  function abrirModalEndereco(id, rua, numero, cidade, estado, bairro, complemento, cep) {
+    document.getElementById('editarEnderecoId').value = id;
+    document.getElementById('editarRua').value = rua;
+    document.getElementById('editarNumero').value = numero;
+    document.getElementById('editarCidade').value = cidade;
+    document.getElementById('editarEstado').value = estado;
+    document.getElementById('editarBairro').value = bairro;
+    document.getElementById('editarComplemento').value = complemento;
+    document.getElementById('editarCep').value = cep;
+    document.getElementById('modalEditarEndereco').style.display = 'flex';
+  }
+
+  function fecharModalEndereco() {
+    document.getElementById('modalEditarEndereco').style.display = 'none';
+  }
+
+  function abrirCadastroEndereco() {
+    const campo = document.querySelector("#campoAddUser");
+    campo.style.display = campo.style.display === "block" ? "none" : "block";
+  }
+</script>
+
 </body>
 </html>
+<style>
+  /* Modal container - cobre toda a tela */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  /* Conteúdo do modal */
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px; /* largura fixa, pode ajustar */
+    max-width: 90%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+  }
+
+  /* Botão de fechar (x) */
+  .modal .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+</style>

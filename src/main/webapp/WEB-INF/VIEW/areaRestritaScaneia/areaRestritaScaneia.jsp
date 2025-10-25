@@ -59,7 +59,11 @@
         <td><a href="<%= request.getContextPath() %>/areaRH?idEmpresa=<%= e.getId() %>" class="aTable"><%= e.getNome() %></a></td>
         <td><%= e.getCnpj() %></td>
         <td><%= e.getEmail() %></td>
-        <td><%= e.getDataCriacao() %></td>
+        <%@ page import="java.time.format.DateTimeFormatter" %>
+        <%
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        %>
+        <td><%= e.getDataCriacao().format(formatter) %></td>
         <td><a href="areaRestrita?acao=verEnderecos&idEmpresa=<%= e.getId() %>" class="aTable">Ver Endereços</a></td>
         <td>
           <div class="acoes">
@@ -99,6 +103,10 @@
     <div>
       <label for="email">Email: </label>
       <input type="email" name="email" id="email" required>
+    </div>
+    <div>
+      <label for="senha">Senha: </label>
+      <input type="password" name="senha" id="senha" required>
     </div>
     <button type="submit">Cadastrar</button>
   </form>

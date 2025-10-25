@@ -71,6 +71,6 @@ public class AlterarEnderecoServlet extends HttpServlet {
         enderecoDAO.atualizar(enderecoAtual);
 
         // redireciona de volta à lista de endereços da empresa
-        res.sendRedirect(req.getContextPath() + "/areaRestrita/enderecos?idEmpresa=" + enderecoAtual.getIdEmpresa());
+        res.sendRedirect(req.getContextPath() + "/areaRestrita?acao=verEnderecos&idEmpresa=" + enderecoAtual.getIdEmpresa());
     }
 }
