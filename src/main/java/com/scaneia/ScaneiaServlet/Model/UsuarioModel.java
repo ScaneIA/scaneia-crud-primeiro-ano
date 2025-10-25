@@ -1,6 +1,9 @@
 package com.scaneia.ScaneiaServlet.Model;
 
+import jakarta.servlet.http.Part;
+
 import java.time.LocalDateTime;
+
 
 public class UsuarioModel {
     //atributos
@@ -8,7 +11,7 @@ public class UsuarioModel {
     private String nome;
     private String email;
     private String cpf;
-    private String urlFoto; //tipo text
+    private byte[] urlFoto; //tipo text
     private String senha;
     private LocalDateTime dataCriacao; //LocalDateTime timezone z
     private LocalDateTime dataAtualizacao; //LocalDateTime timezone z
@@ -17,7 +20,7 @@ public class UsuarioModel {
     private int idEmpresa;
 
     //construtor com todos os atributos, ideal para buscas
-    public UsuarioModel(int id, String nome, String email, String cpf, String urlFoto, String senha, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao, LocalDateTime dataExclusao, int idCargo, int idEmpresa) {
+    public UsuarioModel(int id, String nome, String email, String cpf, byte[] urlFoto, String senha, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao, LocalDateTime dataExclusao, int idCargo, int idEmpresa) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -32,12 +35,13 @@ public class UsuarioModel {
     }
 
     //Construtor simples, ideal para registros
-    public UsuarioModel(String nome, String email, String cpf, int idCargo, int idEmpresa) {
+    public UsuarioModel(String nome, String email, String cpf, int idCargo, int idEmpresa, byte[] urlFoto) {
         this.nome = nome;
         this.email = email;
         this.cpf = cpf;
         this.idCargo = idCargo;
         this.idEmpresa = idEmpresa;
+        this.urlFoto = urlFoto;
     }
 
     //Getters
@@ -57,7 +61,7 @@ public class UsuarioModel {
         return cpf;
     }
 
-    public String getUrlFoto() {
+    public byte[] getUrlFoto() {
         return urlFoto;
     }
 

@@ -19,7 +19,7 @@ public class UsuarioDAO {
         }
 
         try (PreparedStatement pstmt = conn.prepareStatement(
-                "INSERT INTO USUARIOS (NOME, EMAIL, CPF, IDCARGOS, IDEMPRESAS) VALUES (?, ?, ?, ?, ?)")) {
+                "INSERT INTO USUARIOS (NOME, EMAIL, CPF, IDCARGOS, IDEMPRESAS, URLFOTO) VALUES (?, ?, ?, ?, ?, ?)")) {
 
             // adiciona os parâmetros
             pstmt.setString(1, usuario.getNome());
@@ -27,6 +27,7 @@ public class UsuarioDAO {
             pstmt.setString(3, usuario.getCpf());
             pstmt.setInt(4, usuario.getIdCargo());
             pstmt.setInt(5, usuario.getIdEmpresa());
+            pstmt.setBytes(6, usuario.getUrlFoto());
 
             // executa
             int retorno = pstmt.executeUpdate();
@@ -288,6 +289,43 @@ public class UsuarioDAO {
 
             //atualiza os parametros
             pstmt.setString(1, email);
+            pstmt.setInt(2, idUsuario);
+
+            //realiza a requisição
+            int afetadas = pstmt.executeUpdate();
+
+            if (afetadas > 0){
+                return 1;
+            }else{
+                return 0;
+            }
+
+        }catch (SQLException exception){
+            return -2;
+        }catch (Exception exception){
+            return -3;
+        }finally {
+            conexao.desconectar();
+        }
+    }
+
+    public int alterarImagem(byte[] imagem, int idUsuario){
+        //cria a conexao
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+
+        if (conn == null){
+            return -1;
+        }
+
+        //faz o script
+        try {
+            //prepara o sql
+            String sql = "UPDATE USUARIOS SET URLFOTO = ?, DATAATUALIZACAO = NOW() WHERE ID = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            //atualiza os parametros
+            pstmt.setBytes(1, imagem);
             pstmt.setInt(2, idUsuario);
 
             //realiza a requisição

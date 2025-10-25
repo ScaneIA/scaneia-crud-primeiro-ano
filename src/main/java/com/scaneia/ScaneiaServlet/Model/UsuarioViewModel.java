@@ -8,12 +8,12 @@ public class UsuarioViewModel {
     String cpf;
     String setor;
     String cargo;
-    String urlFoto;
+    byte[] urlFoto;
     String registro;
 
     //construtor proprio para consultas da view
 
-    public UsuarioViewModel(int id, String nome, String email, String cpf, String setor, String cargo, String urlFoto,
+    public UsuarioViewModel(int id, String nome, String email, String cpf, String setor, String cargo, byte[] urlFoto,
                             String registro) {
         this.id = id;
         this.nome = nome;
@@ -48,7 +48,7 @@ public class UsuarioViewModel {
         return cargo;
     }
 
-    public String getUrlFoto() {
+    public byte[] getUrlFoto() {
         return urlFoto;
     }
 

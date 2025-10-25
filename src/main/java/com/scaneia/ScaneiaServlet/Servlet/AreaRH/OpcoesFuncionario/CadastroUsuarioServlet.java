@@ -1,21 +1,22 @@
 package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 
+import com.scaneia.ScaneiaServlet.Config.ImgConfig;
 import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
 import com.scaneia.ScaneiaServlet.DAO.UsuarioViewDAO;
 import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
 import com.scaneia.ScaneiaServlet.Model.UsuarioModel;
 import com.scaneia.ScaneiaServlet.Model.UsuarioViewModel;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @WebServlet(name = "cadastroUsuario", value = "/areaRH/cadastroUsuario")
+@MultipartConfig(maxFileSize = 1024 * 1024 * 5)
 public class CadastroUsuarioServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         //variaveis gerais
@@ -37,7 +38,10 @@ public class CadastroUsuarioServlet extends HttpServlet {
         String email = req.getParameter("addEmail");
         String cpf = req.getParameter("addCpf");
         String idCargo = req.getParameter("idCargo");
+        Part partArquivo =req.getPart("arquivo");
 
+        //transforma a imagem em bytes
+        byte[] imagembytea = ImgConfig.transformarBytea(partArquivo);
 
         //carrega a empresa
         empresa = (EmpresaModel) httpSession.getAttribute("empresa");
@@ -91,7 +95,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         //manda as informações pro banco de dados
         cadastroAutorizado = usuarioDAO.insert(new UsuarioModel(
-                nome, email, cpf, Integer.parseInt(idCargo), empresa.getId()
+                nome, email, cpf, Integer.parseInt(idCargo), empresa.getId(), imagembytea
         ));
 
         //encaminha para as paginas coerentes

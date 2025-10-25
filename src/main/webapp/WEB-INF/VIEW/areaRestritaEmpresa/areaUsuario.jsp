@@ -12,7 +12,7 @@
     <jsp:include page="areaRestritaEmpresa.jsp"/>
     <div id="campoUsuario">
         <div>
-            <img src="" alt="foto do usuario">
+            <img src="data:image/jpeg;base64, <%=(String) request.getAttribute("imagem")%>" alt="foto do usuario" id="fotoUsuario">
             <h1>Nome</h1>
         </div>
         <div class="fundoForm">
@@ -50,6 +50,13 @@
             <form action="alterarEmail" method="post">
                 <label for="inputEmail" class="inputLabel"><b>E-mail</b></label>
                 <input type="text" size="50" name="email" class="inputText" id="inputEmail" value="<%=usuario.getEmail()%>">
+                <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
+                <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
+            </form>
+
+            <form action="alterarImagem" method="post" enctype="multipart/form-data">
+                <label for="arquivo">Imagem</label>
+                <input type="file" id="arquivo" name="arquivo" accept="image/*">
                 <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
             </form>

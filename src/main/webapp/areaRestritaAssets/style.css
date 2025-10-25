@@ -218,3 +218,9 @@ select{
 option:hover{
     background-color: #AFC9E8;
 }
+
+/* estilizando campo do usuario */
+#fotoUsuario{
+    width: 100px;
+    height: 100px;
+}

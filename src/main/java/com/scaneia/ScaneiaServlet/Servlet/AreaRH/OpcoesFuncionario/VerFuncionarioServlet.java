@@ -1,5 +1,6 @@
 package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 
+import com.scaneia.ScaneiaServlet.Config.ImgConfig;
 import com.scaneia.ScaneiaServlet.DAO.UsuarioViewDAO;
 import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
 import com.scaneia.ScaneiaServlet.Model.UsuarioViewModel;
@@ -63,6 +64,8 @@ public class VerFuncionarioServlet extends HttpServlet {
             return;
         }
 
+        System.out.println(ImgConfig.transformarBase64(usuario.getUrlFoto()));
+        req.setAttribute("imagem", ImgConfig.transformarBase64(usuario.getUrlFoto()));
         req.setAttribute("usuario", usuario);
         req.setAttribute("usuarios", usuarios);
         req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/areaUsuario.jsp").forward(req, res);
