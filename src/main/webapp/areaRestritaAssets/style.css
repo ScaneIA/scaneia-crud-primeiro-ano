@@ -9,6 +9,18 @@ body{
     font-family: 'Segoe UI', 'Helvetica', 'Arial', sans-serif;
 }
 
+.botaoAzul{
+    padding: 4px 22px;
+    border: solid 3px #4D63BA;
+    border-radius: 4px;
+    background: none;
+}
+
+.botaoAzul:hover{
+    cursor: pointer;
+    background-color: #4D63BA;
+}
+
 
 header {
     width: 100%;
@@ -28,7 +40,7 @@ nav {
 
 #aHeader{
     text-decoration: none;
-    border: 1px solid #3f51b5;
+    border: 1px solid #4D63BA;
     padding: 8px 44px;
     border-radius: 7px;
     border-width: 3px;
@@ -86,6 +98,9 @@ main{
 
 #campoUsuario > div > form{
     margin-left: 5%;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 30%;
 }
 
 #campoUsuario > div > form > input[type="text"]{
@@ -101,6 +116,7 @@ main{
     background-color: #B6C6E0;
 
     padding: 1%;
+    padding-left: 20%;
     border-radius: 15px;
 }
 
@@ -217,4 +233,26 @@ select{
 
 option:hover{
     background-color: #AFC9E8;
+}
+
+/* estilizando campo foto do usuario */
+#fotoUsuario{
+    height: 100px;
+    border-radius: 20px;
+    border: solid 1px black;
+}
+
+#infoUsuario{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3vw;
+}
+
+/* botoes de acao de editar funcionario */
+#botoesAcao{
+    justify-self: center;
+    margin-top: 2.5vh;
+    display: flex;
+    gap: 3vw;
 }

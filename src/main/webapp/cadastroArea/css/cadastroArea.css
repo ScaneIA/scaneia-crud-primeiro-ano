@@ -20,6 +20,10 @@ header {
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
+header >h2{
+  margin-left: -70px;
+}
+
 #imgHeader {
   width: 180px;
   height: auto;
@@ -83,7 +87,7 @@ form {
 }
 
 .grupo_Form {
-  width: 500px;
+  width: 700px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -107,6 +111,25 @@ input {
   transition: all 0.2s ease;
 }
 
+textarea{
+  height: 150px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f7f8ff;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  font-family: "Poppins", Arial, sans-serif;
+}
+
+textarea:focus{
+    border-color: #3f51b5;
+  background-color: #fff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(63, 81, 181, 0.2);
+}
+
 input:focus {
   border-color: #3f51b5;
   background-color: #fff;
@@ -115,7 +138,7 @@ input:focus {
 }
 
 button {
-  width: 200px;
+  width: 180px;
   padding: 12px;
   margin-top: 40px;
   border: none;
@@ -139,20 +162,22 @@ button:hover {
   margin-top: 30px;
 }
 
-#jaPossui {
-  display: block;
-  margin-top: 20px;
+#botoesFinal{
+  width: 700px;
+  display: flex;
+  justify-content: space-around;
+}
+
+#finalizar{
+  border: solid #3f51b5;
   color: #3f51b5;
-  text-decoration: none;
-  font-size: 14px;
+  transition: all 0.3s ease;
+  background-color: transparent;
 }
 
-#jaPossui:hover {
-  text-decoration: underline;
-}
-
-.endereco-container {
-  margin-top: 20px;
+#finalizar:hover{
+  background-color: #3f51b5;
+  color: #fff;
 }
 
 @media (max-width: 768px) {

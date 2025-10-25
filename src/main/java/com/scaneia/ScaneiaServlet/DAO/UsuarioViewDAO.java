@@ -41,7 +41,7 @@ public class UsuarioViewDAO {
                 String cpf = rs.getString("cpf_usuario");
                 String setor = rs.getString("setor_usuario");
                 String cargo = rs.getString("cargo_usuario");
-                String urlFoto = rs.getString("url_foto_usuario");
+                byte[] urlFoto = rs.getBytes("url_foto_usuario");
                 String registro = rs.getString("data_criacao");
                 String dataExclusao = rs.getString("data_exclusao");
 
@@ -92,7 +92,7 @@ public class UsuarioViewDAO {
                 String cpf = rs.getString("cpf_usuario");
                 String setor = rs.getString("setor_usuario");
                 String cargo = rs.getString("cargo_usuario");
-                String urlFoto = rs.getString("url_foto_usuario");
+                byte[] urlFoto = rs.getBytes("url_foto_usuario");
                 String registro = rs.getString("data_criacao");
                 String dataExclusao = rs.getString("data_exclusao");
 
@@ -143,7 +143,7 @@ public class UsuarioViewDAO {
                 String cpf = rs.getString("cpf_usuario");
                 String setor = rs.getString("setor_usuario");
                 String cargo = rs.getString("cargo_usuario");
-                String urlFoto = rs.getString("url_foto_usuario");
+                byte[] urlFoto = rs.getBytes("url_foto_usuario");
                 String registro = rs.getString("data_criacao");
                 String dataExclusao = rs.getString("data_exclusao");
 
@@ -192,7 +192,7 @@ public class UsuarioViewDAO {
                 String cpf = rs.getString("cpf_usuario");
                 String setor = rs.getString("setor_usuario");
                 String cargo = rs.getString("cargo_usuario");
-                String urlFoto = rs.getString("url_foto_usuario");
+                byte[] urlFoto = rs.getBytes("url_foto_usuario");
                 String registro = rs.getString("data_criacao");
                 String dataExclusao = rs.getString("data_exclusao");
 

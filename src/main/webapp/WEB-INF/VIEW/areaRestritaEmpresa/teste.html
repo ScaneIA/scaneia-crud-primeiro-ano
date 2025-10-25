@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Área Restrita</title>
+    <link rel="stylesheet" href="/areaRestritaAssets/style.css">
+</head>
+
+<body>
+
+    <!-- Simulação do include da área restrita -->
+    <header>
+        <img id="imgHeader" src="areaRestritaAssets/LogoCompleta.png" alt="Logo do ScaneIA">
+        <nav>
+            <a href="#" id="aHeader">Sair</a>
+        </nav>
+    </header>
+    <main>
+        <div id="caixaFundo">
+            <div id="campoFiltro">
+                <div>
+                    <select name="filtroCargo" id="filtroCargo">
+                        <option value="" selected hidden>Escolha um cargo</option>
+                        <option value="todos">Todos os cargos</option>
+                        <option value="operario">Operario</option>
+                        <option value="chefeDeArea">Chefe de Área</option>
+                        <option value="RH">Recursos Humanos</option>
+                        <option value="diretor">Diretor</option>
+                    </select>
+                </div>
+                <div>
+                    <form action="/areaRH/nome" id="formPesquisar">
+                        <input type="text" name="nome" placeholder="Pesquisar por Nome" id="inputFiltroNome" size="50"
+                            maxlength="40">
+                        <input type="image" alt="Enviar" src="areaRestritaAssets/pesquisa.png" id="imgEnviar">
+                    </form>
+                </div>
+                <div>
+                    <button onclick="adicionarUsuario()" type="button" id="addUserButton">Adicionar funcionário</button>
+                </div>
+            </div>
+
+            <table>
+                <tr id="headerTabela">
+                    <th>NOME</th>
+                    <th>CARGO</th>
+                    <th>SETOR</th>
+                    <th>CPF</th>
+                    <th>REGISTRO</th>
+                </tr>
+                <tr>
+                    <td><a href="/areaRH/EditarFuncionario?id=1" class="aTable">João da Silva</a></td>
+                    <td><a href="/areaRH/EditarFuncionario?id=1" class="aTable">Operario</a></td>
+                    <td><a href="/areaRH/EditarFuncionario?id=1" class="aTable">Montagem</a></td>
+                    <td><a href="/areaRH/EditarFuncionario?id=1" class="aTable">123.456.789-00</a></td>
+                    <td><a href="/areaRH/EditarFuncionario?id=1" class="aTable">001</a></td>
+                </tr>
+            </table>
+        </div>
+    </main>
+
+    <div id="campoAddUser" style="display:none">
+        <form action="/areaRH/cadastroUsuario" method="post" id="formAddUser" enctype="multipart/form-data">
+            <div>
+                <label for="addNome">Nome: </label>
+                <input type="text" name="addNome" id="addNome">
+            </div>
+            <div>
+                <label for="addEmail">Email: </label>
+                <input type="text" name="addEmail" id="addEmail">
+            </div>
+            <div>
+                <label for="addCpf">Cpf: </label>
+                <input type="text" name="addCpf" id="addCpf">
+            </div>
+            <div>
+                <label for="idCargo">Cargo: </label>
+                <select name="idCargo" id="idCargo">
+                    <option value="8" selected>Colaborador</option>
+                    <option value="7">RH</option>
+                    <option value="6">Chefe de Área</option>
+                    <option value="5">Diretor</option>
+                </select>
+            </div>
+            <div>
+                <label>Foto: </label>
+                <input type="file" id="arquivo" name="arquivo" accept="image/*">
+            </div>
+            <button type="submit">Adicionar</button>
+        </form>
+    </div>
+
+    <!-- Parte do usuário -->
+    <div id="campoUsuario">
+        <div id="infoUsuario">
+            <img src="/areaRestritaAssets/LogoCompleta.png" alt="foto do Fusuario" id="fotoUsuario">
+            <h1>João da Silva</h1>
+        </div>
+
+        <div class="fundoForm">
+            <form action="/alterarCargo" method="post">
+                <label for="inputCargo" class="inputLabel"><b>Cargo</b></label>
+                <div>
+
+                    <select name="cargo" id="inputCargo">
+                        <option selected>Operario</option>
+                        <option value="Diretor">Diretor</option>
+                        <option value="Chefe de área">Chefe de área</option>
+                        <option value="RH">RH</option>
+                        <option value="Colaborador">Operario</option>
+                    </select>
+                    <input type="hidden" value="1" name="idUsuario">
+                    <input type="image" src="areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
+                </div>
+            </form>
+
+            <form action="/alterarSetor" method="post">
+                <label for="inputSetor" class="inputLabel"><b>Setor</b></label>
+                <div>
+                    <input type="text" size="50" name="setor" class="inputText" id="inputSetor" value="Montagem">
+                    <input type="hidden" value="1" name="idUsuario">
+                    <input type="image" src="areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
+                </div>
+            </form>
+        </div>
+
+        <div class="fundoForm">
+            <form action="/alterarCpf" method="post">
+                <label for="inputCpf" class="inputLabel"><b>CPF</b></label>
+                <div>
+                    <input type="text" size="50" name="cpf" class="inputText" id="inputCpf" value="123.456.789-00">
+                    <input type="hidden" value="1" name="idUsuario">
+                    <input type="image" src="areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
+                </div>
+            </form>
+
+            <form action="/alterarEmail" method="post">
+                <label for="inputEmail" class="inputLabel"><b>E-mail</b></label>
+                <div>
+                    <input type="text" size="50" name="email" class="inputText" id="inputEmail"
+                        value="joao@empresa.com">
+                    <input type="hidden" value="1" name="idUsuario">
+                    <input type="image" src="areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
+                </div>
+            </form>
+
+            <form action="/alterarImagem" method="post" enctype="multipart/form-data">
+                <label for="arquivo"><b>Imagem</b></label>
+                <div>
+                    <input type="file" id="arquivo" name="arquivo" accept="image/*">
+                    <input type="hidden" value="1" name="idUsuario">
+                    <input type="image" src="areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
+                </div>
+            </form>
+        </div>
+
+        <div id="botoesAcao">
+            <button type="button" onclick="fechar()" id="fechar" class="botaoAzul">Fechar</button>
+
+            <form action="/excluirUsuario" method="post">
+                <input type="hidden" value="1" name="idUsuario">
+                <button type="submit" class="botaoAzul">Excluir</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('#filtroCargo').addEventListener("change", function () {
+            const contextPath = window.location.pathname.split('/')[1]
+            window.location.href = '/' + contextPath + '/areaRH/filtro?cargo=' + this.value
+        })
+
+        function adicionarUsuario() {
+            const campo = document.querySelector("#campoAddUser")
+            campo.style.display = campo.style.display === "block" ? "none" : "block"
+        }
+
+        document.querySelector("#fechar").addEventListener("click", function () {
+            const contextPath = window.location.pathname.split('/')[1]
+            window.location.href = '/' + contextPath + '/areaRH'
+        })
+    </script>
+</body>
+
+</html>

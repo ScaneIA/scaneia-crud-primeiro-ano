@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Área de Cadastro</title>
+    <link rel="stylesheet" href="css/cadastroArea.css">
+</head>
+
+<body>
+    <header>
+        <img id="imgHeader" src="img/Group_65765-removebg-preview.png" alt="logo ScaneIA">
+        <h2>Recursos Humanos</h2>
+        <nav>
+            <a href="#" id="voltarTopo">Voltar</a>
+        </nav>
+    </header>
+
+    <main>
+        <img src="img/IMG_300px.png" alt="" id="figEsquerda">
+        <img src="img/imagem_300x300.png" alt="" id="figDireita">
+        <img id="imgMain" src="img/scaneia_logo_resized.png" alt="">
+
+        <form action="cadastro-empresa" method="post" id="formCadastro">
+
+
+            <div id="parte1">
+                <div class="grupo_Form">
+                    <label for="nome_empresa">Nome da área</label>
+                    <input type="text" name="nome_area" placeholder="Ex: Área quente">
+                </div>
+
+                <div class="grupo_Form">
+                    <label for="cnpj">Descrição da área</label>
+                    <textarea type="text" id="descriçaoArea" name="descricao_area" placeholder="Descriçao da Área"></textarea>
+                </div>
+            </div>
+        </form>
+        <div id="botoesFinal">
+            <button id="finalizar"type="submit">Finalizar</button>
+            <button type="submit">Cadastrar mais áreas</button>
+        </div>
+    </main>
+</body>
+
+</html>

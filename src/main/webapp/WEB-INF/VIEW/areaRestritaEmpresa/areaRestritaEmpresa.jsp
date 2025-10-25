@@ -80,7 +80,7 @@
     </main>
 
     <div id="campoAddUser">
-        <form action="areaRH/cadastroUsuario" method="post" id="formAddUser">
+        <form action="areaRH/cadastroUsuario" method="post" id="formAddUser" enctype="multipart/form-data">
 
             <div>
                 <label for="addNome">Nome: </label>
@@ -105,6 +105,11 @@
                     <option value="6">Chefe de Área</option>
                     <option value="5">Diretor</option>
                 </select>
+            </div>
+
+            <div>
+                <label>Foto: </label>
+                <input type="file" id="arquivo" name="arquivo" accept="image/*">
             </div>
 
             <button type="submit">Adicionar</button>
