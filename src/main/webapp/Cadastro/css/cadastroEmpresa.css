@@ -166,3 +166,10 @@ button:hover {
     width: 100%;
   }
 }
+
+#mensagemErro{
+  border: solid 3px red;
+  text-align: center;
+  margin: 0 auto;
+  width: 30%;
+}

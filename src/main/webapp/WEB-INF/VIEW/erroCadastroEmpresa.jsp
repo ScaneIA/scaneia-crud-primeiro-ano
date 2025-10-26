@@ -14,16 +14,8 @@
     %>
 
     <!-- adiciona a mensagem de erro -->
-    <style>
-        #mensagemErro{
-            border: solid 3px red;
-            text-align: center;
-            margin: 0 auto;
-            width: 30%;
-        }
-        #mensagemErro::after{
-            content: "<%=mensagemErro%>";
-        }
-    </style>
+    <script>
+        document.getElementById('mensagemErro').textContent = "<%=mensagemErro%>"
+    </script>
 </body>
 </html>
