@@ -188,7 +188,7 @@ public class EmpresaDAO {
         // prepara
         try {
             PreparedStatement pstmt = conn.prepareStatement(
-                    "UPDATE EMPRESAS SET EMAIL=? DATAATUALIZACAO=NOW() WHERE ID=?");
+                    "UPDATE EMPRESAS SET EMAIL=?, DATAATUALIZACAO=NOW() WHERE ID=?");
 
             pstmt.setString(1, empresa.getEmail());
             pstmt.setInt(2, empresa.getId());

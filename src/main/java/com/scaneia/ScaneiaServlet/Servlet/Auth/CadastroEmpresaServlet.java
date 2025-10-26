@@ -53,7 +53,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
             }
 
             //valida se a senha é segura
-            if (!senha.matches("^(?=.[0-9])(?=.[a-z])(?=.[A-Z])(?=.[\\W_])\\S{8,}$")){
+            if (!senha.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\\W_])\\S{8,}$")){
                 req.setAttribute("status",  400);
                 req.setAttribute("mensagem", "Senha deve ter: 1 minúscula, 1 maiúscula, 1 número, 1 símbolo, mínimo 8 caracteres e sem espaços.");
                 req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);

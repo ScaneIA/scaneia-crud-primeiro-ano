@@ -9,17 +9,17 @@
     <title>Área Restrita</title>
 </head>
 <body>
-    <jsp:include page="areaRestritaEmpresa.jsp"/>
-    <div id="campoUsuario">
-        <div id="infoUsuario">
-            <img src="data:image/jpeg;base64, <%=(String) request.getAttribute("imagem")%>" alt="foto do usuario" id="fotoUsuario">
-            <h1><%=usuario.getNome()%></h1>
-        </div>
-        <div class="fundoForm">
-            <!-- Input para informações empresariais -->
-            <form action="alterarCargo" method="post">
-                <label for="inputCargo" class="inputLabel"><b>Cargo</b></label>
-                <div>
+<jsp:include page="areaRestritaEmpresa.jsp"/>
+<div id="campoUsuario">
+    <div id="infoUsuario">
+        <img src="data:image/jpeg;base64, <%=(String) request.getAttribute("imagem")%>" alt="foto do usuario" id="fotoUsuario">
+        <h1><%=usuario.getNome()%></h1>
+    </div>
+    <div class="fundoForm">
+        <!-- Input para informações empresariais -->
+        <form action="alterarCargo" method="post">
+            <label for="inputCargo" class="inputLabel"><b>Cargo</b></label>
+            <div>
                 <select name="cargo" id="inputCargo">
                     <option selected><%=usuario.getCargo()%></option>
                     <option value="Diretor">Diretor</option>
@@ -29,64 +29,64 @@
                 </select>
                 <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
-                </div>
-            </form>
+            </div>
+        </form>
 
-            <form action="alterarSetor" method="post">
-                <label for="inputSetor" class="inputLabel"><b>Setor</b></label>
-                <div>
+        <form action="alterarSetor" method="post">
+            <label for="inputSetor" class="inputLabel"><b>Setor</b></label>
+            <div>
                 <input type="text" size="50" name="setor" class="inputText" id="inputSetor" value="<%=usuario.getSetor()%>">
                 <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
-                </div>
-            </form>
-        </div>
+            </div>
+        </form>
+    </div>
 
-        <div class="fundoForm">
-            <!-- Input para informações pessoais -->
-            <form action="alterarCpf" method="post">
-                <label for="inputCpf" class="inputLabel"><b>CPF</b></label>
-                <div>
+    <div class="fundoForm">
+        <!-- Input para informações pessoais -->
+        <form action="alterarCpf" method="post">
+            <label for="inputCpf" class="inputLabel"><b>CPF</b></label>
+            <div>
                 <input type="text" size="50" name="cpf" class="inputText" id="inputCpf" value="<%=usuario.getCpf()%>">
                 <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
-                </div>
-            </form>
+            </div>
+        </form>
 
-            <form action="alterarEmail" method="post">
-                <label for="inputEmail" class="inputLabel"><b>E-mail</b></label>
-                <div>
+        <form action="alterarEmail" method="post">
+            <label for="inputEmail" class="inputLabel"><b>E-mail</b></label>
+            <div>
                 <input type="text" size="50" name="email" class="inputText" id="inputEmail" value="<%=usuario.getEmail()%>">
                 <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
-                </div>
-            </form>
+            </div>
+        </form>
 
-            <form action="alterarImagem" method="post" enctype="multipart/form-data">
-                <label for="arquivo"><b>Imagem</b></label>
-                <div>
+        <form action="alterarImagem" method="post" enctype="multipart/form-data">
+            <label for="arquivo"><b>Imagem</b></label>
+            <div>
                 <input type="file" id="arquivo" name="arquivo" accept="image/*">
                 <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
-                </div>
-            </form>
-        </div>
-
-        <div id="botoesAcao">
-            <button type="button" onclick="fechar()" id="fechar" class="botaoAzul">Fechar</button>
-
-            <form action="excluirUsuario" method="post">
-                <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
-                <button type="submit" class="botaoAzul">Excluir</button>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 
-    <script>
-        document.querySelector("#fechar").addEventListener("click", function(){
-            const contextPath = window.location.pathname.split('/')[1]
-            window.location.href = '/' + contextPath + '/areaRH'
-        })
-    </script>
+    <div id="botoesAcao">
+        <button type="button" onclick="fechar()" id="fechar" class="botaoAzul">Fechar</button>
+
+        <form action="excluirUsuario" method="post">
+            <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
+            <button type="submit" class="botaoAzul">Excluir</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.querySelector("#fechar").addEventListener("click", function(){
+        const contextPath = window.location.pathname.split('/')[1]
+        window.location.href = '/' + contextPath + '/areaRH'
+    })
+</script>
 </body>
 </html>

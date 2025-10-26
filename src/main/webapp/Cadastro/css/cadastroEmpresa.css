@@ -1,6 +1,6 @@
 body {
   font-family: "Poppins", Arial, sans-serif;
-  background-color: #f7f7f7;
+  background-color: #f4f6fc;
   margin: 0;
   padding: 0;
   display: flex;
@@ -82,7 +82,7 @@ form {
   align-items: center;
 }
 
-.grupo_Form {
+.form-group {
   width: 500px;
   display: flex;
   flex-direction: column;
@@ -132,6 +132,7 @@ button:hover {
   background-color: #2e3b8a;
 }
 
+
 .botoes-acao {
   display: flex;
   justify-content: center;
@@ -161,7 +162,7 @@ button:hover {
     padding: 30px 20px;
   }
 
-  .grupo_Form {
+  .form-group {
     width: 100%;
   }
 }
