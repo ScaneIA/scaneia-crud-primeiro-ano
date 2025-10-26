@@ -1,4 +1,3 @@
-cadastroEmpresa.js
 document.addEventListener("DOMContentLoaded", function () {
   const parte1 = document.getElementById("parte1");
   const parte2 = document.getElementById("parte2");

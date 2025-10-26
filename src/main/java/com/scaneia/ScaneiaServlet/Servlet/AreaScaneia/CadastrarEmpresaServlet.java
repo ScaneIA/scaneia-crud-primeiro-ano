@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 @WebServlet(name = "cadastroEmpresa", value = "/areaRestrita/cadastroEmpresa")
-public class CadastroEmpresaServlet extends HttpServlet {
+public class CadastrarEmpresaServlet extends HttpServlet {
 
     private static final String REGEX_EMAIL = "^[A-Za-z0-9]+([._]?[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
     private static final String REGEX_CNPJ = "\\d{2}\\.?\\d{3}\\.?\\d{3}/?\\d{4}-?\\d{2}";

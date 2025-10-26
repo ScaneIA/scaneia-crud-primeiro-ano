@@ -37,7 +37,7 @@ public class AreaRHServlet extends HttpServlet {
                             Integer.parseInt(req.getParameter("idEmpresa"))
                     ));
 
-                }catch (NullPointerException npe){
+                }catch (NullPointerException  | NumberFormatException exception){
                     res.sendRedirect(req.getContextPath() + "/index.html");
                 }
             }
