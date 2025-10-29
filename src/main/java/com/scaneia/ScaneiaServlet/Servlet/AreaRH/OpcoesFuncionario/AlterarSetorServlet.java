@@ -68,11 +68,9 @@ public class AlterarSetorServlet extends HttpServlet {
         if (resultado == 1){
             //responde para a mesma pagina
             res.sendRedirect(req.getContextPath() + "/areaRH/EditarFuncionario?id=" + idUsuario);
-            return;
         }else{
             //responde para a pagina do RH
             res.sendRedirect(req.getContextPath() + "/areaRH");
-            return;
         }
 
     }

@@ -16,6 +16,12 @@ public abstract class BaseModel {
         this.descricao = descricao;
     }
 
+    public BaseModel(int id, String nome, String descricao){
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+    }
+
     //construtor com todos os atributos, ideal para buscas
     public BaseModel(int id, String nome, String descricao, LocalDateTime dataExclusao, LocalDateTime dataAtualizacao, LocalDateTime dataCriacao) {
         this.id = id;

@@ -1,8 +1,14 @@
 <%@ page import="com.scaneia.ScaneiaServlet.Model.UsuarioViewModel" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.scaneia.ScaneiaServlet.Model.SetorModel" %>
+<%@ page import="java.util.Set" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%
     //carrega o usuario
     UsuarioViewModel usuario = (UsuarioViewModel) request.getAttribute("usuario");
+
+    //carrega os setores
+    List<SetorModel> setores = (List<SetorModel>) request.getAttribute("setores");
 %>
 <html>
 <head>
@@ -35,7 +41,19 @@
         <form action="alterarSetor" method="post">
             <label for="inputSetor" class="inputLabel"><b>Setor</b></label>
             <div>
-                <input type="text" size="50" name="setor" class="inputText" id="inputSetor" value="<%=usuario.getSetor()%>">
+                <select name="setor" id="inputSetor">
+                    <%
+                        for (SetorModel setor : setores) {
+                            String atributoSelected = "";
+                            if (usuario.getSetor() != null && usuario.getSetor().equals(setor.getNome())) {
+                                atributoSelected = " selected";
+                            }
+                    %>
+                    <option value="<%=setor.getNome()%>"<%=atributoSelected%>><%=setor.getNome()%></option>
+                    <%
+                        }
+                    %>
+                </select>
                 <input type="text" hidden value="<%=usuario.getId()%>" name="idUsuario">
                 <input type="image" src="${pageContext.request.contextPath}/areaRestritaAssets/saveIcon.png" class="saveIcon" alt="salvar">
             </div>

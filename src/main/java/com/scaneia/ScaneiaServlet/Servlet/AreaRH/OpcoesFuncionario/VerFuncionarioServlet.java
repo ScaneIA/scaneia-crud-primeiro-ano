@@ -1,8 +1,10 @@
 package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 
 import com.scaneia.ScaneiaServlet.Config.ImgConfig;
+import com.scaneia.ScaneiaServlet.DAO.SetorDAO;
 import com.scaneia.ScaneiaServlet.DAO.UsuarioViewDAO;
 import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
+import com.scaneia.ScaneiaServlet.Model.SetorModel;
 import com.scaneia.ScaneiaServlet.Model.UsuarioViewModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,6 +25,8 @@ public class VerFuncionarioServlet extends HttpServlet {
         HttpSession httpSession = req.getSession();
         EmpresaModel empresa;
         UsuarioViewModel usuario;
+        List<SetorModel> setores;
+        SetorDAO setorDAO = new SetorDAO();
         List<UsuarioViewModel> usuarios;
 
         //valida se a sessão existe
@@ -64,7 +68,11 @@ public class VerFuncionarioServlet extends HttpServlet {
             return;
         }
 
-        System.out.println(ImgConfig.transformarBase64(usuario.getUrlFoto()));
+        //seta os setores da empresa
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
+
+        //encaminha para a area do usuario
         req.setAttribute("imagem", ImgConfig.transformarBase64(usuario.getUrlFoto()));
         req.setAttribute("usuario", usuario);
         req.setAttribute("usuarios", usuarios);

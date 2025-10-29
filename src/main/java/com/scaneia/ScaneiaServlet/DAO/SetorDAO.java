@@ -254,4 +254,44 @@ public class SetorDAO {
         return -3;
     }
 
+    public List<SetorModel> listarSetores(){
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        List<SetorModel> setores = new ArrayList<>();
+
+        if (conn == null){
+            return null;
+        }
+
+        //prepara a consulta
+        try {
+            //cria o pstmt
+            String sql = "SELECT * FROM SETORES";
+            Statement stmt  = conn.createStatement();
+
+            //executa a consulta
+            ResultSet rs = stmt.executeQuery(sql);
+
+            //retorna o id encontrado
+            while (rs.next()){
+                int id = rs.getInt("id");
+                String nome = rs.getString("nome");
+                String descricao = rs.getString("descricao");
+                String dataExclusao = rs.getString("dataexclusao");
+
+                if (dataExclusao == null){
+                    setores.add(
+                            new SetorModel(id, nome, descricao)
+                    );
+                }
+            }
+
+            return setores;
+        }catch (SQLException exception){
+            return null;
+        }finally {
+            conexao.desconectar();
+        }
+    }
+
 }
