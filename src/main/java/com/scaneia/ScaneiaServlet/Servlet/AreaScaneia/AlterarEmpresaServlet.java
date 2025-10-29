@@ -15,7 +15,7 @@ import java.io.IOException;
 public class AlterarEmpresaServlet extends HttpServlet {
 
     private static final String REGEX_EMAIL = "^[A-Za-z0-9]+([._]?[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-    private static final String REGEX_CNPJ = "\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}";
+    private static final String REGEX_CNPJ = "^\\d{2}[. -/]?\\d{3}[. -/]?\\d{3}[. -/]?\\d{4}[. -/]?\\d{2}$";
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)

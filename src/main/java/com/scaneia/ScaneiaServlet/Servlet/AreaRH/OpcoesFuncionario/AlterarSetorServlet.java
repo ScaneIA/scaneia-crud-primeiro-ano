@@ -36,7 +36,7 @@ public class AlterarSetorServlet extends HttpServlet {
         //validação de entrada
         try {
             //valida o novo setor
-            if (!novoSetor.matches("^[a-zA-ZáàâãäéèêëíïîóôõöúüçñÁÀÂÃÄÉÈÊËÍÏÎÓÔÕÖÚÜÇÑ ]+$")) {
+            if (!novoSetor.matches("^[A-Za-zÀ-ÖØ-öø-ÿ0-9.,!?\\s'\"\\-():;]+$\n")) {
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }

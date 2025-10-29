@@ -106,7 +106,6 @@
                     <option value="5">Diretor</option>
                 </select>
             </div>
-
             <button type="submit">Adicionar</button>
         </form>
     </div>
