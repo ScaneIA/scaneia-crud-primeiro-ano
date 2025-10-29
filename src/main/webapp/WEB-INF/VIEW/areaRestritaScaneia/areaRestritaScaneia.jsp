@@ -1,5 +1,3 @@
-
-
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.*, com.scaneia.ScaneiaServlet.Model.*" %>
 <!DOCTYPE html>
@@ -46,6 +44,18 @@
       cursor: pointer;
     }
 
+    /* Estilo para as mensagens de erro */
+    .erro {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #ee4040;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
   </style>
 </head>
 
@@ -89,7 +99,7 @@
         <th>Endereços</th>
         <th>Ações</th>
       </tr>
-
+      <hr>
       <%
         List<EmpresaModel> empresas = (List<EmpresaModel>) request.getAttribute("empresas");
         if (empresas != null && !empresas.isEmpty()) {
@@ -129,20 +139,24 @@
   </div>
 </main>
 
-<!-- Formulário de Adicionar Empresa -->
+<!-- FORMULÁRIO DE ADICIONAR EMPRESA -->
 <div id="campoAddUser" style="display:none;">
-  <form action="<%= request.getContextPath() %>/areaRestrita/cadastroEmpresa" method="post" id="formAddUser">
+  <form action="<%= request.getContextPath() %>/areaRestrita/cadastroEmpresa"
+        method="post" id="formAddUser">
     <div>
       <label for="nome">Nome: </label>
       <input type="text" name="nome" id="nome" required>
+      <span id="erroNomeAdd" class="erro" style="display: none;">Nome inválido.</span>
     </div>
     <div>
       <label for="cnpj">CNPJ: </label>
       <input type="text" name="cnpj" id="cnpj" required>
+      <span id="erroCnpjAdd" class="erro" style="display: none;">CNPJ inválido.</span>
     </div>
     <div>
       <label for="email">Email: </label>
       <input type="email" name="email" id="email" required>
+      <span id="erroEmailAdd" class="erro" style="display: none;">Email inválido.</span>
     </div>
     <div>
       <label for="senha">Senha: </label>
@@ -152,24 +166,78 @@
   </form>
 </div>
 
+<script>
+  // REGEX
+  const regexEmail = /^[A-Za-z0-9]+([._]?[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  const regexCnpj = /^\d{2}[.\-\/]?\d{3}[.\-\/]?\d{3}[.\-\/]?\d{4}[.\-\/]?\d{2}$/;
 
+  // Abre ou fecha o formulário de cadastro
+  function abrirCadastroEmpresa() {
+    const campo = document.querySelector("#campoAddUser");
+    campo.style.display = campo.style.display === "block" ? "none" : "block";
+  }
+
+  // Validação antes de enviar o formulário de cadastro
+  document.getElementById("formAddUser").addEventListener("submit", function(event) {
+    let erro = false;
+
+    const nome = document.getElementById('nome').value.trim();
+    const cnpj = document.getElementById('cnpj').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    // Valida nome
+    if (nome.length < 3) {
+      document.getElementById('erroNomeAdd').style.display = 'block';
+      erro = true;
+    } else {
+      document.getElementById('erroNomeAdd').style.display = 'none';
+    }
+
+    // Valida CNPJ
+    if (!regexCnpj.test(cnpj)) {
+      document.getElementById('erroCnpjAdd').style.display = 'block';
+      erro = true;
+    } else {
+      document.getElementById('erroCnpjAdd').style.display = 'none';
+    }
+
+    // Valida email
+    if (!regexEmail.test(email)) {
+      document.getElementById('erroEmailAdd').style.display = 'block';
+      erro = true;
+    } else {
+      document.getElementById('erroEmailAdd').style.display = 'none';
+    }
+
+    // Impede o envio se houver erro
+    if (erro) {
+      event.preventDefault();
+    }
+  });
+</script>
+
+<!-- MODAL DE EDIÇÃO -->
 <div id="modalEditar" class="modal" style="display:none;">
   <div class="modal-content">
     <span class="close" onclick="fecharModal()">&times;</span>
     <h2>Editar Empresa</h2>
-    <form id="formEditarEmpresa" method="post" action="<%= request.getContextPath() %>/areaRestrita/alterarEmpresa">
+    <form id="formEditarEmpresa" method="post"
+          action="<%= request.getContextPath() %>/areaRestrita/alterarEmpresa">
       <input type="hidden" name="id" id="editarId">
       <div>
         <label for="editarNome">Nome:</label>
         <input type="text" name="nome" id="editarNome">
+        <span id="erroNome" class="erro" style="display: none;">Nome inválido.</span>
       </div>
       <div>
         <label for="editarCnpj">CNPJ:</label>
         <input type="text" name="cnpj" id="editarCnpj">
+        <span id="erroCnpj" class="erro" style="display: none;">CNPJ inválido.</span>
       </div>
       <div>
         <label for="editarEmail">Email:</label>
         <input type="email" name="email" id="editarEmail">
+        <span id="erroEmail" class="erro" style="display: none;">Email inválido.</span>
       </div>
       <button type="submit">Salvar Alterações</button>
     </form>
@@ -177,13 +245,7 @@
 </div>
 
 <script>
-  // Abre ou fecha o formulário de cadastro
-  function abrirCadastroEmpresa() {
-    const campo = document.querySelector("#campoAddUser");
-    campo.style.display = campo.style.display === "block" ? "none" : "block";
-  }
-
-  //edição
+  // Abre o modal e preenche os campos
   function abrirModal(id, nome, cnpj, email) {
     document.getElementById('editarId').value = id;
     document.getElementById('editarNome').value = nome;
@@ -192,10 +254,53 @@
     document.getElementById('modalEditar').style.display = 'flex';
   }
 
+  // Fecha o modal e limpa mensagens de erro
   function fecharModal() {
     document.getElementById('modalEditar').style.display = 'none';
+    document.getElementById('erroNome').style.display = 'none';
+    document.getElementById('erroCnpj').style.display = 'none';
+    document.getElementById('erroEmail').style.display = 'none';
   }
+
+  // Validação antes de enviar o formulário de edição
+  document.getElementById("formEditarEmpresa").addEventListener("submit", function(event) {
+    let erro = false;
+
+    const nome = document.getElementById('editarNome').value.trim();
+    const cnpj = document.getElementById('editarCnpj').value.trim();
+    const email = document.getElementById('editarEmail').value.trim();
+
+    // Valida nome
+    if (nome.length < 3) {
+      document.getElementById('erroNome').style.display = 'block';
+      erro = true;
+    } else {
+      document.getElementById('erroNome').style.display = 'none';
+    }
+
+    // Valida CNPJ
+    if (!regexCnpj.test(cnpj)) {
+      document.getElementById('erroCnpj').style.display = 'block';
+      erro = true;
+    } else {
+      document.getElementById('erroCnpj').style.display = 'none';
+    }
+
+    // Valida email
+    if (!regexEmail.test(email)) {
+      document.getElementById('erroEmail').style.display = 'block';
+      erro = true;
+    } else {
+      document.getElementById('erroEmail').style.display = 'none';
+    }
+
+    // Impede o envio se houver erro
+    if (erro) {
+      event.preventDefault();
+    }
+  });
 </script>
+
 
 </body>
 </html>

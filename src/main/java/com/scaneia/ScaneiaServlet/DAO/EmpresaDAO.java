@@ -5,8 +5,6 @@ import com.scaneia.ScaneiaServlet.conexao.Conexao;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +21,7 @@ public class EmpresaDAO {
         }
         // prepara
         try (PreparedStatement pstmt = conn.prepareStatement(
-                "INSERT INTO EMPRESAS (NOME, CNPJ, EMAIL, SENHA) VALUES (?, ?, ?, ?)",
+                "INSERT INTO EMPRESAS (NOME, CNPJ, EMAIL, SENHA, DATACRIACAO, DATAATUALIZACAO) VALUES (?, ?, ?, ?, NOW(), NOW())",
                 Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, empresa.getNome());
@@ -62,7 +60,7 @@ public class EmpresaDAO {
         }
     }
 
-    // Atualizar empresa completa
+    // Atualizar empresa completa (usa quando for alterar a senha também)
     public int atualizar(EmpresaModel empresa) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
@@ -72,15 +70,15 @@ public class EmpresaDAO {
             return -1; // erro na conexão
         }
         // prepara o comando
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "UPDATE EMPRESAS SET NOME=?, CNPJ=?, EMAIL=?, SENHA=?, DATAATUALIZACAO=NOW() WHERE ID=?");
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "UPDATE EMPRESAS SET NOME=?, CNPJ=?, EMAIL=?, SENHA=?, DATAATUALIZACAO=NOW() WHERE ID=?")) {
 
             pstmt.setString(1, empresa.getNome());
             pstmt.setString(2, empresa.getCnpj());
             pstmt.setString(3, empresa.getEmail());
             pstmt.setString(4, empresa.getSenha());
             pstmt.setInt(5, empresa.getId());
+
             // executa
             int retorno = pstmt.executeUpdate();
             if (retorno > 0) {
@@ -102,6 +100,40 @@ public class EmpresaDAO {
         }
     }
 
+
+    public int atualizarSemSenha(EmpresaModel empresa) {
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.getConnection();
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            return -1; // erro na conexão
+        }
+
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "UPDATE EMPRESAS SET NOME=?, CNPJ=?, EMAIL=?, DATAATUALIZACAO=NOW() WHERE ID=?")) {
+
+            pstmt.setString(1, empresa.getNome());
+            pstmt.setString(2, empresa.getCnpj());
+            pstmt.setString(3, empresa.getEmail());
+            pstmt.setInt(4, empresa.getId());
+
+            int retorno = pstmt.executeUpdate();
+            if (retorno > 0) {
+                empresa.setDataAtualizacao(LocalDateTime.now());
+                return 1; // deu certo
+            } else return 0; // nada alterado
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -2;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -3;
+        } finally {
+            conexao.desconectar();
+        }
+    }
+
     // Atualizando só o nome
     public int atualizarNome(EmpresaModel empresa) {
         Conexao conexao = new Conexao();
@@ -113,9 +145,8 @@ public class EmpresaDAO {
             return -1; // erro na conexão
         }
         // prepara
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "UPDATE EMPRESAS SET NOME=?, DATAATUALIZACAO=NOW() WHERE ID=?");
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "UPDATE EMPRESAS SET NOME=?, DATAATUALIZACAO=NOW() WHERE ID=?")) {
 
             pstmt.setString(1, empresa.getNome());
             pstmt.setInt(2, empresa.getId());
@@ -140,7 +171,7 @@ public class EmpresaDAO {
         }
     }
 
-    // Atuliazando só o CNPJ
+    // Atualizando só o CNPJ
     public int atualizarCnpj(EmpresaModel empresa) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
@@ -150,9 +181,8 @@ public class EmpresaDAO {
             return -1; // erro na conexão
         }
         // prepara
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "UPDATE EMPRESAS SET CNPJ=?, DATAATUALIZACAO=NOW() WHERE ID=?");
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "UPDATE EMPRESAS SET CNPJ=?, DATAATUALIZACAO=NOW() WHERE ID=?")) {
 
             pstmt.setString(1, empresa.getCnpj());
             pstmt.setInt(2, empresa.getId());
@@ -169,7 +199,7 @@ public class EmpresaDAO {
             return -2; // erro SQL
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // nada altardo
+            return -3; // nada alterado
         } finally {
             conexao.desconectar();
             // desconecta
@@ -186,9 +216,8 @@ public class EmpresaDAO {
             return -1; // erro na conexão
         }
         // prepara
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "UPDATE EMPRESAS SET EMAIL=?, DATAATUALIZACAO=NOW() WHERE ID=?");
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "UPDATE EMPRESAS SET EMAIL=?, DATAATUALIZACAO=NOW() WHERE ID=?")) {
 
             pstmt.setString(1, empresa.getEmail());
             pstmt.setInt(2, empresa.getId());
@@ -223,9 +252,9 @@ public class EmpresaDAO {
             return -1; // erro na conexão
         }
         // prepara o comando
-        try {
-            String remover = "UPDATE EMPRESAS SET DATAEXCLUSAO = NOW() WHERE ID=?";
-            PreparedStatement pstmt = conn.prepareStatement(remover);
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "UPDATE EMPRESAS SET DATAEXCLUSAO = NOW() WHERE ID=?")) {
+
             pstmt.setInt(1, empresa.getId());
 
             // executa
@@ -257,9 +286,8 @@ public class EmpresaDAO {
         if (conn == null) return lista;
 
         // prepara
-        try {
-            Statement stmt = conn.createStatement();
-            ResultSet rset = stmt.executeQuery("SELECT * FROM EMPRESAS WHERE DATAEXCLUSAO IS NULL");
+        try (Statement stmt = conn.createStatement();
+             ResultSet rset = stmt.executeQuery("SELECT * FROM EMPRESAS WHERE DATAEXCLUSAO IS NULL")) {
 
             while (rset.next()) {
                 int id = rset.getInt("id");
@@ -299,9 +327,10 @@ public class EmpresaDAO {
         if (conn == null) return lista;
 
         // prepara o comando
-        try {
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM EMPRESAS WHERE NOME = ? AND DATAEXCLUSAO IS NULL ORDER BY 1");
-            pstmt.setString(1, empresa.getNome());
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "SELECT * FROM EMPRESAS WHERE LOWER(NOME) LIKE ? AND DATAEXCLUSAO IS NULL ORDER BY 1")) {
+
+            pstmt.setString(1, empresa.getNome().toLowerCase() + "%");
             ResultSet rset = pstmt.executeQuery();
 
             while (rset.next()) {
@@ -331,8 +360,10 @@ public class EmpresaDAO {
         }
 
         return lista;
-        // retorna a lisat
+        // retorna a lista
     }
+
+    // Buscar por ID
     public EmpresaModel buscarId(int id) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
@@ -340,8 +371,7 @@ public class EmpresaDAO {
 
         if (conn == null) return null;
 
-        try {
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM EMPRESAS WHERE ID=? AND DATAEXCLUSAO IS NULL");
+        try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM EMPRESAS WHERE ID=? AND DATAEXCLUSAO IS NULL")) {
             pstmt.setInt(1, id);
             ResultSet rset = pstmt.executeQuery();
 
@@ -358,7 +388,7 @@ public class EmpresaDAO {
 
                 LocalDateTime dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
                 LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
-                empresa = new EmpresaModel(id, nome, cnpj, email, senha,dataCriacao, dataAtualizacao, dataExclusao);
+                empresa = new EmpresaModel(id, nome, cnpj, email, senha, dataCriacao, dataAtualizacao, dataExclusao);
             }
 
         } catch (SQLException se) {
@@ -370,22 +400,21 @@ public class EmpresaDAO {
         return empresa;
     }
 
-    public EmpresaModel login(String email, String senha, String cnpj){
+    // Login da empresa
+    public EmpresaModel login(String email, String senha, String cnpj) {
         //variaveis gerais
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         List<EmpresaModel> empresas = new ArrayList<>();
         int encontrados = 0;
 
-        if (conn == null){
+        if (conn == null) {
             return null;
         }
 
         //faz a consulta sql
-        try{
-            //prepara o statement
-            String sql = "SELECT * FROM EMPRESAS WHERE CNPJ = ? AND EMAIL = ? AND SENHA = ? AND DATAEXCLUSAO IS NULL";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "SELECT * FROM EMPRESAS WHERE CNPJ = ? AND EMAIL = ? AND SENHA = ? AND DATAEXCLUSAO IS NULL")) {
 
             //atualiza os parametros
             pstmt.setString(1, cnpj);
@@ -396,7 +425,7 @@ public class EmpresaDAO {
             ResultSet rs = pstmt.executeQuery();
 
             //itera sob os dados
-            while (rs.next()){
+            while (rs.next()) {
                 //pega os campos
                 int newId = rs.getInt("id");
                 String newNome = rs.getString("nome");
@@ -406,22 +435,23 @@ public class EmpresaDAO {
                 String newDataExclusao = rs.getString("dataexclusao");
 
                 //vê se é uma empresa apagada
-                if (newDataExclusao == null){
+                if (newDataExclusao == null) {
                     empresas.add(new EmpresaModel(newId, newNome, newCnpj, newEmail, newSenha));
                     encontrados++;
                 }
             }
 
-            //retorna true se só encontar 1
-            if (encontrados == 1){
+            //retorna true se só encontrar 1
+            if (encontrados == 1) {
                 return empresas.get(0);
-            }else {
+            } else {
                 return null;
             }
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
+            e.printStackTrace();
             return null;
-        }finally {
+        } finally {
             conexao.desconectar();
         }
     }
