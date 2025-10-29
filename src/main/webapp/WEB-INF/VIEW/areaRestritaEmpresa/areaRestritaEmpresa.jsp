@@ -1,9 +1,13 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.scaneia.ScaneiaServlet.Model.UsuarioViewModel" %>
+<%@ page import="com.scaneia.ScaneiaServlet.Model.SetorModel" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%
     //carrega os atributos
     List<UsuarioViewModel> usuarios = (List<UsuarioViewModel>) request.getAttribute("usuarios");
+
+    //carrega os setores
+    List<SetorModel> setores = (List<SetorModel>) request.getAttribute("setores");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,7 +84,7 @@
     </main>
 
     <div id="campoAddUser">
-        <form action="areaRH/cadastroUsuario" method="post" id="formAddUser">
+        <form action="areaRH/cadastroUsuario" method="post" id="formAddUser" enctype="multipart/form-data">
 
             <div>
                 <label for="addNome">Nome: </label>
@@ -106,6 +110,26 @@
                     <option value="5">Diretor</option>
                 </select>
             </div>
+
+            <div>
+                <label for="idSetor">Setor:</label>
+                <select name="setorId" id="idSetor">
+                    <%
+                        for(int index = 0; index < setores.size(); index++){
+                            SetorModel setor = setores.get(index);
+                    %>
+                    <option value="<%=setor.getId()%>"><%=setor.getNome()%></option>
+                    <%
+                        }
+                    %>
+                </select>
+            </div>
+
+            <div>
+                <label>Foto: </label>
+                <input type="file" id="arquivo" name="arquivo" accept="image/*">
+            </div>
+
             <button type="submit">Adicionar</button>
         </form>
     </div>

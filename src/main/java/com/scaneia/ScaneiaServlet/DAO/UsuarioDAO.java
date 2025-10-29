@@ -1,5 +1,6 @@
 package com.scaneia.ScaneiaServlet.DAO;
 
+
 import com.scaneia.ScaneiaServlet.Model.UsuarioModel;
 import com.scaneia.ScaneiaServlet.conexao.Conexao;
 
@@ -19,7 +20,8 @@ public class UsuarioDAO {
         }
 
         try (PreparedStatement pstmt = conn.prepareStatement(
-                "INSERT INTO USUARIOS (NOME, EMAIL, CPF, IDCARGOS, IDEMPRESAS, URLFOTO) VALUES (?, ?, ?, ?, ?, ?)")) {
+                "INSERT INTO USUARIOS (NOME, EMAIL, CPF, IDCARGOS, IDEMPRESAS, URLFOTO) VALUES (?, ?, ?, ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS)) {
 
             // adiciona os parâmetros
             pstmt.setString(1, usuario.getNome());
@@ -31,6 +33,16 @@ public class UsuarioDAO {
 
             // executa
             int retorno = pstmt.executeUpdate();
+
+            //atualiza o id de acordo com o gerado
+            ResultSet rs = pstmt.getGeneratedKeys();
+
+            while (rs.next()){
+                int id = rs.getInt("id");
+                usuario.setId(id);
+            }
+
+            //retorno do metodo
 
             if (retorno > 0) {
                 return 1; // deu certo
@@ -210,7 +222,7 @@ public class UsuarioDAO {
         //faz o script
         try {
             //prepara o sql
-            String sql = "UPDATE SETORES_USUARIOS SET IDSETORES = ?, DATAATUALIZACAO = NOW() WHERE IDUSUARIOS = ?";
+            String sql = "UPDATE SETORES_USUARIOS SET IDSETORES = ? WHERE IDUSUARIOS = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             //atualiza os parametros

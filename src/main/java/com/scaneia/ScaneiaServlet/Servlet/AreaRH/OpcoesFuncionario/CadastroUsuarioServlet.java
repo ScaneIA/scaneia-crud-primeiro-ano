@@ -26,6 +26,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
         int cadastroAutorizado;
         List<UsuarioViewModel> usuarios;
         UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
+        UsuarioModel usuarioAdicionado;
 
         //valida se a sessão existe
         if(httpSession == null || httpSession.getAttribute("empresa") == null){
@@ -38,6 +39,7 @@ public class CadastroUsuarioServlet extends HttpServlet {
         String email = req.getParameter("addEmail");
         String cpf = req.getParameter("addCpf");
         String idCargo = req.getParameter("idCargo");
+        String setorId = req.getParameter("setorId");
         Part partArquivo =req.getPart("arquivo");
 
         //transforma a imagem em bytes
@@ -94,9 +96,14 @@ public class CadastroUsuarioServlet extends HttpServlet {
         }
 
         //manda as informações pro banco de dados
-        cadastroAutorizado = usuarioDAO.insert(new UsuarioModel(
+        usuarioAdicionado = new UsuarioModel(
                 nome, email, cpf, Integer.parseInt(idCargo), empresa.getId(), imagembytea
-        ));
+        );
+
+        cadastroAutorizado = usuarioDAO.insert(usuarioAdicionado);
+
+        //seta o setor do usuario
+        usuarioDAO.adicionarSetorUsuario(usuarioAdicionado, Integer.parseInt(setorId));
 
         //encaminha para as paginas coerentes
         if (cadastroAutorizado == 1){

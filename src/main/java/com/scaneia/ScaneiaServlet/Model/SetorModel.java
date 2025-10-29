@@ -1,6 +1,7 @@
 package com.scaneia.ScaneiaServlet.Model;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class SetorModel extends BaseModel {
     // atributo
@@ -18,6 +19,10 @@ public class SetorModel extends BaseModel {
                       int idArea) {
         super(id, nome, descricao, dataExclusao, dataAtualizacao, dataCriacao);
         this.idArea = idArea;
+    }
+
+    public SetorModel(int id, String nome, String descricao){
+        super(id, nome, descricao);
     }
 
     // Getter e Setter específicos
