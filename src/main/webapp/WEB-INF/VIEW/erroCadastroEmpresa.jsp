@@ -15,7 +15,9 @@
 
     <!-- adiciona a mensagem de erro -->
     <script>
-        document.getElementById('mensagemErro').textContent = "<%=mensagemErro%>"
+        const elemento = document.getElementById('mensagemErro')
+        elemento.textContent = "<%=mensagemErro%>"
+        elemento.style.display = "block"
     </script>
 </body>
 </html>
