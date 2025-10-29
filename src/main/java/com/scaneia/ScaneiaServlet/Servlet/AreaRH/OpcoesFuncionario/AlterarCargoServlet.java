@@ -70,13 +70,30 @@ public class AlterarCargoServlet extends HttpServlet {
         resultado = usuarioDAO.updateIdCargo(idCargo, Integer.parseInt(idUsuario));
 
         //sai da operação caso der erro
-        if (resultado != 1){
-            res.sendRedirect(req.getContextPath() + "/areaRH");
+        if(resultado == -1 || resultado == -3){
+            req.setAttribute("mensagem", "Ops... Tente novamente!");
+            req.setAttribute("status", 500);
+            req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp");
+            return;
+        }else if(resultado == 0){
+            req.setAttribute("mensagem", "Ops... Esse usuario não existe!");
+            req.setAttribute("status", 400);
+            req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp");
+            return;
+        }else if(resultado == -2){
+            req.setAttribute("mensagem", "Ops... Tente novamente!");
+            req.setAttribute("status", 500);
+            req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp");
+            return;
+        }else if(resultado == 1){
+            req.setAttribute("mensagem", "Atualizado com sucesso!");
+            req.setAttribute("status", 200);
+            req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp");
             return;
         }
 
-        //responde para a mesma pagina
-        res.sendRedirect(req.getContextPath() + "/areaRH/EditarFuncionario?id=" + idUsuario);
+        //responde para a pagina do RH
+        res.sendRedirect(req.getContextPath() + "/areaRH");
     }
 
 
