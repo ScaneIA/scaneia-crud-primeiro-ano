@@ -27,7 +27,7 @@ public class AreaRHServlet extends HttpServlet {
         HttpSession httpSession = req.getSession();
         EmpresaModel empresa;
         SetorDAO setorDAO = new SetorDAO();
-        List<SetorModel> setores = new ArrayList<>();
+        List<SetorModel> setores;
 
         //valida se tem uma sessao
         if (httpSession == null || (httpSession.getAttribute("empresa") == null && httpSession.getAttribute("admin")
@@ -35,15 +35,21 @@ public class AreaRHServlet extends HttpServlet {
             res.sendRedirect(req.getContextPath() + "/index.html"); // sem parâmetro
             return;
         }else {
-            //valida se é admin
-            if (httpSession.getAttribute("admin") != null){
-                try {
-                    httpSession.setAttribute("empresa", new EmpresaModel(
-                            Integer.parseInt(req.getParameter("idEmpresa"))
-                    ));
+            //valida se tem empresa
+            if (httpSession.getAttribute("empresa") != null){
+                empresa = (EmpresaModel) httpSession.getAttribute("empresa");
+            }else{
+                //valida se é admin
+                if (httpSession.getAttribute("admin") != null){
+                    try {
+                        httpSession.setAttribute("empresa", new EmpresaModel(
+                                Integer.parseInt(req.getParameter("idEmpresa"))
+                        ));
 
-                }catch (NullPointerException  | NumberFormatException exception){
-                    res.sendRedirect(req.getContextPath() + "/index.html");
+                    }catch (NullPointerException  | NumberFormatException exception){
+                        res.sendRedirect(req.getContextPath() + "/index.html");
+                        return;
+                    }
                 }
             }
         }
