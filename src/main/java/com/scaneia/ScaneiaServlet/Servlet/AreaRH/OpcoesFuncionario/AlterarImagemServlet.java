@@ -1,13 +1,16 @@
 package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 
 import com.scaneia.ScaneiaServlet.Config.ImgConfig;
+import com.scaneia.ScaneiaServlet.DAO.SetorDAO;
 import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
+import com.scaneia.ScaneiaServlet.Model.SetorModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @MultipartConfig
 @WebServlet(name = "AlterarImagem", value = "/areaRH/alterarImagem")
@@ -18,6 +21,8 @@ public class AlterarImagemServlet extends HttpServlet {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         HttpSession httpSession = req.getSession();
         int resultado;
+        List<SetorModel> setores;
+        SetorDAO setorDAO = new SetorDAO();
 
         //valida se a sessão existe
         if(httpSession == null || httpSession.getAttribute("empresa") == null){
@@ -34,6 +39,10 @@ public class AlterarImagemServlet extends HttpServlet {
 
         //salva no banco de dados
         resultado = usuarioDAO.alterarImagem(imagem, Integer.parseInt(idUsuario));
+
+        //seta os setores da empresa
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
 
         //valida se deu certo
         if (resultado == 1){

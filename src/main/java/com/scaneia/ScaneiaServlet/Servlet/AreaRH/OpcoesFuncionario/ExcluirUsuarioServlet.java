@@ -1,6 +1,8 @@
 package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 
+import com.scaneia.ScaneiaServlet.DAO.SetorDAO;
 import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
+import com.scaneia.ScaneiaServlet.Model.SetorModel;
 import com.scaneia.ScaneiaServlet.Model.UsuarioModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.rmi.ServerError;
+import java.util.List;
 
 @WebServlet(name = "ExcluirUsuario", value = "/areaRH/excluirUsuario")
 public class ExcluirUsuarioServlet extends HttpServlet {
@@ -19,6 +22,8 @@ public class ExcluirUsuarioServlet extends HttpServlet {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         HttpSession httpSession = req.getSession();
         int resultado;
+        List<SetorModel> setores;
+        SetorDAO setorDAO = new SetorDAO();
 
         //valida se a sessão existe
         if(httpSession == null || httpSession.getAttribute("empresa") == null){
@@ -45,6 +50,10 @@ public class ExcluirUsuarioServlet extends HttpServlet {
 
         //exclui o usuario
         resultado = usuarioDAO.delete(Integer.parseInt(idUsuario));
+
+        //seta os setores da empresa
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
 
         if (resultado != 1){
             res.sendRedirect(req.getContextPath() + "/areaRH");
