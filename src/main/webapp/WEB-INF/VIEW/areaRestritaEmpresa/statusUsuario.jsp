@@ -10,18 +10,15 @@
                 right: 0;
                 margin: 2%;
                 padding: 2%;
-
-
-
                 border-radius: 5px;
-
-                background-color: lightcoral;
+                background-color: #f8d7da;
+                border: 1px solid #f5c6cb;
             }
         </style>
     </head>
 
     <body>
-        <jsp:include page="areaRestritaEmpresa.jsp" />
+        <jsp:include page="areaUsuario.jsp" />
         <div id="msgErro">
             <p>
                 <%=request.getAttribute("mensagem")%>

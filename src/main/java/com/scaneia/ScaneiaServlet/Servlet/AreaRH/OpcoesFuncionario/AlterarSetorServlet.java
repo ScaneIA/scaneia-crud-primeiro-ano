@@ -1,9 +1,13 @@
 package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 
+import com.scaneia.ScaneiaServlet.Config.ImgConfig;
 import com.scaneia.ScaneiaServlet.DAO.SetorDAO;
 import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
+import com.scaneia.ScaneiaServlet.DAO.UsuarioViewDAO;
 import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
 import com.scaneia.ScaneiaServlet.Model.SetorModel;
+import com.scaneia.ScaneiaServlet.Model.UsuarioModel;
+import com.scaneia.ScaneiaServlet.Model.UsuarioViewModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -24,11 +28,16 @@ public class AlterarSetorServlet extends HttpServlet {
         int idSetor;
         int resultado;
         List<SetorModel> setores;
+        UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
+        EmpresaModel empresa;
+        UsuarioViewModel usuario;
 
         //valida se a sessão existe
         if(httpSession == null || httpSession.getAttribute("empresa") == null){
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
+        }else{
+            empresa = (EmpresaModel) httpSession.getAttribute("empresa");
         }
 
         //variaveis da requisição
@@ -39,7 +48,7 @@ public class AlterarSetorServlet extends HttpServlet {
         //validação de entrada
         try {
             //valida o novo setor
-            if (!novoSetor.matches("^[A-Za-zÀ-ÖØ-öø-ÿ0-9.,!?\\s'\"\\-():;]+$\n")) {
+            if (!novoSetor.matches("^[A-Za-zÀ-ÖØ-öø-ÿ0-9.,!?\\s'\"\\-():;]+$")) {
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }
@@ -71,13 +80,35 @@ public class AlterarSetorServlet extends HttpServlet {
         setores = setorDAO.listarSetores();
         req.setAttribute("setores", setores);
 
-        //valida se deu certo
-        if (resultado == 1){
-            //responde para a mesma pagina
-            res.sendRedirect(req.getContextPath() + "/areaRH/EditarFuncionario?id=" + idUsuario);
+        //seta os usuarios da empresa
+        usuario = usuarioViewDAO.buscarPorId(empresa.getId(), Integer.parseInt(idUsuario));
+        req.setAttribute("usuarios", usuarioViewDAO.buscarPorEmpresa(empresa.getId()));
+        req.setAttribute("usuario", usuario);
+
+        //seta a foto do usuario
+        req.setAttribute("imagem", ImgConfig.transformarBase64(usuario.getUrlFoto()));
+
+        //saidas do jsp
+        if(resultado == -1){
+            req.setAttribute("mensagem", "Ops... Tente novamente!");
+            req.setAttribute("status", 500);
+            req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
+        }else if(resultado == 0){
+            req.setAttribute("mensagem", "Ops... Esse usuario não existe!");
+            req.setAttribute("status", 400);
+            req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
+        }else if(resultado == -2){
+            req.setAttribute("mensagem", "Ops... Tente novamente!");
+            req.setAttribute("status", 500);
+            req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
+        }else if(resultado == 1){
+            req.setAttribute("mensagem", "Atualizado com sucesso!");
+            req.setAttribute("status", 200);
+            req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
         }else{
-            //responde para a pagina do RH
-            res.sendRedirect(req.getContextPath() + "/areaRH");
+            req.setAttribute("mensagem", "Ops... Erro nosso, tente novamente!");
+            req.setAttribute("status", 500);
+            req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
         }
 
     }
