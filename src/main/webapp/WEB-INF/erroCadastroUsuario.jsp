@@ -13,10 +13,23 @@
             padding: 2%;
 
             border-radius: 5px;
-
-            background-color: lightcoral;
         }
     </style>
+    <%
+        if ((int) request.getAttribute("status") == 200){
+    %>
+    <style>
+        #msgErro{
+            background-color: green;
+        }
+    </style>
+    <%}else {%>
+    <style>
+        #msgErro{
+            background-color: red;
+        }
+    </style>
+    <%}%>
 </head>
 <body>
     <jsp:include page="VIEW/areaRestritaEmpresa/areaRestritaEmpresa.jsp"/>

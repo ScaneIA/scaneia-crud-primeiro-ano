@@ -3,6 +3,7 @@ package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 import com.scaneia.ScaneiaServlet.DAO.SetorDAO;
 import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
 import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
+import com.scaneia.ScaneiaServlet.Model.SetorModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "AlterarSetor", value = "/areaRH/alterarSetor")
 public class AlterarSetorServlet extends HttpServlet {
@@ -21,6 +23,7 @@ public class AlterarSetorServlet extends HttpServlet {
         HttpSession httpSession = req.getSession();
         int idSetor;
         int resultado;
+        List<SetorModel> setores;
 
         //valida se a sessão existe
         if(httpSession == null || httpSession.getAttribute("empresa") == null){
@@ -63,6 +66,10 @@ public class AlterarSetorServlet extends HttpServlet {
 
         //atualiza o setor
         resultado = usuarioDAO.alterarIdSetor(idSetor, Integer.parseInt(idUsuario));
+
+        //seta os setores da empresa
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
 
         //valida se deu certo
         if (resultado == 1){

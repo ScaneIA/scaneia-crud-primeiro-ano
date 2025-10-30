@@ -12,7 +12,7 @@
 %>
 <html>
 <head>
-    <title>Área Restrita</title>
+    <title>Área RH</title>
 </head>
 <body>
 <jsp:include page="areaRestritaEmpresa.jsp"/>

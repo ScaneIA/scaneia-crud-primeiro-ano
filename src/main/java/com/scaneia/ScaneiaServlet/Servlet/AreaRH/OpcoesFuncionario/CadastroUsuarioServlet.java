@@ -1,9 +1,11 @@
 package com.scaneia.ScaneiaServlet.Servlet.AreaRH.OpcoesFuncionario;
 
 import com.scaneia.ScaneiaServlet.Config.ImgConfig;
+import com.scaneia.ScaneiaServlet.DAO.SetorDAO;
 import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
 import com.scaneia.ScaneiaServlet.DAO.UsuarioViewDAO;
 import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
+import com.scaneia.ScaneiaServlet.Model.SetorModel;
 import com.scaneia.ScaneiaServlet.Model.UsuarioModel;
 import com.scaneia.ScaneiaServlet.Model.UsuarioViewModel;
 import jakarta.servlet.ServletException;
@@ -27,6 +29,8 @@ public class CadastroUsuarioServlet extends HttpServlet {
         List<UsuarioViewModel> usuarios;
         UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
         UsuarioModel usuarioAdicionado;
+        List<SetorModel> setores;
+        SetorDAO setorDAO = new SetorDAO();
 
         //valida se a sessão existe
         if(httpSession == null || httpSession.getAttribute("empresa") == null){
@@ -104,6 +108,10 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         //seta o setor do usuario
         usuarioDAO.adicionarSetorUsuario(usuarioAdicionado, Integer.parseInt(setorId));
+
+        //carrega todos os setores
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
 
         //encaminha para as paginas coerentes
         if (cadastroAutorizado == 1){
