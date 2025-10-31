@@ -34,7 +34,8 @@ public class Conexao {
 
     public void desconectar(){
         try {
-            this.connection.close(); //fecha a conexão
+            //fecha a conexão
+            this.connection.close();
         }catch (SQLException sqle){
             sqle.printStackTrace();
         }
