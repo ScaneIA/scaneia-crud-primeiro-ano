@@ -1,7 +1,9 @@
 package com.scaneia.ScaneiaServlet.Servlet.AreaRH.Filtro;
 
+import com.scaneia.ScaneiaServlet.DAO.SetorDAO;
 import com.scaneia.ScaneiaServlet.DAO.UsuarioViewDAO;
 import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
+import com.scaneia.ScaneiaServlet.Model.SetorModel;
 import com.scaneia.ScaneiaServlet.Model.UsuarioViewModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,6 +23,8 @@ public class FiltroPorCargoServlet extends HttpServlet {
         List<UsuarioViewModel> usuarios;
         HttpSession httpSession = req.getSession();
         EmpresaModel empresa;
+        List<SetorModel> setores;
+        SetorDAO setorDAO = new SetorDAO();
 
         //valida se a sessão existe
         if(httpSession == null || httpSession.getAttribute("empresa") == null){
@@ -67,6 +71,10 @@ public class FiltroPorCargoServlet extends HttpServlet {
 
         //carrega os usuarios
         usuarios = usuarioViewDAO.filtrarPorCargo(cargo, empresa.getId());
+
+        //carrega os setores
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
 
         //responde com jsp
         req.setAttribute("usuarios", usuarios);
