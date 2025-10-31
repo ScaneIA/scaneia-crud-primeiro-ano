@@ -6,7 +6,7 @@ public class EnvConfig {
     private static Dotenv dotenv;
 
     static{
-        dotenv = Dotenv.load();
+        dotenv = Dotenv.configure().ignoreIfMissing().load();
     }
 
     public static String getEnv(String chave){
