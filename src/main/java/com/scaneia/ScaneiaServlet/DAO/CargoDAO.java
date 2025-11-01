@@ -11,7 +11,7 @@ import java.util.List;
 public class CargoDAO {
 
     // Insert normal, inserindo todos os dados
-    public int insert(CargoModel cargo) {
+    public int inserir(CargoModel cargo) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         // cria conexão
@@ -63,7 +63,7 @@ public class CargoDAO {
     }
 
     // Inserindo apenas o nome
-    public int insertNome(CargoModel cargo) {
+    public int inserirNome(CargoModel cargo) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         // cria a conexão
@@ -115,7 +115,7 @@ public class CargoDAO {
     }
 
     // Atualizando tudo
-    public int update(CargoModel cargo) {
+    public int atualizar(CargoModel cargo) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         // cria a conexão
@@ -162,7 +162,7 @@ public class CargoDAO {
     }
 
     // Atualizando só nome
-    public int updateNome(CargoModel cargo) {
+    public int atualizarNome(CargoModel cargo) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         // cria conexão
@@ -207,7 +207,7 @@ public class CargoDAO {
     }
 
     // Atualizando só a descriação
-    public int updateDescricao(CargoModel cargo) {
+    public int atualizarDescricao(CargoModel cargo) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         // cria conexão

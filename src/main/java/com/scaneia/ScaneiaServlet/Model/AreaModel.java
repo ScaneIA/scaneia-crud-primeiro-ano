@@ -6,10 +6,6 @@ import java.time.LocalDateTime;
 // Herda classe BaseModel
 public class AreaModel extends BaseModel {
 
-    // Construtor simples, quando nem tudo é preenchido
-    public AreaModel(String nome, String descricao) {
-        super(nome, descricao);
-    }
 
     // Construtor completo
     public AreaModel(int id, String nome, String descricao,

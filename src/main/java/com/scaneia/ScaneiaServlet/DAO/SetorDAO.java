@@ -159,7 +159,7 @@ public class SetorDAO {
     }
 
     // Atualizar ID da área
-    public int updateIdArea(SetorModel setor) {
+    public int atualizarIdArea(SetorModel setor) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         // cria a conexão

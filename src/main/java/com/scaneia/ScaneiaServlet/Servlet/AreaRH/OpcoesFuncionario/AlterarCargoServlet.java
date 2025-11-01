@@ -70,7 +70,7 @@ public class AlterarCargoServlet extends HttpServlet {
         }
 
         // Atualiza o cargo no banco
-        resultado = usuarioDAO.updateIdCargo(idCargo, Integer.parseInt(idUsuario));
+        resultado = usuarioDAO.alterarIdCargo(idCargo, Integer.parseInt(idUsuario));
 
         // Carrega setores e usuários
         setores = setorDAO.listarSetores();
