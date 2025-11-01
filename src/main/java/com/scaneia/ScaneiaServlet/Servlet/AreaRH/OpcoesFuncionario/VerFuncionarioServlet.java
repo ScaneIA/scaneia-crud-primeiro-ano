@@ -17,10 +17,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+// Ver/Pesquisar o usuario pelo nome
 @WebServlet(name = "editarFuncionario", value = "/areaRH/EditarFuncionario")
 public class VerFuncionarioServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        //variaveis gerais
+        // DAO e variáveis gerais
         UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
         HttpSession httpSession = req.getSession();
         EmpresaModel empresa;
@@ -29,50 +30,49 @@ public class VerFuncionarioServlet extends HttpServlet {
         SetorDAO setorDAO = new SetorDAO();
         List<UsuarioViewModel> usuarios;
 
-        //valida se a sessão existe
+        // valida sessão
         if(httpSession == null || httpSession.getAttribute("empresa") == null){
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
         }
 
-        //pega os parametros da req
+        // pega parâmetros da requisição
         String id = req.getParameter("id");
 
-        //validação de entrada
+        // valida entrada
         try {
-            //valida o id
             if (!id.matches("[0-9]+")){
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }
-        }catch (NullPointerException exception){
-            //ve se está salvo no atributo
+        } catch (NullPointerException exception){
+            // tenta pegar id de atributo
             if (req.getAttribute("id") != null){
                 id = (String) req.getAttribute("id");
-            }else {
+            } else {
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }
         }
 
-        //carrega a empresa
+        // carrega empresa
         empresa = (EmpresaModel) httpSession.getAttribute("empresa");
 
-        //carrega o usuario
+        // carrega usuário e lista de usuários da empresa
         usuario = usuarioViewDAO.buscarPorId(empresa.getId(), Integer.parseInt(id));
         usuarios = usuarioViewDAO.buscarPorEmpresa(empresa.getId());
 
-        //respnde para a pagina do usuario
+        // verifica se usuário existe
         if (usuario == null){
             res.sendRedirect("/areaRH");
             return;
         }
 
-        //seta os setores da empresa
+        // carrega setores
         setores = setorDAO.listarSetores();
         req.setAttribute("setores", setores);
 
-        //encaminha para a area do usuario
+        // encaminha dados para a página do usuário
         req.setAttribute("imagem", ImgConfig.transformarBase64(usuario.getUrlFoto()));
         req.setAttribute("usuario", usuario);
         req.setAttribute("usuarios", usuarios);

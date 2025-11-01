@@ -18,6 +18,7 @@ public class UsuarioViewDAO {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
 
+        // verifica a conexão
         if (conn == null){
             return null;
         }
@@ -51,11 +52,13 @@ public class UsuarioViewDAO {
                     ));
                 }
             }
-
+            // retorna o objeto usuarios
             return usuarios;
         }catch (SQLException sqle){
+            // erro de sql
             return null;
         }finally {
+            // desconectar
             conexao.desconectar();
         }
     }
@@ -68,6 +71,7 @@ public class UsuarioViewDAO {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
 
+        // verificar a conexão
         if (conn == null){
             return null;
         }
@@ -102,11 +106,14 @@ public class UsuarioViewDAO {
                     ));
                 }
             }
+            // retorna o objeto usuarios
             return usuarios;
 
         }catch (SQLException exception){
+            // erro de banco
             return null;
         }finally {
+            // outro erro
             conexao.desconectar();
         }
     }
@@ -119,6 +126,7 @@ public class UsuarioViewDAO {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
 
+        // verifica a conexão
         if (conn == null){
             return null;
         }
@@ -152,10 +160,13 @@ public class UsuarioViewDAO {
                 }
             }
 
+            // retorna o objeto usuario
             return usuario;
         }catch (SQLException sqle){
+            // erro de banco
             return null;
         }finally {
+            // desconectar
             conexao.desconectar();
         }
     }
@@ -168,6 +179,7 @@ public class UsuarioViewDAO {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
 
+        // verifica a conexão
         if (conn == null){
             return null;
         }
@@ -202,11 +214,14 @@ public class UsuarioViewDAO {
                     ));
                 }
             }
+            // retorna a lista de usuarios
             return usuarios;
 
         }catch (SQLException exception){
+            // erro de banco
             return null;
         }finally {
+            // desconectar
             conexao.desconectar();
         }
     }
@@ -219,6 +234,7 @@ public class UsuarioViewDAO {
         //cria o formatter da saida
         DateTimeFormatter formatterSaida = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+        // retorna a área formatada
         return horaNormal.format(formatterSaida);
     }
 }

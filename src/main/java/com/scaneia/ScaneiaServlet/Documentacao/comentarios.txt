@@ -1,0 +1,28 @@
+Desenvolvemos essas páginas com o objetivo de torná-las o mais práticas e simples possível, tanto para nós quanto para o usuário.
+Ao clicar em “Cadastre sua empresa”, o usuário é direcionado para uma tela de cadastro padrão, solicitando informações como CNPJ,
+nome e e-mail. Após essa etapa inicial, ele é levado para o cadastro de endereço da empresa. Concluído esse processo, o sistema o
+redireciona para a tela de login, onde ele repete apenas o e-mail, CNPJ e senha para acessar o sistema.Isso se for a primeira interação
+do usuário com o site.
+Caso o usuário já tenha se cadastrado anteriormente, é só clicar em “Fazer login”, pulando as duas primeiras etapas e inserindo
+diretamente o e-mail, CNPJ e senha.
+
+Independentemente do caminho seguido, o usuário é direcionado para a tela de cadastro de usuários, onde o setor de RH pode adicionar,
+editar, excluir e pesquisar usuários.Já que em nosso site,app e projeto acreditamos que a organização de cargos mantendo a
+lógica industrial é fundamental. Dessa forma o RH tem total autonomia para gerenciar quem terá acesso ao aplicativo e quais
+serão suas funções. Nessa tela, as informações de setor e cargo (que pertencem a tabelas distintas) são exibidas em conjunto a
+de usuário, facilitando a compreensão e o gerenciamento e diminuindo a necessidade de mais páginas CRUD que iriam deixar o programa
+mais lento e mais difícil de "interpretar". Essa é a última etapa acessível ao usuário comum.
+
+Partindo agora para a área restrita, sua primeira tela possui um pequeno login para controle de acesso. A tela seguinte apresenta
+todas as empresas cadastradas, permitindo adicionar, editar, excluir e pesquisar registros, exibindo as informações mais essenciais.
+Cada empresa possui a opção “Ver endereços”, que direciona para a tela onde é possível visualizar, editar e adicionar endereços.
+Não incluímos a opção de exclusão, pois não faria sentido deletar um endereço e manter a empresa. Além disso, endereços é uma tabela dependente
+(tabela fraca) da entidade empresa,então ela não conseguiria ser deletada já que informações de outra tabela dependem dela, porém,
+ao excluir uma empresa, seus endereços são automaticamente removidos. Como cada empresa possui apenas um endereço, não há necessidade
+de implementar pesquisa nessa tela, e o sistema impede o cadastro de um novo endereço caso já exista um registrado.Sendo possível apenas
+editar o atual.
+
+Ao clicar em “Voltar”, retornamos à listagem de empresas. Já ao clicar sobre o nome de uma empresa,
+o sistema exibe os usuários vinculados a ela. Assim, a área de usuários serve tanto para que os clientes
+cadastrem novos colaboradores quanto como uma ferramenta administrativa de controle, atuando como um CRUD unificado,
+que reduz o número de telas e melhora o desempenho do sistema, otimizando tempo de execução e compilação dos códigos.

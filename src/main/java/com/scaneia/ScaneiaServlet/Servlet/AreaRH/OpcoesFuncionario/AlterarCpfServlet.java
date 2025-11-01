@@ -17,10 +17,11 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+// Alterar/atualizar o CPF do usuário
 @WebServlet(name = "AlterarCpf", value = "/areaRH/alterarCpf")
 public class AlterarCpfServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        //variaveis gerais
+        // Variávies principais
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         HttpSession httpSession = req.getSession();
         int resultado;
@@ -30,74 +31,73 @@ public class AlterarCpfServlet extends HttpServlet {
         UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
         UsuarioViewModel usuario;
 
-        //valida se a sessão existe
-        if(httpSession == null || httpSession.getAttribute("empresa") == null){
+        // Verifica se a sessão é válida
+        if (httpSession == null || httpSession.getAttribute("empresa") == null) {
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
-        }else{
+        } else {
             empresa = (EmpresaModel) httpSession.getAttribute("empresa");
         }
 
-        //variaveis da requisição
+        // Dados enviados pelo formulário
         String novoCpf = req.getParameter("cpf");
         String idUsuario = req.getParameter("idUsuario");
 
-
-        //validação de entrada
+        // Validação dos dados
         try {
-            //valida o cpf
-            if (!novoCpf.matches("^\\s*\\d{3}\\s*[.\\-]?\\s*\\d{3}\\s*[.\\-]?\\s*\\d{3}\\s*[.\\-]?\\s*\\d{2}\\s*$")){
+            // Verifica formato do CPF
+            if (!novoCpf.matches("^\\s*\\d{3}\\s*[.\\-]?\\s*\\d{3}\\s*[.\\-]?\\s*\\d{3}\\s*[.\\-]?\\s*\\d{2}\\s*$")) {
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
-            }else {
-                //remove os numeros
+            } else {
+                // Mantém apenas os números
                 novoCpf = novoCpf.replaceAll("[^0-9]", "");
             }
 
-            //valida o id
-            if (!idUsuario.matches("[0-9]+")){
+            // Verifica se o ID é numérico
+            if (!idUsuario.matches("[0-9]+")) {
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }
 
-        }catch (NullPointerException exception){
+        } catch (NullPointerException exception) {
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 
-        //seta os setores da empresa
+        // Carrega setores
         setores = setorDAO.listarSetores();
         req.setAttribute("setores", setores);
 
-        //altera o cpf
+        // Atualiza o CPF
         resultado = usuarioDAO.alterarCpf(novoCpf, Integer.parseInt(idUsuario));
 
-        //seta os usuarios da empresa
+        // Carrega dados do usuário
         usuario = usuarioViewDAO.buscarPorId(empresa.getId(), Integer.parseInt(idUsuario));
         req.setAttribute("usuarios", usuarioViewDAO.buscarPorEmpresa(empresa.getId()));
         req.setAttribute("usuario", usuario);
 
-        //seta a foto do usuario
+        // Define a imagem do usuário
         req.setAttribute("imagem", ImgConfig.transformarBase64(usuario.getUrlFoto()));
 
-        //saidas do jsp
-        if(resultado == -1 || resultado == -3){
+        // Resposta conforme o resultado
+        if (resultado == -1 || resultado == -3) {
             req.setAttribute("mensagem", "Ops... Tente novamente!");
             req.setAttribute("status", 500);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
-        }else if(resultado == 0){
-            req.setAttribute("mensagem", "Ops... Esse usuario não existe!");
+        } else if (resultado == 0) {
+            req.setAttribute("mensagem", "Ops... Esse usuário não existe!");
             req.setAttribute("status", 400);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
-        }else if(resultado == -2){
+        } else if (resultado == -2) {
             req.setAttribute("mensagem", "Ops... Tente novamente!");
             req.setAttribute("status", 500);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
-        }else if(resultado == 1){
+        } else if (resultado == 1) {
             req.setAttribute("mensagem", "Atualizado com sucesso!");
             req.setAttribute("status", 200);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
-        }else{
+        } else {
             req.setAttribute("mensagem", "Ops... Erro nosso, tente novamente!");
             req.setAttribute("status", 500);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);

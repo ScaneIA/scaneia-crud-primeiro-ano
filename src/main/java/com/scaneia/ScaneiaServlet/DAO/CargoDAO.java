@@ -17,7 +17,8 @@ public class CargoDAO {
         // cria conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara
         try (PreparedStatement pstmt = conn.prepareStatement(
@@ -40,17 +41,21 @@ public class CargoDAO {
                 cargo.setDataCriacao(LocalDateTime.now());
                 cargo.setDataAtualizacao(LocalDateTime.now());
                 // colocando esses valores no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada foi alterado
+                // nada foi alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -64,7 +69,8 @@ public class CargoDAO {
         // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara
         try (PreparedStatement pstmt = conn.prepareStatement(
@@ -87,17 +93,21 @@ public class CargoDAO {
                 cargo.setDataCriacao(LocalDateTime.now());
                 cargo.setDataAtualizacao(LocalDateTime.now());
                 // colocando esses valores no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada foi alterado
+                // nada foi alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -111,7 +121,8 @@ public class CargoDAO {
         // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
 
         // prepara o comando
@@ -129,17 +140,21 @@ public class CargoDAO {
             if (linhasAfetadas > 0) {
                 cargo.setDataAtualizacao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -153,7 +168,8 @@ public class CargoDAO {
         // cria conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara a conexão
         try {
@@ -169,17 +185,21 @@ public class CargoDAO {
             if (retorno > 0) {
                 cargo.setDataAtualizacao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -193,7 +213,8 @@ public class CargoDAO {
         // cria conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara
         try {
@@ -209,17 +230,21 @@ public class CargoDAO {
             if (retorno > 0) {
                 cargo.setDataAtualizacao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -233,7 +258,8 @@ public class CargoDAO {
         // cria conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
 
         // prepara
@@ -248,17 +274,21 @@ public class CargoDAO {
             if (retorno > 0) {
                 cargo.setDataExclusao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta

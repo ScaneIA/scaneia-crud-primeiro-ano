@@ -15,13 +15,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
-
+// Alterar/atualizar o email do usuário
 @WebServlet(name = "AlterarEmail", value = "/areaRH/alterarEmail")
 public class AlterarEmailServlet extends HttpServlet {
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-        //variaveis gerais
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // Variáveis principais
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         HttpSession httpSession = req.getSession();
         int resultado;
@@ -31,82 +30,82 @@ public class AlterarEmailServlet extends HttpServlet {
         UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
         UsuarioViewModel usuario;
 
-        //valida se a sessão existe
-        if(httpSession == null || httpSession.getAttribute("empresa") == null){
+        // Verifica se a sessão é válida
+        if (httpSession == null || httpSession.getAttribute("empresa") == null) {
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
-        }else{
+        } else {
             empresa = (EmpresaModel) httpSession.getAttribute("empresa");
         }
 
-        //variaveis da reqisição
+        // Dados da requisição
         String idUsuario = req.getParameter("idUsuario");
         String novoEmail = req.getParameter("email");
 
-
-        //validação de entrada
+        // Validação dos dados
         try {
-            //valida o id
-            if (!idUsuario.matches("[0-9]+")){
+            // Verifica se o ID é numérico
+            if (!idUsuario.matches("[0-9]+")) {
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }
 
-            //valida o email
-            if (!novoEmail.matches("^[A-Za-z0-9]+([._]?[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){
+            // Verifica formato do email
+            if (!novoEmail.matches("^[A-Za-z0-9]+([._]?[A-Za-z0-9]+)*@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }
 
-        }catch (NullPointerException exception){
+        } catch (NullPointerException exception) {
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 
-        //atualiza o email
+        // Atualiza o email no banco
         resultado = usuarioDAO.alterarEmail(novoEmail, Integer.parseInt(idUsuario));
 
-        //seta os setores da empresa
+        // Carrega setores da empresa
         setores = setorDAO.listarSetores();
         req.setAttribute("setores", setores);
 
-        //seta os usuarios da empresa
+        // Carrega dados do usuário
         usuario = usuarioViewDAO.buscarPorId(empresa.getId(), Integer.parseInt(idUsuario));
         req.setAttribute("usuarios", usuarioViewDAO.buscarPorEmpresa(empresa.getId()));
         req.setAttribute("usuario", usuario);
 
-        //seta a foto do usuario
+        // Define a imagem do usuário
         req.setAttribute("imagem", ImgConfig.transformarBase64(usuario.getUrlFoto()));
 
-        //saidas do jsp
-        if(resultado == -1 || resultado == -3){
+        // Define mensagem conforme o resultado
+        if (resultado == -1 || resultado == -3) {
             req.setAttribute("mensagem", "Ops... Tente novamente!");
             req.setAttribute("status", 500);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
-        }else if(resultado == 0){
-            req.setAttribute("mensagem", "Ops... Esse usuario não existe!");
+        } else if (resultado == 0) {
+            req.setAttribute("mensagem", "Ops... Esse usuário não existe!");
             req.setAttribute("status", 400);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
-        }else if(resultado == -2){
+        } else if (resultado == -2) {
             req.setAttribute("mensagem", "Ops... Tente novamente!");
             req.setAttribute("status", 500);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
-        }else if(resultado == 1){
+        } else if (resultado == 1) {
             req.setAttribute("mensagem", "Atualizado com sucesso!");
             req.setAttribute("status", 200);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
-        }else{
+        } else {
             req.setAttribute("mensagem", "Ops... Erro nosso, tente novamente!");
             req.setAttribute("status", 500);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
         }
 
-        if(resultado != 1){
+        // Redireciona caso o resultado não seja sucesso
+        if (resultado != 1) {
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 
-        //responde para a mesma pagina
+        // Redireciona para a tela de edição do funcionário
         res.sendRedirect(req.getContextPath() + "/areaRH/EditarFuncionario?id=" + idUsuario);
     }
 }

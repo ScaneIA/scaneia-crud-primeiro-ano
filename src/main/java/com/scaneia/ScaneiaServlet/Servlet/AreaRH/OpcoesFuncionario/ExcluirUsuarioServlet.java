@@ -15,52 +15,51 @@ import java.io.IOException;
 import java.rmi.ServerError;
 import java.util.List;
 
+//Excluir o usuário
 @WebServlet(name = "ExcluirUsuario", value = "/areaRH/excluirUsuario")
 public class ExcluirUsuarioServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        //variaveis gerais
+        // objetos e variáveis
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         HttpSession httpSession = req.getSession();
         int resultado;
         List<SetorModel> setores;
         SetorDAO setorDAO = new SetorDAO();
 
-        //valida se a sessão existe
+        // valida sessão
         if(httpSession == null || httpSession.getAttribute("empresa") == null){
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
         }
 
-        //variaveis da reqisição
+        // parâmetros da requisição
         String idUsuario = req.getParameter("idUsuario");
 
-
-        //validação de entrada
+        // valida entrada
         try {
-            //valida o id
             if (!idUsuario.matches("[0-9]+")){
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }
-
-        }catch (NullPointerException exception){
+        } catch (NullPointerException exception){
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 
-        //exclui o usuario
+        // exclui o usuário
         resultado = usuarioDAO.delete(Integer.parseInt(idUsuario));
 
-        //seta os setores da empresa
+        // carrega setores
         setores = setorDAO.listarSetores();
         req.setAttribute("setores", setores);
 
+        // redireciona se houve erro
         if (resultado != 1){
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 
-        //responde para a mesma pagina
+        // redireciona para a página do usuário
         res.sendRedirect(req.getContextPath() + "/areaRH/EditarFuncionario?id=" + idUsuario);
     }
 }

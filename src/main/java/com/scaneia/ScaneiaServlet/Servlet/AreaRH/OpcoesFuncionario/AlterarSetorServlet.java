@@ -6,7 +6,6 @@ import com.scaneia.ScaneiaServlet.DAO.UsuarioDAO;
 import com.scaneia.ScaneiaServlet.DAO.UsuarioViewDAO;
 import com.scaneia.ScaneiaServlet.Model.EmpresaModel;
 import com.scaneia.ScaneiaServlet.Model.SetorModel;
-import com.scaneia.ScaneiaServlet.Model.UsuarioModel;
 import com.scaneia.ScaneiaServlet.Model.UsuarioViewModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,10 +17,11 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+// Alterar/atualizar o setor do usuário
 @WebServlet(name = "AlterarSetor", value = "/areaRH/alterarSetor")
 public class AlterarSetorServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        //variaveis gerais
+        //objetos DAO e variáveis
         SetorDAO setorDAO = new SetorDAO();
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         HttpSession httpSession = req.getSession();
@@ -32,7 +32,7 @@ public class AlterarSetorServlet extends HttpServlet {
         EmpresaModel empresa;
         UsuarioViewModel usuario;
 
-        //valida se a sessão existe
+        //verifica sessão
         if(httpSession == null || httpSession.getAttribute("empresa") == null){
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
@@ -40,20 +40,19 @@ public class AlterarSetorServlet extends HttpServlet {
             empresa = (EmpresaModel) httpSession.getAttribute("empresa");
         }
 
-        //variaveis da requisição
+        //recebe dados da requisição
         String novoSetor = req.getParameter("setor");
         String idUsuario = req.getParameter("idUsuario");
 
-
         //validação de entrada
         try {
-            //valida o novo setor
+            //valida o nome do setor
             if (!novoSetor.matches("^[A-Za-zÀ-ÖØ-öø-ÿ0-9.,!?\\s'\"\\-():;]+$")) {
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }
 
-            //valida o id do usuario
+            //valida o id do usuário
             if (!idUsuario.matches("[0-9]+")) {
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
@@ -64,31 +63,31 @@ public class AlterarSetorServlet extends HttpServlet {
             return;
         }
 
-        //pega o id do setor novo
+        //pega o id do setor
         idSetor = setorDAO.descobrirId(novoSetor);
 
-        //valida se deu erro
+        //verifica se encontrou o setor
         if (idSetor < 0){
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 
-        //atualiza o setor
+        //atualiza setor do usuário
         resultado = usuarioDAO.alterarIdSetor(idSetor, Integer.parseInt(idUsuario));
 
-        //seta os setores da empresa
+        //carrega setores
         setores = setorDAO.listarSetores();
         req.setAttribute("setores", setores);
 
-        //seta os usuarios da empresa
+        //carrega usuários
         usuario = usuarioViewDAO.buscarPorId(empresa.getId(), Integer.parseInt(idUsuario));
         req.setAttribute("usuarios", usuarioViewDAO.buscarPorEmpresa(empresa.getId()));
         req.setAttribute("usuario", usuario);
 
-        //seta a foto do usuario
+        //imagem do usuário
         req.setAttribute("imagem", ImgConfig.transformarBase64(usuario.getUrlFoto()));
 
-        //saidas do jsp
+        //resposta para JSP
         if(resultado == -1){
             req.setAttribute("mensagem", "Ops... Tente novamente!");
             req.setAttribute("status", 500);

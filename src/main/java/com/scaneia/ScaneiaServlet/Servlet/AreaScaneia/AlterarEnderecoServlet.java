@@ -11,6 +11,9 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+// Servlet responsável por alterar/atualizar os dados do endereço da empresa.
+// Todas as atualizações como rua, bairro, cep e etc são tratadas aqui,
+// permitindo modificar um ou mais campos conforme a solicitação do usuário.
 @WebServlet(name = "enderecos", value = "/areaRestrita/alterarEndereco")
 public class AlterarEnderecoServlet extends HttpServlet {
 
@@ -18,7 +21,8 @@ public class AlterarEnderecoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        HttpSession session = req.getSession(false); // não cria nova sessão
+        // pega a sessão sem criar nova
+        HttpSession session = req.getSession(false);
         if (session == null) {
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
@@ -26,7 +30,7 @@ public class AlterarEnderecoServlet extends HttpServlet {
 
         EnderecoEmpresaDAO enderecoDAO = new EnderecoEmpresaDAO();
 
-        // parâmetros do formulário
+        // pega os parâmetros enviados pelo formulário
         String idParam = req.getParameter("id");
         String rua = req.getParameter("rua");
         String numeroParam = req.getParameter("numero");
@@ -36,7 +40,7 @@ public class AlterarEnderecoServlet extends HttpServlet {
         String complemento = req.getParameter("complemento");
         String cep = req.getParameter("cep");
 
-        // valida id
+        // valida o id do endereço
         if (idParam == null || !idParam.matches("[0-9]+")) {
             res.sendRedirect(req.getContextPath() + "/areaRestrita/enderecos");
             return;
@@ -44,7 +48,7 @@ public class AlterarEnderecoServlet extends HttpServlet {
 
         int id = Integer.parseInt(idParam);
 
-        // busca o endereço atual
+        // busca o endereço atual pelo id
         EnderecoEmpresaModel enderecoAtual = null;
         for (EnderecoEmpresaModel e : enderecoDAO.buscar()) {
             if (e.getId() == id) {
@@ -53,24 +57,27 @@ public class AlterarEnderecoServlet extends HttpServlet {
             }
         }
 
+        // redireciona caso o endereço não exista
         if (enderecoAtual == null) {
             res.sendRedirect(req.getContextPath() + "/areaRestrita/enderecos");
             return;
         }
 
-        // Atualiza os campos somente se preenchidos
+        // atualiza somente os campos preenchidos
         if (rua != null && !rua.isBlank()) enderecoAtual.setRua(rua);
         if (numeroParam != null && numeroParam.matches("[0-9]+")) enderecoAtual.setNumero(Integer.parseInt(numeroParam));
         if (cidade != null && !cidade.isBlank()) enderecoAtual.setCidade(cidade);
         if (estado != null && !estado.isBlank()) enderecoAtual.setEstado(estado);
-        if (bairro != null) enderecoAtual.setBairro(bairro); // pode ser vazio
-        if (complemento != null) enderecoAtual.setComplemento(complemento); // pode ser vazio
+        // permitido o usuário não escrever nada/ aceita valor vazio
+        if (bairro != null) enderecoAtual.setBairro(bairro);
+        // permitido o usuário não escrever nada/ aceita valor vazio
+        if (complemento != null) enderecoAtual.setComplemento(complemento);
         if (cep != null && cep.matches("\\d{5}-?\\d{3}")) enderecoAtual.setCep(cep);
 
-        // chama o DAO para atualizar
+        // chama o DAO para salvar as alterações
         enderecoDAO.atualizar(enderecoAtual);
 
-        // redireciona de volta à lista de endereços da empresa
+        // redireciona para a lista de endereços da empresa
         res.sendRedirect(req.getContextPath() + "/areaRestrita?acao=verEnderecos&idEmpresa=" + enderecoAtual.getIdEmpresa());
     }
 }

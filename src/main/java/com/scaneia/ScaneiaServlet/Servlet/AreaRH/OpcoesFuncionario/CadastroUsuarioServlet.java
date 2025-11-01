@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
+// Cadastro de um usuário totalmente novo
 @WebServlet(name = "cadastroUsuario", value = "/areaRH/cadastroUsuario")
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5)
 public class CadastroUsuarioServlet extends HttpServlet {
@@ -106,14 +107,14 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         cadastroAutorizado = usuarioDAO.insert(usuarioAdicionado);
 
-        //seta o setor do usuario
+        //seta o setor do usuário
         usuarioDAO.adicionarSetorUsuario(usuarioAdicionado, Integer.parseInt(setorId));
 
         //carrega todos os setores
         setores = setorDAO.listarSetores();
         req.setAttribute("setores", setores);
 
-        //encaminha para as paginas coerentes
+        //encaminha para as páginas coerentes
         if (cadastroAutorizado == 1){
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;

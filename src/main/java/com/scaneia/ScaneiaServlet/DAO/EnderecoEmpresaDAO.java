@@ -16,9 +16,11 @@ public class EnderecoEmpresaDAO {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
 
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         //prepara o sql
         try (PreparedStatement pstmt = conn.prepareStatement(
@@ -48,17 +50,21 @@ public class EnderecoEmpresaDAO {
                 endereco.setDataCriacao(LocalDateTime.now());
                 endereco.setDataAtualizacao(LocalDateTime.now());
                 // colocando esses valores no objeto
-                return 1; // sucesso
+                // sucesso
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             // fecha a conexão
             conexao.desconectar();
@@ -67,12 +73,15 @@ public class EnderecoEmpresaDAO {
 
     // Atualizar endereço completo
     public int atualizar(EnderecoEmpresaModel endereco) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara o comando sql
         try {
@@ -96,17 +105,21 @@ public class EnderecoEmpresaDAO {
             if (retorno > 0) {
                 endereco.setDataAtualizacao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // sucesso
+                // sucesso
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             // desconecta
             conexao.desconectar();
@@ -115,12 +128,15 @@ public class EnderecoEmpresaDAO {
 
     // Deletar endereço
     public int deletar(EnderecoEmpresaModel endereco) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara o comando
         try {
@@ -134,17 +150,21 @@ public class EnderecoEmpresaDAO {
             if (retorno > 0) {
                 endereco.setDataExclusao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // sucesso
+                // sucesso
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             // desconecta
             conexao.desconectar();
@@ -153,10 +173,12 @@ public class EnderecoEmpresaDAO {
 
     // Buscar todos os endereços
     public List<EnderecoEmpresaModel> buscar() {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         List<EnderecoEmpresaModel> lista = new ArrayList<>();
-       // cria a conexão
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
             return lista;
@@ -195,6 +217,7 @@ public class EnderecoEmpresaDAO {
             }
 
         } catch (SQLException se) {
+            // erro de banco
             se.printStackTrace();
         } finally {
             // desconecta
@@ -206,11 +229,12 @@ public class EnderecoEmpresaDAO {
 
     // Buscar por cidade
     public List<EnderecoEmpresaModel> buscarPorCidade(EnderecoEmpresaModel endereco) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         List<EnderecoEmpresaModel> lista = new ArrayList<>();
 
-        // cria a conexão
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
             return lista;
@@ -251,6 +275,7 @@ public class EnderecoEmpresaDAO {
             }
 
         } catch (SQLException se) {
+            // erro de banco
             se.printStackTrace();
         } finally {
             // desconecta
@@ -260,11 +285,15 @@ public class EnderecoEmpresaDAO {
         return lista;
     }
     public List<EnderecoEmpresaModel> buscarPorIdEmpresa(int idEmpresa) {
-        List<EnderecoEmpresaModel> lista = new ArrayList<>();
+        // cria a conexão
         Conexao conexao = new Conexao();
+        List<EnderecoEmpresaModel> lista = new ArrayList<>();
         Connection conn = conexao.getConnection();
+
+        // verifica a conexão
         if (conn == null) return lista;
 
+        // prepara o comando
         try {
             PreparedStatement pstmt = conn.prepareStatement(
                     "SELECT * FROM ENDERECOS_EMPRESAS WHERE IDEMPRESAS = ? AND DATAEXCLUSAO IS NULL"
@@ -297,11 +326,13 @@ public class EnderecoEmpresaDAO {
             }
 
         } catch (SQLException e) {
+            // erro de banco
             e.printStackTrace();
         } finally {
+            // desconecta
             conexao.desconectar();
         }
-
+        // retorna a lista
         return lista;
     }
 

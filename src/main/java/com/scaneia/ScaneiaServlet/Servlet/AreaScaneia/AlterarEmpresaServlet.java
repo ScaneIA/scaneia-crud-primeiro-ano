@@ -11,6 +11,10 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+// Servlet responsável por alterar/atualizar os dados da empresa.
+// Todas as atualizações como nome, CNPJ e e-mail são tratadas aqui,
+// permitindo modificar um ou mais campos conforme a solicitação do usuário.
+
 @WebServlet(name = "alterarEmpresa", value = "/areaRestrita/alterarEmpresa")
 public class AlterarEmpresaServlet extends HttpServlet {
 
@@ -21,7 +25,8 @@ public class AlterarEmpresaServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
-        HttpSession session = req.getSession(false); // não cria nova sessão
+        // pega a sessão sem criar nova
+        HttpSession session = req.getSession(false);
         if (session == null) {
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
@@ -29,7 +34,7 @@ public class AlterarEmpresaServlet extends HttpServlet {
 
         EmpresaDAO empresaDAO = new EmpresaDAO();
 
-        // parâmetros do formulário
+        // pega parâmetros do formulário
         String idParam = req.getParameter("id");
         String nome = req.getParameter("nome");
         String cnpj = req.getParameter("cnpj");
@@ -43,7 +48,7 @@ public class AlterarEmpresaServlet extends HttpServlet {
 
         int id = Integer.parseInt(idParam);
 
-        // busca a empresa atual
+        // busca empresa atual pelo id
         EmpresaModel empresaAtual = empresaDAO.buscarId(id);
         if (empresaAtual == null) {
             res.sendRedirect(req.getContextPath() + "/areaRestrita");
@@ -52,23 +57,25 @@ public class AlterarEmpresaServlet extends HttpServlet {
 
         int resultado = 0;
 
-        // atualiza somente se os campos foram preenchidos e válidos
+        // atualiza nome se  for válido
         if (nome != null && !nome.isBlank()) {
             empresaAtual.setNome(nome);
             resultado = empresaDAO.atualizarNome(empresaAtual);
         }
 
+        // atualiza cnpj se for válido
         if (cnpj != null && !cnpj.isBlank() && cnpj.matches(REGEX_CNPJ)) {
             empresaAtual.setCnpj(cnpj);
             resultado = empresaDAO.atualizarCnpj(empresaAtual);
         }
 
+        // atualiza email se for válido
         if (email != null && !email.isBlank() && email.matches(REGEX_EMAIL)) {
             empresaAtual.setEmail(email);
             resultado = empresaDAO.atualizarEmail(empresaAtual);
         }
 
-        // volta para área restrita
+        // redireciona de volta para área restrita
         res.sendRedirect(req.getContextPath() + "/areaRestrita");
     }
 }

@@ -4,7 +4,7 @@ import jakarta.servlet.http.Part;
 
 import java.time.LocalDateTime;
 
-
+// Usuários da empresa
 public class UsuarioModel {
     //atributos
     private int id;

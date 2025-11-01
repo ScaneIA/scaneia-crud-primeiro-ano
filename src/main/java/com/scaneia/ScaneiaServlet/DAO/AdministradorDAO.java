@@ -16,9 +16,11 @@ public class AdministradorDAO {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         AdministradorModel admin = null;
-
-        if (conn == null) return null;
-
+        if (conn == null) {
+            System.out.println("Não foi possível conectar");
+            // erro na conexão
+        }
+        // faz a consulta sql
         try {
             PreparedStatement pstmt = conn.prepareStatement(
                     "SELECT * FROM ADMINISTRADOR WHERE LOWER(EMAIL) = LOWER(?) AND DATAEXCLUSAO IS NULL"
@@ -31,6 +33,7 @@ public class AdministradorDAO {
                 int id = rset.getInt("id");
                 String emailDB = rset.getString("email");
                 LocalDateTime dataCriacao = rset.getTimestamp("datacriacao").toLocalDateTime();
+                // verifica se dataExclusao e atualizacao são null
                 LocalDateTime dataAtualizacao = null;
                 if (rset.getTimestamp("dataatualizacao") != null) {
                     dataAtualizacao = rset.getTimestamp("dataatualizacao").toLocalDateTime();
@@ -39,7 +42,7 @@ public class AdministradorDAO {
                 if (rset.getTimestamp("dataexclusao") != null) {
                     dataExclusao = rset.getTimestamp("dataexclusao").toLocalDateTime();
                 }
-
+                // coloca os valores no objeto
                 admin = new AdministradorModel(id, emailDB, null, dataCriacao, dataAtualizacao, dataExclusao);
             }
 
@@ -49,6 +52,7 @@ public class AdministradorDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            // desconecta
             conexao.desconectar();
         }
 
@@ -104,6 +108,7 @@ public class AdministradorDAO {
         }catch (SQLException e){
             return null;
         }finally {
+            // desconecta
             conexao.desconectar();
         }
     }

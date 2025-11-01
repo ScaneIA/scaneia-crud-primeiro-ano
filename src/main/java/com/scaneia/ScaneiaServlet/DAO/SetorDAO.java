@@ -12,13 +12,15 @@ public class SetorDAO {
 
     // Inserir setor
     public int inserir(SetorModel setor) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
 
-        // cria a conexão
+        // verificar a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
 
         // prepara o comando
@@ -44,17 +46,21 @@ public class SetorDAO {
                 setor.setDataCriacao(LocalDateTime.now());
                 setor.setDataAtualizacao(LocalDateTime.now());
                 // // colocando esses valores no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
+            // erroSQL
             se.printStackTrace();
-            return -2; // erroSQL
+            return -2;
         } catch (Exception e) {
+            // outro erro
             e.printStackTrace();
-            return -3; // outro erro
+            return -3;
         } finally {
             // desconecta
             conexao.desconectar();
@@ -63,12 +69,15 @@ public class SetorDAO {
 
     // Atualizar nome
     public int atualizarNome(SetorModel setor) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara o comando
         try {
@@ -83,17 +92,21 @@ public class SetorDAO {
             if (retorno > 0) {
                 setor.setDataAtualizacao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
+            // erro SQL
             se.printStackTrace();
-            return -2; // erro SQL
+            return -2;
         } catch (Exception e) {
+            // outro erro
             e.printStackTrace();
-            return -3; // outro erro
+            return -3;
         } finally {
             // desconecta
             conexao.desconectar();
@@ -107,8 +120,9 @@ public class SetorDAO {
 
         // cria a conexão
         if (conn == null) {
+            // erro na conexão
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            return -1;
         }
         // prepara o comando
         try {
@@ -123,17 +137,21 @@ public class SetorDAO {
             if (retorno > 0) {
                 setor.setDataAtualizacao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
+            // erro SQL
             se.printStackTrace();
-            return -2; // erro SQL
+            return -2;
         } catch (Exception e) {
+            // outro erro
             e.printStackTrace();
-            return -3; // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -147,7 +165,8 @@ public class SetorDAO {
         // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara o comando
         try {
@@ -163,17 +182,21 @@ public class SetorDAO {
             if (retorno > 0) {
                 setor.setDataAtualizacao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada altarado
+                // nada altarado
+                return 0;
             }
 
         } catch (SQLException se) {
+            // erro SQL
             se.printStackTrace();
-            return -2; // erro SQL
+            return -2;
         } catch (Exception e) {
+            // outro erro
             e.printStackTrace();
-            return -3; // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -182,12 +205,15 @@ public class SetorDAO {
 
     // Deletar setor
     public int delete(SetorModel setor) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara
         try {
@@ -202,17 +228,21 @@ public class SetorDAO {
             if (retorno > 0) {
                 setor.setDataExclusao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
+            // erro SQL
             se.printStackTrace();
-            return -2; // erro SQL
+            return -2;
         } catch (Exception e) {
+            // outro erro
             e.printStackTrace();
-            return -3; // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -220,9 +250,11 @@ public class SetorDAO {
     }
 
     public int descobrirId(String nome){
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
 
+        // verifica a conexão
         if (conn == null){
             return -1;
         }
@@ -244,21 +276,27 @@ public class SetorDAO {
                 return rs.getInt("id");
             }
         }catch (SQLException exception){
+            // erro de banco
             return -2;
         }catch (Exception exception){
+            // outro erro
             return -3;
         }
         finally {
             conexao.desconectar();
+            // desconectar
         }
+        // outro erro
         return -3;
     }
 
     public List<SetorModel> listarSetores(){
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         List<SetorModel> setores = new ArrayList<>();
 
+        // verifica a conexão
         if (conn == null){
             return null;
         }
@@ -288,9 +326,11 @@ public class SetorDAO {
 
             return setores;
         }catch (SQLException exception){
+            // erro de banco
             return null;
         }finally {
             conexao.desconectar();
+            // desconectar
         }
     }
 

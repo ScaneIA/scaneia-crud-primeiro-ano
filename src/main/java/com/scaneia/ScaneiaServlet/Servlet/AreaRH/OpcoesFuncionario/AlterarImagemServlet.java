@@ -15,11 +15,12 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
+// Alterar/atualizar a imagem do usuário
 @MultipartConfig
 @WebServlet(name = "AlterarImagem", value = "/areaRH/alterarImagem")
 public class AlterarImagemServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        //variaveis gerais
+        //variaveis principais
         byte[] imagem;
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         HttpSession httpSession = req.getSession();
@@ -30,7 +31,7 @@ public class AlterarImagemServlet extends HttpServlet {
         UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
         UsuarioViewModel usuario;
 
-        //valida se a sessão existe
+        //verifica se a sessão está ativa
         if(httpSession == null || httpSession.getAttribute("empresa") == null){
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
@@ -38,29 +39,29 @@ public class AlterarImagemServlet extends HttpServlet {
             empresa = (EmpresaModel) httpSession.getAttribute("empresa");
         }
 
-        //recebe os parametros da requisicao
+        //recebe os dados enviados pelo formulário
         Part partImagem = req.getPart("arquivo");
         String idUsuario = req.getParameter("idUsuario");
 
-        //converte a imagem para vetor de bytes
+        //converte o arquivo para bytes
         imagem = ImgConfig.transformarBytea(partImagem);
 
-        //salva no banco de dados
+        //atualiza a imagem do usuário no banco
         resultado = usuarioDAO.alterarImagem(imagem, Integer.parseInt(idUsuario));
 
-        //seta os setores da empresa
+        //carrega setores
         setores = setorDAO.listarSetores();
         req.setAttribute("setores", setores);
 
-        //seta os usuarios da empresa
+        //carrega informações do usuário
         usuario = usuarioViewDAO.buscarPorId(empresa.getId(), Integer.parseInt(idUsuario));
         req.setAttribute("usuarios", usuarioViewDAO.buscarPorEmpresa(empresa.getId()));
         req.setAttribute("usuario", usuario);
 
-        //seta a foto do usuario
+        //define imagem do usuário em base64
         req.setAttribute("imagem", ImgConfig.transformarBase64(usuario.getUrlFoto()));
 
-        //saidas do jsp
+        //mensagens de retorno
         if(resultado == -1 || resultado == -3){
             req.setAttribute("mensagem", "Ops... Tente novamente!");
             req.setAttribute("status", 500);

@@ -12,12 +12,15 @@ public class EmpresaDAO {
 
     // Inserir empresa completa
     public int inserir(EmpresaModel empresa) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
+
+        //verificando a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro de conexão
+            // erro de conexão
+            return -1;
         }
         // prepara
         try (PreparedStatement pstmt = conn.prepareStatement(
@@ -43,17 +46,21 @@ public class EmpresaDAO {
                 empresa.setDataCriacao(LocalDateTime.now());
                 empresa.setDataAtualizacao(LocalDateTime.now());
                 // colocando esses valores no objeto
-                return 1; // sucesso
+                // sucesso
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -62,12 +69,15 @@ public class EmpresaDAO {
 
     // Atualizar empresa completa (usa quando for alterar a senha também)
     public int atualizar(EmpresaModel empresa) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara o comando
         try (PreparedStatement pstmt = conn.prepareStatement(
@@ -84,29 +94,38 @@ public class EmpresaDAO {
             if (retorno > 0) {
                 empresa.setDataAtualizacao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
+            // desconecta a conexão
         }
     }
 
 
     public int atualizarSemSenha(EmpresaModel empresa) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
 
         try (PreparedStatement pstmt = conn.prepareStatement(
@@ -117,32 +136,42 @@ public class EmpresaDAO {
             pstmt.setString(3, empresa.getEmail());
             pstmt.setInt(4, empresa.getId());
 
+            // executa
             int retorno = pstmt.executeUpdate();
             if (retorno > 0) {
                 empresa.setDataAtualizacao(LocalDateTime.now());
-                return 1; // deu certo
-            } else return 0; // nada alterado
+                // deu certo
+                return 1;
+            }
+            else
+                // nada alterado
+                return 0;
 
         } catch (SQLException se) {
             se.printStackTrace();
+            // erro no banco
             return -2;
         } catch (Exception e) {
             e.printStackTrace();
+            // outro erro
             return -3;
         } finally {
             conexao.desconectar();
+            // desconectar
         }
     }
 
     // Atualizando só o nome
     public int atualizarNome(EmpresaModel empresa) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
 
-        // cria a conexão
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara
         try (PreparedStatement pstmt = conn.prepareStatement(
@@ -156,15 +185,21 @@ public class EmpresaDAO {
             if (retorno > 0) {
                 empresa.setDataAtualizacao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
-            } else return 0; // nada alterado
+                // deu certo
+                return 1;
+            }
+            else
+                // nada alterado
+                return 0;
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -173,12 +208,15 @@ public class EmpresaDAO {
 
     // Atualizando só o CNPJ
     public int atualizarCnpj(EmpresaModel empresa) {
+        // Cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara
         try (PreparedStatement pstmt = conn.prepareStatement(
@@ -187,19 +225,26 @@ public class EmpresaDAO {
             pstmt.setString(1, empresa.getCnpj());
             pstmt.setInt(2, empresa.getId());
 
+            // executa
             int retorno = pstmt.executeUpdate();
             if (retorno > 0) {
                 empresa.setDataAtualizacao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
-            } else return 0; // nada alterado
+                // deu certo
+                return 1;
+            }
+            else
+                // nada alterado
+                return 0;
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // nada alterado
+            // nada alterado
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -208,12 +253,15 @@ public class EmpresaDAO {
 
     // Atualizando o email e senha
     public int atualizarEmail(EmpresaModel empresa) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara
         try (PreparedStatement pstmt = conn.prepareStatement(
@@ -227,15 +275,21 @@ public class EmpresaDAO {
             if (retorno > 0) {
                 empresa.setDataAtualizacao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
-            } else return 0; // nada alterado
+                // deu certo
+                return 1;
+            }
+            else
+                // nada alterado
+                return 0;
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro na conexão
+            // erro na conexão
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -249,7 +303,8 @@ public class EmpresaDAO {
         // cria a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
         // prepara o comando
         try (PreparedStatement pstmt = conn.prepareStatement(
@@ -262,15 +317,21 @@ public class EmpresaDAO {
             if (retorno > 0) {
                 empresa.setDataExclusao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
-            } else return 0; // nada alterado
+                // deu certo
+                return 1;
+            }
+            else
+                // nada alterado
+                return 0;
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             //desconecta
@@ -279,10 +340,12 @@ public class EmpresaDAO {
 
     // Buscar todas as empresas
     public List<EmpresaModel> buscar() {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         List<EmpresaModel> lista = new ArrayList<>();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) return lista;
 
         // prepara
@@ -309,6 +372,7 @@ public class EmpresaDAO {
             }
 
         } catch (SQLException se) {
+            // erro de banco
             se.printStackTrace();
         } finally {
             conexao.desconectar();
@@ -320,10 +384,12 @@ public class EmpresaDAO {
 
     // Buscar por nome
     public List<EmpresaModel> buscarPorNome(EmpresaModel empresa) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         List<EmpresaModel> lista = new ArrayList<>();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) return lista;
 
         // prepara o comando
@@ -353,6 +419,7 @@ public class EmpresaDAO {
             }
 
         } catch (SQLException se) {
+            // erro de banco
             se.printStackTrace();
         } finally {
             conexao.desconectar();
@@ -365,12 +432,15 @@ public class EmpresaDAO {
 
     // Buscar por ID
     public EmpresaModel buscarId(int id) {
+        //Cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         EmpresaModel empresa = null;
 
+        // verifica a conexão
         if (conn == null) return null;
 
+        //Prepara o comando
         try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM EMPRESAS WHERE ID=? AND DATAEXCLUSAO IS NULL")) {
             pstmt.setInt(1, id);
             ResultSet rset = pstmt.executeQuery();
@@ -392,22 +462,27 @@ public class EmpresaDAO {
             }
 
         } catch (SQLException se) {
+            // erro de banco
             se.printStackTrace();
         } finally {
             conexao.desconectar();
+            //desconectar
         }
 
         return empresa;
+        //retornando a empresa
     }
 
     // Login da empresa
     public EmpresaModel login(String email, String senha, String cnpj) {
         //variaveis gerais
+        //Cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         List<EmpresaModel> empresas = new ArrayList<>();
         int encontrados = 0;
 
+        // verifica a conexão
         if (conn == null) {
             return null;
         }
@@ -449,10 +524,12 @@ public class EmpresaDAO {
             }
 
         } catch (SQLException e) {
+            // erro de banco
             e.printStackTrace();
             return null;
         } finally {
             conexao.desconectar();
+            // desconectar
         }
     }
 }

@@ -15,10 +15,12 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+// Com esse servlet conseguimos filtrar por nomes dessa forma o usuário consegue encontrar informações com maior facilidade
+
 @WebServlet(name = "FiltroPorNome", value = "/areaRH/nome")
 public class FiltroPorNomeServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        //variaveis gerais
+        // variáveis principais
         UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
         List<UsuarioViewModel> usuarios;
         HttpSession httpSession = req.getSession();
@@ -26,43 +28,40 @@ public class FiltroPorNomeServlet extends HttpServlet {
         List<SetorModel> setores;
         SetorDAO setorDAO = new SetorDAO();
 
-        //valida se a sessão existe
-        if(httpSession == null || httpSession.getAttribute("empresa") == null){
+        // verifica se a sessão existe
+        if (httpSession == null || httpSession.getAttribute("empresa") == null) {
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
         }
 
-        //variaveis da requisição
+        // recebe o nome da requisição
         String nome = req.getParameter("nome");
 
-
-        //validação de entrada
+        // valida o parâmetro recebido
         try {
-            //valida o nome
-            if (!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ]+)*$")){
+            if (!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ]+)*$")) {
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
-            }else{
-                //transforma nome em minusculo
+            } else {
+                // transforma o nome em minúsculo
                 nome = nome.toLowerCase();
             }
-
-        }catch (NullPointerException exception){
+        } catch (NullPointerException exception) {
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 
-        //carrega a empresa
+        // pega a empresa da sessão
         empresa = (EmpresaModel) httpSession.getAttribute("empresa");
 
-        //carrega os usuarios
+        // busca os usuários filtrados por nome
         usuarios = usuarioViewDAO.filtrarPorNome(nome, empresa.getId());
 
-        //carrega os setores
+        // carrega os setores
         setores = setorDAO.listarSetores();
         req.setAttribute("setores", setores);
 
-        //responde com jsp
+        // envia os dados para o JSP
         req.setAttribute("usuarios", usuarios);
         req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/areaRestritaEmpresa.jsp").forward(req, res);
     }

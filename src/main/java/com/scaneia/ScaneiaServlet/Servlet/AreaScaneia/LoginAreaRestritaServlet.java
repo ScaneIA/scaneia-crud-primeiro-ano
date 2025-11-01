@@ -10,6 +10,7 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
+// Página para colocar email e senha e conseguir acessar área restrita
 @WebServlet("/loginAreaRestrita")
 public class LoginAreaRestritaServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
