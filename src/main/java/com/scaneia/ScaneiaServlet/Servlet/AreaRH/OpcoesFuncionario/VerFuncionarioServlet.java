@@ -64,7 +64,7 @@ public class VerFuncionarioServlet extends HttpServlet {
 
         // verifica se usuário existe
         if (usuario == null){
-            res.sendRedirect("/areaRH");
+            res.sendRedirect(req.getContextPath()+ "/areaRH");
             return;
         }
 
