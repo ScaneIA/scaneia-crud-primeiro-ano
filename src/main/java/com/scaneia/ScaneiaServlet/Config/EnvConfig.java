@@ -10,11 +10,14 @@ public class EnvConfig {
     }
 
     public static String getEnv(String chave){
-        if (dotenv == null){
-            System.out.println("variavel do sistema usada");
+        //pega a variavel pelo dotenv
+        String env = dotenv.get(chave);
+        if (env == null){
+            //retorna a variavel de ambiente
             return System.getenv(chave);
         }
-        System.out.println("variavel dotenv usada");
+
+        //retorna a variavel do dotenv
         return dotenv.get(chave);
     }
 }
