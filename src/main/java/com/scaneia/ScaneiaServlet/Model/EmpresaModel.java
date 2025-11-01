@@ -4,6 +4,7 @@ import com.scaneia.ScaneiaServlet.DAO.EmpresaDAO;
 
 import java.time.LocalDateTime;
 
+// Empresas
 public class EmpresaModel {
     // atributos
     private int id;
@@ -46,6 +47,7 @@ public class EmpresaModel {
 
 
     }
+    // outros construtores para pegar apenas informações específicas
     public EmpresaModel(int id, String nome, String cnpj,String email) {
         this.id = id;
         this.nome = nome;
@@ -122,6 +124,7 @@ public class EmpresaModel {
     }
 
     @Override
+    // ToString
 
     public String toString() {
         return "EmpresaModel:"+ "id=" + id + ", nome='" + nome + "', cnpj='" + cnpj + "', email='" + email + "', senha='" + senha + "', dataExclusao=" + dataExclusao + ", dataAtualizacao=" + dataAtualizacao + "}";

@@ -283,20 +283,25 @@ public class AreaDAO {
             if (retorno > 0) {
                 area.setDataExclusao(LocalDateTime.now());
                 // colocando esse valor no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
-            conexao.desconectar();
             // desconecta
+            conexao.desconectar();
+
         }
     }
 
@@ -340,8 +345,9 @@ public class AreaDAO {
             se.printStackTrace();
             return null;
         } finally {
-            conexao.desconectar();
             // desconecta
+            conexao.desconectar();
+
         }
         return listaBusca;
     }
@@ -389,8 +395,9 @@ public class AreaDAO {
             se.printStackTrace();
             return null;
         } finally {
-            conexao.desconectar();
             // desconecta
+            conexao.desconectar();
+
         }
         return listaBusca;
     }

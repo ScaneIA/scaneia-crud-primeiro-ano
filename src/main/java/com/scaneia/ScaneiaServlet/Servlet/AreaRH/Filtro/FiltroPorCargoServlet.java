@@ -15,10 +15,12 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+// Com esse servlet conseguimos filtrar por cargos, dessa forma o usuário consegue encontrar informações com maior facilidade
+// Visualmente é apresentada um lista de opções, o usuário escolhe uma, então é filtrada
 @WebServlet(name = "FiltroPorCargo", value = "/areaRH/filtro")
 public class FiltroPorCargoServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        //variaveis gerais
+        // variáveis principais
         UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
         List<UsuarioViewModel> usuarios;
         HttpSession httpSession = req.getSession();
@@ -26,22 +28,22 @@ public class FiltroPorCargoServlet extends HttpServlet {
         List<SetorModel> setores;
         SetorDAO setorDAO = new SetorDAO();
 
-        //valida se a sessão existe
+        // verifica se a sessão existe
         if(httpSession == null || httpSession.getAttribute("empresa") == null){
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
         }
 
-        //variaveis da requisição
+        // recebe o cargo da requisição
         String cargo = req.getParameter("cargo");
 
-        //validação de entrada
+        // valida o parâmetro recebido
         try {
             if (!cargo.matches("(operario|chefeDeArea|RH|diretor|todos)")){
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }else{
-                //deixa o cargo igual o banco
+                // ajusta o nome do cargo conforme o banco
                 switch (cargo){
                     case "operario" -> {
                         cargo = "Colaborador";
@@ -60,23 +62,23 @@ public class FiltroPorCargoServlet extends HttpServlet {
             return;
         }
 
-        //verifica se são todos os filtros
+        // se o filtro for "todos", retorna à página principal
         if (cargo.equals("todos")){
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 
-        //carrega a empresa
+        // pega a empresa da sessão
         empresa = (EmpresaModel) httpSession.getAttribute("empresa");
 
-        //carrega os usuarios
+        // busca usuários filtrados por cargo e empresa
         usuarios = usuarioViewDAO.filtrarPorCargo(cargo, empresa.getId());
 
-        //carrega os setores
+        // carrega os setores
         setores = setorDAO.listarSetores();
         req.setAttribute("setores", setores);
 
-        //responde com jsp
+        // envia os dados para o JSP
         req.setAttribute("usuarios", usuarios);
         req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/areaRestritaEmpresa.jsp").forward(req, res);
     }

@@ -17,36 +17,40 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+// Página principal do CRUD de usuários.
+// Exibe os usuários de cada empresa com suas respectivas informações.
+// Nesta página ocorre a integração de três CRUDs/Servlets em um único ponto,
+// combinando as tabelas de Usuário, Setor e Cargo, o que facilita a visualização e compreensão dos dados pelo usuário.
+
+// qualquer dúvida sobre o comentário acima acesse a documentação
 
 @WebServlet(name = "areaRH", value = "/areaRH")
 public class AreaRHServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        //variaveis gerais
+        // sessão e variáveis gerais
         HttpSession httpSession = req.getSession();
         EmpresaModel empresa;
         SetorDAO setorDAO = new SetorDAO();
         List<SetorModel> setores;
 
-        //valida se tem uma sessao
-        if (httpSession == null || (httpSession.getAttribute("empresa") == null && httpSession.getAttribute("admin")
-                == null)){
-            res.sendRedirect(req.getContextPath() + "/index.html"); // sem parâmetro
+        // valida sessão
+        if (httpSession == null || (httpSession.getAttribute("empresa") == null && httpSession.getAttribute("admin") == null)) {
+            res.sendRedirect(req.getContextPath() + "/index.html");
             return;
-        }else {
-            //valida se tem empresa
+        } else {
+            // verifica se tem empresa
             if (httpSession.getAttribute("empresa") != null){
                 empresa = (EmpresaModel) httpSession.getAttribute("empresa");
-            }else{
-                //valida se é admin
+            } else {
+                // verifica se é admin
                 if (httpSession.getAttribute("admin") != null){
                     try {
                         httpSession.setAttribute("empresa", new EmpresaModel(
                                 Integer.parseInt(req.getParameter("idEmpresa"))
                         ));
-
-                    }catch (NullPointerException  | NumberFormatException exception){
+                    } catch (NullPointerException | NumberFormatException exception){
                         res.sendRedirect(req.getContextPath() + "/index.html");
                         return;
                     }
@@ -54,17 +58,17 @@ public class AreaRHServlet extends HttpServlet {
             }
         }
 
-        //adiciona a empresa
+        // pega a empresa da sessão
         empresa = (EmpresaModel) httpSession.getAttribute("empresa");
 
-        // Busca os usuários da empresa
+        // busca usuários da empresa
         UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
         List<UsuarioViewModel> usuarios = usuarioViewDAO.buscarPorEmpresa(empresa.getId());
 
-        //carrega os setores
+        // carrega setores
         setores = setorDAO.listarSetores();
 
-        // Envia para o JSP
+        // envia dados para o JSP
         req.setAttribute("empresa", empresa);
         req.setAttribute("usuarios", usuarios);
         req.setAttribute("setores", setores);
@@ -75,6 +79,6 @@ public class AreaRHServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        doGet(req, res); // redireciona para a pagina de login
+        doGet(req, res); // redireciona para a mesma página
     }
 }

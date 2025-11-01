@@ -2,6 +2,7 @@ package com.scaneia.ScaneiaServlet.Model;
 
 import java.time.LocalDateTime;
 
+// Endereços das empresas
 public class EnderecoEmpresaModel {
     // atributos
     private int id;
@@ -44,6 +45,7 @@ public class EnderecoEmpresaModel {
         this.dataExclusao = dataExclusao;
         this.idEmpresa = idEmpresa;
     }
+    // construtor vazio
     public EnderecoEmpresaModel() {
 
     }
@@ -106,6 +108,7 @@ public class EnderecoEmpresaModel {
         this.dataAtualizacao = dataAtualizacao;
     }
 
+    // ToString
     @Override
     public String toString() {
         return "EnderecoEmpresaModel{id=" + id + ", estado='" + estado + "', cep='" + cep + "', cidade='" + cidade + "', bairro='" + bairro + "', rua='" + rua + "', numero=" + numero + ", complemento='" + complemento + "', dataCriacao=" + dataCriacao + ", dataAtualizacao=" + dataAtualizacao + ", dataExclusao=" + dataExclusao + ", idEmpresa=" + idEmpresa + "}";

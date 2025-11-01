@@ -1,5 +1,11 @@
 package com.scaneia.ScaneiaServlet.Model;
 
+// Model criado para facilitar o select entre as tabelas do banco, ao ínves de um código com vários joins, fizemos uma view,
+// com essa view as tabelas cargo e setor são apresentadas no próprio usuário ao invés do ID delas, facilitando a
+// indentificação do usuário e diminuido a necessidade de mais páginas de CRUD já que em um CRUD só incluimos 3 ao mesmo
+// tempo para simplificar a ação do usuário
+
+// qualquer dúvida sobre o comentário acima acesse a documentação
 public class UsuarioViewModel {
     //atributos
     int id;

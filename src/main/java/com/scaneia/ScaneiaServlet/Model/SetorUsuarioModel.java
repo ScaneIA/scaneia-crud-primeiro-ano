@@ -1,5 +1,6 @@
 package com.scaneia.ScaneiaServlet.Model;
 
+// Model criado para representar a tabela intermediária que existe entre setor e usuário
 public class SetorUsuarioModel {
     //atributos
     private int id;

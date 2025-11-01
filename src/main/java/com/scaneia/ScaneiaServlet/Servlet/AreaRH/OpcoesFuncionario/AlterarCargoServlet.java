@@ -17,11 +17,11 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-
+// Alterar/atualizar o cargo do usuário
 @WebServlet(name = "alterarCargo", value = "/areaRH/alterarCargo")
 public class AlterarCargoServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        //variaveis gerais
+        // Variáveis principais
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         HttpSession httpSession = req.getSession();
         int resultado;
@@ -32,91 +32,78 @@ public class AlterarCargoServlet extends HttpServlet {
         UsuarioViewDAO usuarioViewDAO = new UsuarioViewDAO();
         UsuarioViewModel usuario;
 
-        //valida se a sessão existe
-        if(httpSession == null || httpSession.getAttribute("empresa") == null){
+        // Verifica se a sessão existe
+        if (httpSession == null || httpSession.getAttribute("empresa") == null) {
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
-        }else{
+        } else {
             empresa = (EmpresaModel) httpSession.getAttribute("empresa");
         }
 
-        //variaveis da requisição
+        // Pega os dados do formulário
         String idUsuario = req.getParameter("idUsuario");
         String novoCargo = req.getParameter("cargo");
 
-        //validação de entrada
+        // Valida entradas
         try {
-            //valida o id
-            if (!idUsuario.matches("[0-9]+")){
+            if (!idUsuario.matches("[0-9]+")) { // ID deve ser número
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }
 
-            //valida o nome do cargo
-            if (!novoCargo.matches("(Diretor|Chefe de área|RH|Colaborador)")){
+            if (!novoCargo.matches("(Diretor|Chefe de área|RH|Colaborador)")) { // Cargo permitido
                 res.sendRedirect(req.getContextPath() + "/areaRH");
                 return;
             }
 
-        }catch (NullPointerException exception){
+        } catch (NullPointerException exception) {
             res.sendRedirect(req.getContextPath() + "/areaRH");
             return;
         }
 
-        //pega o id do cargo
-        switch (novoCargo){
-            case "Diretor" -> {
-                idCargo = 5;
-            }
-            case "Chefe de área" -> {
-                idCargo = 6;
-            }
-            case "RH" -> {
-                idCargo = 7;
-            }
-            case "Colaborador" -> {
-                idCargo = 8;
-            }
+        // Define o id do cargo conforme o nome
+        switch (novoCargo) {
+            case "Diretor" -> idCargo = 5;
+            case "Chefe de área" -> idCargo = 6;
+            case "RH" -> idCargo = 7;
+            case "Colaborador" -> idCargo = 8;
         }
 
-        //atualiza o idCargo
+        // Atualiza o cargo no banco
         resultado = usuarioDAO.updateIdCargo(idCargo, Integer.parseInt(idUsuario));
 
-        //seta os setores da empresa
+        // Carrega setores e usuários
         setores = setorDAO.listarSetores();
         req.setAttribute("setores", setores);
 
-        //seta os usuarios da empresa
         usuario = usuarioViewDAO.buscarPorId(empresa.getId(), Integer.parseInt(idUsuario));
         req.setAttribute("usuarios", usuarioViewDAO.buscarPorEmpresa(empresa.getId()));
         req.setAttribute("usuario", usuario);
 
-        //seta a foto do usuario
+        // Define a imagem do usuário
         req.setAttribute("imagem", ImgConfig.transformarBase64(usuario.getUrlFoto()));
 
-        //saidas do jsp
-        if(resultado == -1 || resultado == -3){
+        // Retorna mensagens conforme o resultado
+        if (resultado == -1 || resultado == -3) {
             req.setAttribute("mensagem", "Ops... Tente novamente!");
             req.setAttribute("status", 500);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
-        }else if(resultado == 0){
-            req.setAttribute("mensagem", "Ops... Esse usuario não existe!");
+        } else if (resultado == 0) {
+            req.setAttribute("mensagem", "Ops... Esse usuário não existe!");
             req.setAttribute("status", 400);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
-        }else if(resultado == -2){
+        } else if (resultado == -2) {
             req.setAttribute("mensagem", "Ops... Tente novamente!");
             req.setAttribute("status", 500);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
-        }else if(resultado == 1){
+        } else if (resultado == 1) {
             req.setAttribute("mensagem", "Atualizado com sucesso!");
             req.setAttribute("status", 200);
             req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
-        }else{
+        } else {
             req.setAttribute("mensagem", "Ops... Erro nosso, tente novamente!");
             req.setAttribute("status", 500);
-            req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);;
+            req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaEmpresa/statusUsuario.jsp").forward(req, res);
         }
     }
-
-
 }

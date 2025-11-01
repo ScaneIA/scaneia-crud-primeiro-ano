@@ -11,12 +11,15 @@ public class UsuarioDAO {
 
     // Cadastrar usuário
     public int insert(UsuarioModel usuario) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
 
         try (PreparedStatement pstmt = conn.prepareStatement(
@@ -45,17 +48,21 @@ public class UsuarioDAO {
             //retorno do metodo
 
             if (retorno > 0) {
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
+            // erro SQL
             se.printStackTrace();
-            return -2; // erro SQL
+            return -2;
         } catch (Exception e) {
+            // outro erro
             e.printStackTrace();
-            return -3; // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -64,12 +71,15 @@ public class UsuarioDAO {
 
     // Atualizar nome
     public int updateNome(UsuarioModel usuario) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
 
         try {
@@ -85,17 +95,21 @@ public class UsuarioDAO {
             if (retorno > 0) {
                 usuario.setDataAtualizacao(LocalDateTime.now());
                 // atualiza data no objeto
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -104,12 +118,15 @@ public class UsuarioDAO {
 
     // Atualizar ID do cargo
     public int updateIdCargo(int idCargo, int idUsuario) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
 
         try {
@@ -123,19 +140,24 @@ public class UsuarioDAO {
             int retorno = pstmt.executeUpdate();
 
             if (retorno > 0) {
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
-            conexao.desconectar();// desconecta
+            // desconecta
+            conexao.desconectar();
         }
     }
 
@@ -144,6 +166,7 @@ public class UsuarioDAO {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
 
+        // validar a conexão
         if (conn == null){
             return -1;
         }
@@ -162,25 +185,32 @@ public class UsuarioDAO {
             int resultado = pstmt.executeUpdate();
 
             if (resultado > 0){
+                // deu certo
                 return 1;
             }
+            // nada alterado
             return 0;
 
         }catch (SQLException exception){
+            // erro de banco
             return -2;
         }catch (Exception exception){
+            // outro erro
             return -3;
         }
     }
 
     // Adicionar setor ao usuário
     public int adicionarSetorUsuario(UsuarioModel usuario, int setorId) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
 
         try (PreparedStatement pstmt = conn.prepareStatement(
@@ -193,17 +223,21 @@ public class UsuarioDAO {
             int retorno = pstmt.executeUpdate();
 
             if (retorno > 0) {
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -215,6 +249,7 @@ public class UsuarioDAO {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
 
+        // validar a conexão
         if (conn == null){
             return -1;
         }
@@ -233,30 +268,39 @@ public class UsuarioDAO {
             int afetadas = pstmt.executeUpdate();
 
             if (afetadas > 0){
+                // deu certo
                 return 1;
             }else{
+                // nada alterado
                 return 0;
             }
 
         }catch (SQLException exception){
+            // erro no banco
             return -2;
         }catch (Exception exception){
+            // outro erro
             return -3;
         }finally {
+            // desconectar
             conexao.desconectar();
         }
     }
 
     // Deletar usuário
     public int delete(int idUsuario) {
+        // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
-        // cria a conexão
+
+        // verifica a conexão
         if (conn == null) {
             System.out.println("Não foi possível conectar");
-            return -1; // erro na conexão
+            // erro na conexão
+            return -1;
         }
 
+        // preparando o comando
         try {
             PreparedStatement pstmt = conn.prepareStatement(
                     "UPDATE USUARIOS SET DATAEXCLUSAO = NOW(), DATAATUALIZACAO = NOW() WHERE ID = ?"
@@ -267,17 +311,21 @@ public class UsuarioDAO {
             int retorno = pstmt.executeUpdate();
 
             if (retorno > 0) {
-                return 1; // deu certo
+                // deu certo
+                return 1;
             } else {
-                return 0; // nada alterado
+                // nada alterado
+                return 0;
             }
 
         } catch (SQLException se) {
             se.printStackTrace();
-            return -2; // erro SQL
+            // erro SQL
+            return -2;
         } catch (Exception e) {
             e.printStackTrace();
-            return -3; // outro erro
+            // outro erro
+            return -3;
         } finally {
             conexao.desconectar();
             // desconecta
@@ -285,10 +333,11 @@ public class UsuarioDAO {
     }
 
     public int alterarEmail(String email, int idUsuario){
-        //cria a conexao
+        //cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
 
+        // verifica a conexão
         if (conn == null){
             return -1;
         }
@@ -307,16 +356,21 @@ public class UsuarioDAO {
             int afetadas = pstmt.executeUpdate();
 
             if (afetadas > 0){
+                // deu certo
                 return 1;
             }else{
+                // nada alterado
                 return 0;
             }
 
         }catch (SQLException exception){
+            // erro de banco
             return -2;
         }catch (Exception exception){
+            // outro erro
             return -3;
         }finally {
+            // desconectar
             conexao.desconectar();
         }
     }
@@ -326,6 +380,7 @@ public class UsuarioDAO {
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
 
+        // verifica a conexão
         if (conn == null){
             return -1;
         }
@@ -344,16 +399,21 @@ public class UsuarioDAO {
             int afetadas = pstmt.executeUpdate();
 
             if (afetadas > 0){
+                // deu certo
                 return 1;
             }else{
+                // nada alterado
                 return 0;
             }
 
         }catch (SQLException exception){
+            // erro de banco
             return -2;
         }catch (Exception exception){
+            // outro erro
             return -3;
         }finally {
+            // desconectar
             conexao.desconectar();
         }
     }

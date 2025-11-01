@@ -2,7 +2,9 @@ package com.scaneia.ScaneiaServlet.Model;
 
 import java.time.LocalDateTime;
 
+// Classe o adm para acessar a área restrita
 public class AdministradorModel {
+    // Atributos
     private int id;
     private String email;
     private String senha;
@@ -10,8 +12,10 @@ public class AdministradorModel {
     private LocalDateTime dataAtualizacao;
     private LocalDateTime dataExclusao;
 
+    // Construtor vazio
     public AdministradorModel() {}
 
+    // Construtor completo
     public AdministradorModel(int id, String email, String senha,
                               LocalDateTime dataCriacao, LocalDateTime dataAtualizacao, LocalDateTime dataExclusao) {
         this.id = id;
@@ -22,6 +26,7 @@ public class AdministradorModel {
         this.dataExclusao = dataExclusao;
     }
 
+    // Construtor simples, para quando nem todos os dados são preenchidos
     public AdministradorModel(int id, String email, String senha){
         this.id = id;
         this.senha = senha;

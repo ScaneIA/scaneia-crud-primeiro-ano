@@ -3,6 +3,8 @@ package com.scaneia.ScaneiaServlet.Model;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+// Utiliza de base o BaseModel
+// Setores da empresa
 public class SetorModel extends BaseModel {
     // atributo
     private int idArea;
@@ -21,6 +23,7 @@ public class SetorModel extends BaseModel {
         this.idArea = idArea;
     }
 
+    // outro tipo de construtor
     public SetorModel(int id, String nome, String descricao){
         super(id, nome, descricao);
     }
