@@ -44,6 +44,15 @@ public class AlterarSetorServlet extends HttpServlet {
         String novoSetor = req.getParameter("setor");
         String idUsuario = req.getParameter("idUsuario");
 
+        //carrega setores
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
+
+        //carrega usuários
+        usuario = usuarioViewDAO.buscarPorId(empresa.getId(), Integer.parseInt(idUsuario));
+        req.setAttribute("usuarios", usuarioViewDAO.buscarPorEmpresa(empresa.getId()));
+        req.setAttribute("usuario", usuario);
+
         //validação de entrada
         try {
             //valida o nome do setor
@@ -74,15 +83,6 @@ public class AlterarSetorServlet extends HttpServlet {
 
         //atualiza setor do usuário
         resultado = usuarioDAO.alterarIdSetor(idSetor, Integer.parseInt(idUsuario));
-
-        //carrega setores
-        setores = setorDAO.listarSetores();
-        req.setAttribute("setores", setores);
-
-        //carrega usuários
-        usuario = usuarioViewDAO.buscarPorId(empresa.getId(), Integer.parseInt(idUsuario));
-        req.setAttribute("usuarios", usuarioViewDAO.buscarPorEmpresa(empresa.getId()));
-        req.setAttribute("usuario", usuario);
 
         //imagem do usuário
         req.setAttribute("imagem", ImgConfig.transformarBase64(usuario.getUrlFoto()));

@@ -57,6 +57,10 @@ public class CadastroUsuarioServlet extends HttpServlet {
         usuarios = usuarioViewDAO.buscarPorEmpresa(empresa.getId());
         req.setAttribute("usuarios", usuarios);
 
+        //carrega todos os setores
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
+
         //validação de entrada
         try {
             //valida o formato do cpf
@@ -109,10 +113,6 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
         //seta o setor do usuário
         usuarioDAO.inserirSetorUsuario(usuarioAdicionado, Integer.parseInt(setorId));
-
-        //carrega todos os setores
-        setores = setorDAO.listarSetores();
-        req.setAttribute("setores", setores);
 
         //encaminha para as páginas coerentes
         if (cadastroAutorizado == 1){

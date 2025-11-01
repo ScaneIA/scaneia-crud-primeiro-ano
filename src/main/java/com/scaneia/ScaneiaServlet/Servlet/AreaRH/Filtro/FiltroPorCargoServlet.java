@@ -37,6 +37,10 @@ public class FiltroPorCargoServlet extends HttpServlet {
         // recebe o cargo da requisição
         String cargo = req.getParameter("cargo");
 
+        // carrega os setores
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
+
         // valida o parâmetro recebido
         try {
             if (!cargo.matches("(operario|chefeDeArea|RH|diretor|todos)")){
@@ -73,10 +77,6 @@ public class FiltroPorCargoServlet extends HttpServlet {
 
         // busca usuários filtrados por cargo e empresa
         usuarios = usuarioViewDAO.filtrarPorCargo(cargo, empresa.getId());
-
-        // carrega os setores
-        setores = setorDAO.listarSetores();
-        req.setAttribute("setores", setores);
 
         // envia os dados para o JSP
         req.setAttribute("usuarios", usuarios);

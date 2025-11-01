@@ -44,6 +44,14 @@ public class AlterarCargoServlet extends HttpServlet {
         String idUsuario = req.getParameter("idUsuario");
         String novoCargo = req.getParameter("cargo");
 
+        // Carrega setores e usuários
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
+
+        usuario = usuarioViewDAO.buscarPorId(empresa.getId(), Integer.parseInt(idUsuario));
+        req.setAttribute("usuarios", usuarioViewDAO.buscarPorEmpresa(empresa.getId()));
+        req.setAttribute("usuario", usuario);
+
         // Valida entradas
         try {
             if (!idUsuario.matches("[0-9]+")) { // ID deve ser número

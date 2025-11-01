@@ -43,6 +43,15 @@ public class AlterarCpfServlet extends HttpServlet {
         String novoCpf = req.getParameter("cpf");
         String idUsuario = req.getParameter("idUsuario");
 
+        // Carrega dados do usuário
+        usuario = usuarioViewDAO.buscarPorId(empresa.getId(), Integer.parseInt(idUsuario));
+        req.setAttribute("usuarios", usuarioViewDAO.buscarPorEmpresa(empresa.getId()));
+        req.setAttribute("usuario", usuario);
+
+        // Carrega setores
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
+
         // Validação dos dados
         try {
             // Verifica formato do CPF
@@ -65,17 +74,8 @@ public class AlterarCpfServlet extends HttpServlet {
             return;
         }
 
-        // Carrega setores
-        setores = setorDAO.listarSetores();
-        req.setAttribute("setores", setores);
-
         // Atualiza o CPF
         resultado = usuarioDAO.alterarCpf(novoCpf, Integer.parseInt(idUsuario));
-
-        // Carrega dados do usuário
-        usuario = usuarioViewDAO.buscarPorId(empresa.getId(), Integer.parseInt(idUsuario));
-        req.setAttribute("usuarios", usuarioViewDAO.buscarPorEmpresa(empresa.getId()));
-        req.setAttribute("usuario", usuario);
 
         // Define a imagem do usuário
         req.setAttribute("imagem", ImgConfig.transformarBase64(usuario.getUrlFoto()));

@@ -37,6 +37,10 @@ public class FiltroPorNomeServlet extends HttpServlet {
         // recebe o nome da requisição
         String nome = req.getParameter("nome");
 
+        // carrega os setores
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
+
         // valida o parâmetro recebido
         try {
             if (!nome.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ]+)*$")) {
@@ -56,10 +60,6 @@ public class FiltroPorNomeServlet extends HttpServlet {
 
         // busca os usuários filtrados por nome
         usuarios = usuarioViewDAO.filtrarPorNome(nome, empresa.getId());
-
-        // carrega os setores
-        setores = setorDAO.listarSetores();
-        req.setAttribute("setores", setores);
 
         // envia os dados para o JSP
         req.setAttribute("usuarios", usuarios);
