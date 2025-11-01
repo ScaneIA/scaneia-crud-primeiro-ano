@@ -128,7 +128,7 @@ public class UsuarioDAO {
 
         try {
             PreparedStatement pstmt = conn.prepareStatement(
-                    "UPDATE USUARIOS SET IDCARGOS = ?, DATAATUALIZACAO = NOW() WHERE ID = ?"
+                    "UPDATE USUARIOS SET IDCARGOS = ?, DATAATUALIZACAO = NOW()::timestamptz(6) WHERE ID = ?"
             );
             pstmt.setInt(1, idCargo);
             pstmt.setInt(2, idUsuario);
@@ -171,7 +171,7 @@ public class UsuarioDAO {
         //faz o comando sql
         try {
             //prepara o script
-            String sql = "UPDATE USUARIOS SET CPF = ?, DATAATUALIZACAO = NOW() WHERE ID = ?";
+            String sql = "UPDATE USUARIOS SET CPF = ?, DATAATUALIZACAO = NOW()::timestamptz(6) WHERE ID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             //atualiza os parametro
@@ -297,7 +297,7 @@ public class UsuarioDAO {
         //faz o script
         try {
             //prepara o sql
-            String sql = "UPDATE USUARIOS SET EMAIL = ?, DATAATUALIZACAO = NOW() WHERE ID = ?";
+            String sql = "UPDATE USUARIOS SET EMAIL = ?, DATAATUALIZACAO = NOW()::timestamptz(6) WHERE ID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             //atualiza os parametros
@@ -340,7 +340,7 @@ public class UsuarioDAO {
         //faz o script
         try {
             //prepara o sql
-            String sql = "UPDATE USUARIOS SET URLFOTO = ?, DATAATUALIZACAO = NOW() WHERE ID = ?";
+            String sql = "UPDATE USUARIOS SET URLFOTO = ?, DATAATUALIZACAO = NOW()::timestamptz(6) WHERE ID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             //atualiza os parametros

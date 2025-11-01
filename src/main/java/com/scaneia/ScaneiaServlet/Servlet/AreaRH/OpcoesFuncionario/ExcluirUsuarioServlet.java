@@ -53,13 +53,7 @@ public class ExcluirUsuarioServlet extends HttpServlet {
         setores = setorDAO.listarSetores();
         req.setAttribute("setores", setores);
 
-        // redireciona se houve erro
-        if (resultado != 1){
-            res.sendRedirect(req.getContextPath() + "/areaRH");
-            return;
-        }
-
-        // redireciona para a página do usuário
-        res.sendRedirect(req.getContextPath() + "/areaRH/EditarFuncionario?id=" + idUsuario);
+        // redireciona para a pagina do rh
+        res.sendRedirect(req.getContextPath()+"/areaRH");
     }
 }
