@@ -10,7 +10,7 @@ public class HashSenha {
     public static String hashSenha(String password) throws NoSuchAlgorithmException {
         MessageDigest algorithm =
                 // usamos a biblioteca SHA-256 que transforma a String para um String de 64 dígitos
-                MessageDigest.getInstance("SHA-256");
+                MessageDigest.getInstance(EnvConfig.getEnv("ALGORITIMO_HASH"));
         // transforma a senha recebida em bytes
         byte[] mensagemDigest =
                 algorithm.digest(password.getBytes(StandardCharsets.UTF_8));
