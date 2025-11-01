@@ -39,6 +39,10 @@ public class VerFuncionarioServlet extends HttpServlet {
         // pega parâmetros da requisição
         String id = req.getParameter("id");
 
+        // carrega setores
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
+
         // valida entrada
         try {
             if (!id.matches("[0-9]+")){
@@ -67,10 +71,6 @@ public class VerFuncionarioServlet extends HttpServlet {
             res.sendRedirect(req.getContextPath()+ "/areaRH");
             return;
         }
-
-        // carrega setores
-        setores = setorDAO.listarSetores();
-        req.setAttribute("setores", setores);
 
         // encaminha dados para a página do usuário
         req.setAttribute("imagem", ImgConfig.transformarBase64(usuario.getUrlFoto()));

@@ -35,6 +35,10 @@ public class ExcluirUsuarioServlet extends HttpServlet {
         // parâmetros da requisição
         String idUsuario = req.getParameter("idUsuario");
 
+        // carrega setores
+        setores = setorDAO.listarSetores();
+        req.setAttribute("setores", setores);
+
         // valida entrada
         try {
             if (!idUsuario.matches("[0-9]+")){
@@ -48,10 +52,6 @@ public class ExcluirUsuarioServlet extends HttpServlet {
 
         // exclui o usuário
         resultado = usuarioDAO.deletar(Integer.parseInt(idUsuario));
-
-        // carrega setores
-        setores = setorDAO.listarSetores();
-        req.setAttribute("setores", setores);
 
         // redireciona para a pagina do rh
         res.sendRedirect(req.getContextPath()+"/areaRH");
