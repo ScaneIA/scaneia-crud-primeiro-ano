@@ -12,20 +12,6 @@ public class AdministradorModel {
     private LocalDateTime dataAtualizacao;
     private LocalDateTime dataExclusao;
 
-    // Construtor vazio
-    public AdministradorModel() {}
-
-    // Construtor completo
-    public AdministradorModel(int id, String email, String senha,
-                              LocalDateTime dataCriacao, LocalDateTime dataAtualizacao, LocalDateTime dataExclusao) {
-        this.id = id;
-        this.email = email;
-        this.senha = senha;
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;
-        this.dataExclusao = dataExclusao;
-    }
-
     // Construtor simples, para quando nem todos os dados são preenchidos
     public AdministradorModel(int id, String email, String senha){
         this.id = id;

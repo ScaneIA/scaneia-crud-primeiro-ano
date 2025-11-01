@@ -47,7 +47,7 @@ public class ExcluirUsuarioServlet extends HttpServlet {
         }
 
         // exclui o usuário
-        resultado = usuarioDAO.delete(Integer.parseInt(idUsuario));
+        resultado = usuarioDAO.deletar(Integer.parseInt(idUsuario));
 
         // carrega setores
         setores = setorDAO.listarSetores();

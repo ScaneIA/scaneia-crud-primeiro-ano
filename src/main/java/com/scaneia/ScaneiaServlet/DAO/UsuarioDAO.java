@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class UsuarioDAO {
 
     // Cadastrar usuário
-    public int insert(UsuarioModel usuario) {
+    public int inserir(UsuarioModel usuario) {
         // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
@@ -69,8 +69,8 @@ public class UsuarioDAO {
         }
     }
 
-    // Atualizar nome
-    public int updateNome(UsuarioModel usuario) {
+    // Adicionar setor ao usuário
+    public int inserirSetorUsuario(UsuarioModel usuario, int setorId) {
         // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
@@ -82,19 +82,16 @@ public class UsuarioDAO {
             return -1;
         }
 
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "UPDATE USUARIOS SET NOME = ?, DATAATUALIZACAO = NOW() WHERE ID = ?"
-            );
-            pstmt.setString(1, usuario.getNome());
-            pstmt.setInt(2, usuario.getId());
+        try (PreparedStatement pstmt = conn.prepareStatement(
+                "INSERT INTO SETORES_USUARIOS (IDUSUARIOS, IDSETORES) VALUES (?, ?)"
+        )) {
+            pstmt.setInt(1, usuario.getId());
+            pstmt.setInt(2, setorId);
 
             // executa
             int retorno = pstmt.executeUpdate();
 
             if (retorno > 0) {
-                usuario.setDataAtualizacao(LocalDateTime.now());
-                // atualiza data no objeto
                 // deu certo
                 return 1;
             } else {
@@ -117,7 +114,7 @@ public class UsuarioDAO {
     }
 
     // Atualizar ID do cargo
-    public int updateIdCargo(int idCargo, int idUsuario) {
+    public int alterarIdCargo(int idCargo, int idUsuario) {
         // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
@@ -199,51 +196,6 @@ public class UsuarioDAO {
             return -3;
         }
     }
-
-    // Adicionar setor ao usuário
-    public int adicionarSetorUsuario(UsuarioModel usuario, int setorId) {
-        // cria a conexão
-        Conexao conexao = new Conexao();
-        Connection conn = conexao.getConnection();
-
-        // verifica a conexão
-        if (conn == null) {
-            System.out.println("Não foi possível conectar");
-            // erro na conexão
-            return -1;
-        }
-
-        try (PreparedStatement pstmt = conn.prepareStatement(
-                "INSERT INTO SETORES_USUARIOS (IDUSUARIOS, IDSETORES) VALUES (?, ?)"
-        )) {
-            pstmt.setInt(1, usuario.getId());
-            pstmt.setInt(2, setorId);
-
-            // executa
-            int retorno = pstmt.executeUpdate();
-
-            if (retorno > 0) {
-                // deu certo
-                return 1;
-            } else {
-                // nada alterado
-                return 0;
-            }
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-            // erro SQL
-            return -2;
-        } catch (Exception e) {
-            e.printStackTrace();
-            // outro erro
-            return -3;
-        } finally {
-            conexao.desconectar();
-            // desconecta
-        }
-    }
-
     public int alterarIdSetor(int novoId, int idUsuario){
         //cria a conexao
         Conexao conexao = new Conexao();
@@ -288,7 +240,7 @@ public class UsuarioDAO {
     }
 
     // Deletar usuário
-    public int delete(int idUsuario) {
+    public int deletar(int idUsuario) {
         // cria a conexão
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();

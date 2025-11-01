@@ -137,8 +137,6 @@ public class AreaRestritaServlet extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/VIEW/areaRestritaScaneia/enderecosEmpresa.jsp")
                 .forward(req, res);
 
-        // loga o id da empresa
-        System.out.println("ID da empresa recebido: " + idEmpresa);
     }
 
     @Override

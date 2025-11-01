@@ -33,10 +33,6 @@ public class SetorModel extends BaseModel {
         return idArea;
     }
 
-    public void setIdArea(int idArea) {
-        this.idArea = idArea;
-    }
-
     @Override
     public String toString() {
         return super.toString() + ", idArea=" + idArea;

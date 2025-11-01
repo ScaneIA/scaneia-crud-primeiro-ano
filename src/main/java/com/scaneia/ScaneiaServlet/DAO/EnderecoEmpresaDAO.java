@@ -126,51 +126,6 @@ public class EnderecoEmpresaDAO {
         }
     }
 
-    // Deletar endereço
-    public int deletar(EnderecoEmpresaModel endereco) {
-        // cria a conexão
-        Conexao conexao = new Conexao();
-        Connection conn = conexao.getConnection();
-
-        // verifica a conexão
-        if (conn == null) {
-            System.out.println("Não foi possível conectar");
-            // erro na conexão
-            return -1;
-        }
-        // prepara o comando
-        try {
-            String remover = "UPDATE ENDERECOS_EMPRESAS SET DATAEXCLUSAO = NOW() WHERE ID=?";
-            PreparedStatement pstmt = conn.prepareStatement(remover);
-            pstmt.setInt(1, endereco.getId());
-
-            // executa
-            int retorno = pstmt.executeUpdate();
-
-            if (retorno > 0) {
-                endereco.setDataExclusao(LocalDateTime.now());
-                // colocando esse valor no objeto
-                // sucesso
-                return 1;
-            } else {
-                // nada alterado
-                return 0;
-            }
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-            // erro SQL
-            return -2;
-        } catch (Exception e) {
-            e.printStackTrace();
-            // outro erro
-            return -3;
-        } finally {
-            // desconecta
-            conexao.desconectar();
-        }
-    }
-
     // Buscar todos os endereços
     public List<EnderecoEmpresaModel> buscar() {
         // cria a conexão
@@ -227,63 +182,6 @@ public class EnderecoEmpresaDAO {
         return lista;
     }
 
-    // Buscar por cidade
-    public List<EnderecoEmpresaModel> buscarPorCidade(EnderecoEmpresaModel endereco) {
-        // cria a conexão
-        Conexao conexao = new Conexao();
-        Connection conn = conexao.getConnection();
-        List<EnderecoEmpresaModel> lista = new ArrayList<>();
-
-        // verifica a conexão
-        if (conn == null) {
-            System.out.println("Não foi possível conectar");
-            return lista;
-        }
-        // prepara o comando
-        try {
-            PreparedStatement pstmt = conn.prepareStatement(
-                    "SELECT * FROM ENDERECOS_EMPRESAS WHERE CIDADE = ? AND DATAEXCLUSAO IS NULL ORDER BY 1"
-            );
-            pstmt.setString(1, endereco.getCidade());
-            ResultSet rset = pstmt.executeQuery();
-
-            while (rset.next()) {
-                int id = rset.getInt("id");
-                int idEmpresa = rset.getInt("idEmpresas");
-                String estado = rset.getString("estado");
-                String cep = rset.getString("cep");
-                String cidade = rset.getString("cidade");
-                String bairro = rset.getString("bairro");
-                String rua = rset.getString("rua");
-                int numero = rset.getInt("numero");
-                String complemento = rset.getString("complemento");
-
-                LocalDateTime dataAtualizacao = rset.getTimestamp("dataAtualizacao").toLocalDateTime();
-                LocalDateTime dataCriacao = rset.getTimestamp("dataCriacao").toLocalDateTime();
-
-                // verifica se dataExclusao é null
-                LocalDateTime dataExclusao = null;
-                if (rset.getTimestamp("dataExclusao") != null) {
-                    dataExclusao = rset.getTimestamp("dataExclusao").toLocalDateTime();
-                }
-
-                EnderecoEmpresaModel end = new EnderecoEmpresaModel(
-                        id, estado, cep, cidade, bairro, rua, numero, complemento,
-                        dataCriacao, dataAtualizacao, dataExclusao, idEmpresa
-                );
-                lista.add(end);
-            }
-
-        } catch (SQLException se) {
-            // erro de banco
-            se.printStackTrace();
-        } finally {
-            // desconecta
-            conexao.desconectar();
-        }
-        // retorna a lista
-        return lista;
-    }
     public List<EnderecoEmpresaModel> buscarPorIdEmpresa(int idEmpresa) {
         // cria a conexão
         Conexao conexao = new Conexao();

@@ -105,10 +105,10 @@ public class CadastroUsuarioServlet extends HttpServlet {
                 nome, email, cpf, Integer.parseInt(idCargo), empresa.getId(), imagembytea
         );
 
-        cadastroAutorizado = usuarioDAO.insert(usuarioAdicionado);
+        cadastroAutorizado = usuarioDAO.inserir(usuarioAdicionado);
 
         //seta o setor do usuário
-        usuarioDAO.adicionarSetorUsuario(usuarioAdicionado, Integer.parseInt(setorId));
+        usuarioDAO.inserirSetorUsuario(usuarioAdicionado, Integer.parseInt(setorId));
 
         //carrega todos os setores
         setores = setorDAO.listarSetores();

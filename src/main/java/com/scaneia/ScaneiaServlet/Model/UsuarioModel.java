@@ -106,10 +106,6 @@ public class UsuarioModel {
         this.dataCriacao = dataCriacao;
     }
 
-    public void setIdCargo(int idCargo) {
-        this.idCargo = idCargo;
-    }
-
     public void setId(int id) {
         this.id = id;
     }

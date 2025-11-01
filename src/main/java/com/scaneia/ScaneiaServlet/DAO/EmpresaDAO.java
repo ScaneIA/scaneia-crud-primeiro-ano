@@ -67,7 +67,7 @@ public class EmpresaDAO {
         }
     }
 
-    // Atualizar empresa completa (usa quando for alterar a senha também)
+    // Atualiza empresa completa
     public int atualizar(EmpresaModel empresa) {
         // cria a conexão
         Conexao conexao = new Conexao();
@@ -81,13 +81,12 @@ public class EmpresaDAO {
         }
         // prepara o comando
         try (PreparedStatement pstmt = conn.prepareStatement(
-                "UPDATE EMPRESAS SET NOME=?, CNPJ=?, EMAIL=?, SENHA=?, DATAATUALIZACAO=NOW() WHERE ID=?")) {
+                "UPDATE EMPRESAS SET NOME=?, CNPJ=?, EMAIL=? DATAATUALIZACAO=NOW() WHERE ID=?")) {
 
             pstmt.setString(1, empresa.getNome());
             pstmt.setString(2, empresa.getCnpj());
             pstmt.setString(3, empresa.getEmail());
-            pstmt.setString(4, empresa.getSenha());
-            pstmt.setInt(5, empresa.getId());
+            pstmt.setInt(4, empresa.getId());
 
             // executa
             int retorno = pstmt.executeUpdate();
@@ -112,52 +111,6 @@ public class EmpresaDAO {
         } finally {
             conexao.desconectar();
             // desconecta a conexão
-        }
-    }
-
-
-    public int atualizarSemSenha(EmpresaModel empresa) {
-        // cria a conexão
-        Conexao conexao = new Conexao();
-        Connection conn = conexao.getConnection();
-
-        // verifica a conexão
-        if (conn == null) {
-            System.out.println("Não foi possível conectar");
-            // erro na conexão
-            return -1;
-        }
-
-        try (PreparedStatement pstmt = conn.prepareStatement(
-                "UPDATE EMPRESAS SET NOME=?, CNPJ=?, EMAIL=?, DATAATUALIZACAO=NOW() WHERE ID=?")) {
-
-            pstmt.setString(1, empresa.getNome());
-            pstmt.setString(2, empresa.getCnpj());
-            pstmt.setString(3, empresa.getEmail());
-            pstmt.setInt(4, empresa.getId());
-
-            // executa
-            int retorno = pstmt.executeUpdate();
-            if (retorno > 0) {
-                empresa.setDataAtualizacao(LocalDateTime.now());
-                // deu certo
-                return 1;
-            }
-            else
-                // nada alterado
-                return 0;
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-            // erro no banco
-            return -2;
-        } catch (Exception e) {
-            e.printStackTrace();
-            // outro erro
-            return -3;
-        } finally {
-            conexao.desconectar();
-            // desconectar
         }
     }
 
