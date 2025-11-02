@@ -227,8 +227,15 @@ public class UsuarioViewDAO {
     }
 
     public String formatarHora(String hora){
+        DateTimeFormatter formatterEntrada;
+
         //pega a hora no modelo ceto
-        DateTimeFormatter formatterEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSX");
+        if (hora.substring(0, hora.lastIndexOf("-")).length() == 26){
+            formatterEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSX");
+        }else{
+            formatterEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSX");
+        }
+
         OffsetDateTime horaNormal = OffsetDateTime.parse(hora, formatterEntrada);
 
         //cria o formatter da saida
