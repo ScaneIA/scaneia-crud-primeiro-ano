@@ -28,85 +28,64 @@ public class CadastrarEmpresaServlet extends HttpServlet {
 
         // Pega sessão existente, não cria nova
         HttpSession session = req.getSession(false);
+        boolean erro = false;
 
         // Valida se o usuário é administrador
         if (session == null || session.getAttribute("admin") == null) {
             res.sendRedirect(req.getContextPath() + "/index.html");
-            return;
-        }
+            return;       }
 
         // Captura os parâmetros do formulário
         String nome = req.getParameter("nome");
         String cnpj = req.getParameter("cnpj");
         String email = req.getParameter("email");
-        String senha= req.getParameter("senha");
+        String senha = req.getParameter("senha");
 
         // Valida o campo nome
         if (nome == null || nome.isBlank()) {
-            req.setAttribute("status", 400);
-            req.setAttribute("mensagem", "Nome é obrigatório.");
-            req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
-            return;
+            erro = true;
         }
 
         // Valida o formato do email
         if (email == null || !email.matches(REGEX_EMAIL)) {
-            req.setAttribute("status", 400);
-            req.setAttribute("mensagem", "Formato de e-mail inválido.");
-            req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
-            return;
+            erro = true;
         }
 
         // Valida o formato do CNPJ
         if (cnpj == null || !cnpj.matches(REGEX_CNPJ)) {
-            req.setAttribute("status", 400);
-            req.setAttribute("mensagem", "Formato de CNPJ inválido.");
-            req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
-            return;
+            erro = true;
         }
 
         // Valida o formato da senha
         if (senha == null || !senha.matches(REGEX_SENHA)) {
-            req.setAttribute("status", 400);
-            req.setAttribute("mensagem", "Formato de SENHA inválido.");
-            req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
-            return;
+            erro = true;
         } else {
             try {
                 // Gera hash da senha
                 senha = HashSenha.hashSenha(senha);
-            } catch (NoSuchAlgorithmException exception){
-                req.setAttribute("status",  500);
-                req.setAttribute("mensagem", "Ops... Tente novamente!");
-                req.getRequestDispatcher("/WEB-INF/VIEW/erroLoginEmpresa.jsp").forward(req, res);
+            } catch (NoSuchAlgorithmException exception) {
+                res.sendRedirect(req.getContextPath() + "/areaRestrita");
                 return;
             }
+        }
+
+        //retorna se teve erro
+        if (erro){
+            res.sendRedirect(req.getContextPath() + "/areaRestrita");
+            return;
         }
 
         // Deixa só os núemros no CNPJ
         cnpj = cnpj.replaceAll("[^0-9]", "");
 
         // Cria objeto da empresa
-        EmpresaModel empresa = new EmpresaModel(nome, cnpj, email,"");
+        EmpresaModel empresa = new EmpresaModel(nome, cnpj, email, "");
 
         // Instancia DAO e insere no banco
         EmpresaDAO empresaDAO = new EmpresaDAO();
         int resultado = empresaDAO.inserir(empresa);
 
         // Verifica resultado da inserção
-        if (resultado == 1) {
-            // Se der certo redireciona para área restrita
-            res.sendRedirect(req.getContextPath() + "/areaRestrita");
-        } else if (resultado == -2) {
-            // Empresa já existe
-            req.setAttribute("status", 409);
-            req.setAttribute("mensagem", "Essa empresa já existe!");
-            req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
-        } else {
-            // Outro erro
-            req.setAttribute("status", 500);
-            req.setAttribute("mensagem", "Erro interno. Tente novamente!");
-            req.getRequestDispatcher("/WEB-INF/erroCadastroEmpresa.jsp").forward(req, res);
-        }
+        res.sendRedirect(req.getContextPath() + "/areaRestrita");
     }
 }
