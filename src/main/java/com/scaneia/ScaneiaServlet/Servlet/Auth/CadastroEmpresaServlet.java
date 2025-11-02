@@ -81,7 +81,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
             //valida se o cnpj é valido
             if (!cnpj.matches("^\\d{2}[. -/]?\\d{3}[. -/]?\\d{3}[. -/]?\\d{4}[. -/]?\\d{2}")){
                 req.setAttribute("status",  400);
-                req.setAttribute("mensagem", "formato inválido do cnpj!");
+                req.setAttribute("mensagem", "Formato inválido do cnpj!");
                 req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
                 return;
             }else{
@@ -116,7 +116,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
             //valida o formato do cep
             if (!cep.matches("^\\d{5}[. -/]?\\d{3}")){
                 req.setAttribute("status",  400);
-                req.setAttribute("mensagem", "formato inválido do cep!");
+                req.setAttribute("mensagem", "Formato inválido do cep!");
                 req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
                 return;
             }else{
@@ -135,7 +135,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
             //valida o numero
             if (!numero.matches("^[0-9]+$")){
                 req.setAttribute("status",  400);
-                req.setAttribute("mensagem", "numero inválido!");
+                req.setAttribute("mensagem", "Número inválido!");
                 req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
                 return;
             }
@@ -158,7 +158,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
 
         }catch (NullPointerException npe){
             req.setAttribute("status", 400);
-            req.setAttribute("mensagem", "preencha todos os itens");
+            req.setAttribute("mensagem", "Preencha todos os itens");
             req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
             npe.printStackTrace();
             return;
@@ -172,7 +172,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
 
         if(registroEmpresa == -2){
             req.setAttribute("status", 409);
-            req.setAttribute("mensagem", "Ja existe essa empresa!");
+            req.setAttribute("mensagem", "Já existe essa empresa!");
             req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
             return;
 
