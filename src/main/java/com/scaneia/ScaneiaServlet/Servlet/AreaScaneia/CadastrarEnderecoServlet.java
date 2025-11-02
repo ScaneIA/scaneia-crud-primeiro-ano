@@ -17,6 +17,7 @@ public class CadastrarEnderecoServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = req.getSession(false);
+        boolean erro = false;
 
         if (session == null) {
             res.sendRedirect(req.getContextPath() + "/index.html");
@@ -40,10 +41,7 @@ public class CadastrarEnderecoServlet extends HttpServlet {
                 estado == null || estado.isBlank() ||
                 cep == null || cep.isBlank()) {
 
-            req.setAttribute("status", 400);
-            req.setAttribute("mensagem", "Campos obrigatórios não preenchidos.");
-            req.getRequestDispatcher("/WEB-INF/erroCadastroEndereco.jsp").forward(req, res);
-            return;
+            erro = true;
         }
 
         int idEmpresa;
@@ -52,9 +50,7 @@ public class CadastrarEnderecoServlet extends HttpServlet {
             idEmpresa = Integer.parseInt(idEmpresaParam);
             numero = Integer.parseInt(numeroParam);
         } catch (NumberFormatException e) {
-            req.setAttribute("status", 400);
-            req.setAttribute("mensagem", "ID da empresa ou número do endereço inválido.");
-            req.getRequestDispatcher("/WEB-INF/erroCadastroEndereco.jsp").forward(req, res);
+            res.sendRedirect(req.getContextPath() + "/areaRestrita");
             return;
         }
 
@@ -63,9 +59,11 @@ public class CadastrarEnderecoServlet extends HttpServlet {
         // Verifica se já existe endereço para a empresa
         List<EnderecoEmpresaModel> enderecos = dao.buscarPorIdEmpresa(idEmpresa);
         if (enderecos != null && !enderecos.isEmpty()) {
-            req.setAttribute("status", 409);
-            req.setAttribute("mensagem", "Essa empresa já possui um endereço cadastrado.");
-            req.getRequestDispatcher("/WEB-INF/erroCadastroEndereco.jsp").forward(req, res);
+            erro = true;
+        }
+
+        if (erro){
+            res.sendRedirect(req.getContextPath() + "/areaRestrita");
             return;
         }
 
