@@ -229,8 +229,9 @@ public class UsuarioViewDAO {
     public String formatarHora(String hora){
         DateTimeFormatter formatterEntrada;
 
+
         //pega a hora no modelo ceto
-        if (hora.substring(0, hora.lastIndexOf("-")).length() == 26){
+        if (hora.substring(0, hora.length()-3).length() == 26){
             formatterEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSX");
         }else{
             formatterEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSX");
