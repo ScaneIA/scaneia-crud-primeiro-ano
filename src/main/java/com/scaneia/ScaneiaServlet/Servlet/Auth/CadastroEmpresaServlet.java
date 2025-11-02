@@ -149,7 +149,7 @@ public class CadastroEmpresaServlet extends HttpServlet {
             }
 
             //valida o complemento
-            if (!complemento.matches("^[\\w\\s.,-]+$")){
+            if (!complemento.matches("^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\\s+[A-Za-zÀ-ÖØ-öø-ÿ\\d]+)*$")){
                 req.setAttribute("status",  400);
                 req.setAttribute("mensagem", "Complemento inválido!");
                 req.getRequestDispatcher("/WEB-INF/VIEW/erroCadastroEmpresa.jsp").forward(req, res);
