@@ -39,20 +39,13 @@ public class AreaRHServlet extends HttpServlet {
         if (httpSession == null || (httpSession.getAttribute("empresa") == null && httpSession.getAttribute("admin") == null)) {
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
-        } else {
-            // verifica se é admin
-            if (httpSession.getAttribute("admin") != null){
-                try {
-                    httpSession.setAttribute("empresa", new EmpresaModel(
-                            Integer.parseInt(req.getParameter("idEmpresa"))
-                    ));
-                } catch (NullPointerException | NumberFormatException exception){
-                    res.sendRedirect(req.getContextPath() + "/index.html");
-                    return;
-                }
-            }else if (httpSession.getAttribute("empresa") != null){
-                empresa = (EmpresaModel) httpSession.getAttribute("empresa");
-            }
+        }
+
+        //valida se é admin em nova area
+        if(req.getParameter("idEmpresa") != null && httpSession.getAttribute("admin") != null){
+            httpSession.setAttribute("empresa", new EmpresaModel(
+                    Integer.parseInt(req.getParameter("idEmpresa"))
+            ));
         }
 
         // pega a empresa da sessão
