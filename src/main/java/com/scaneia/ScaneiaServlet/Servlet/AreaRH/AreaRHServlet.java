@@ -40,21 +40,18 @@ public class AreaRHServlet extends HttpServlet {
             res.sendRedirect(req.getContextPath() + "/index.html");
             return;
         } else {
-            // verifica se tem empresa
-            if (httpSession.getAttribute("empresa") != null){
-                empresa = (EmpresaModel) httpSession.getAttribute("empresa");
-            } else {
-                // verifica se é admin
-                if (httpSession.getAttribute("admin") != null){
-                    try {
-                        httpSession.setAttribute("empresa", new EmpresaModel(
-                                Integer.parseInt(req.getParameter("idEmpresa"))
-                        ));
-                    } catch (NullPointerException | NumberFormatException exception){
-                        res.sendRedirect(req.getContextPath() + "/index.html");
-                        return;
-                    }
+            // verifica se é admin
+            if (httpSession.getAttribute("admin") != null){
+                try {
+                    httpSession.setAttribute("empresa", new EmpresaModel(
+                            Integer.parseInt(req.getParameter("idEmpresa"))
+                    ));
+                } catch (NullPointerException | NumberFormatException exception){
+                    res.sendRedirect(req.getContextPath() + "/index.html");
+                    return;
                 }
+            }else if (httpSession.getAttribute("empresa") != null){
+                empresa = (EmpresaModel) httpSession.getAttribute("empresa");
             }
         }
 
